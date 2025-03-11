@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+:root {
+   --mainGreen: #108a01;
+   --secondaryGreen: #4fab4a;
+   --lightGreen: #8ccc8c;
+}
+
+.bg-main-green {
+   background-color: var(--mainGreen);
+}
+
+.text-main-green {
+   color: var(--mainGreen);
+}
+
+.bg-sec-green {
+   background-color: var(--secondaryGreen);
+}
+
+.text-sec-green {
+   color: var(--secondaryGreen);
+}
+
+.bg-light-green {
+   background-color: var(--lightGreen);
+}
+
+.text-light-green {
+   color: var(--lightGreen);
+}
