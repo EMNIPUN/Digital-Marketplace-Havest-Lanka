@@ -1,7 +1,7 @@
 import React from "react";
 
 function TestShopOwner() {
-   return <div>TestShopOwner - Personal branch</div>;
+   return <div className="text-center">TestShopOwner - Personal branch</div>;
 }
 
 export default TestShopOwner;

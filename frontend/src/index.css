@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+   font-family: "Poppins", sans-serif;
+}
+
 /* Global styles */
 :root {
    --mainGreen: #108a01;
