@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, X, Send, Image, Tag, MapPin } from 'lucide-react';
+import BidForm from '../BidForm/BidForm';
 
 const AddPostComponent = () => {
   const [isFormVisible, setFormVisible] = useState(false);
@@ -53,73 +54,7 @@ const AddPostComponent = () => {
             </div>
             
             <div className="p-6">
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Post Title</label>
-                <input 
-                  type="text" 
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                  placeholder="Enter a descriptive title for your post"
-                />
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <textarea 
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent h-32"
-                  placeholder="Describe your products, pricing, and other relevant details"
-                ></textarea>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Price (per kg)</label>
-                  <input 
-                    type="text" 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                    placeholder="0.00"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Quantity Available (kg)</label>
-                  <input 
-                    type="number" 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                    placeholder="0"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-3 mb-6">
-                <button className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-md text-gray-700 hover:bg-gray-200">
-                  <Image className="mr-2 h-4 w-4" />
-                  Add Photos
-                </button>
-                <button className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-md text-gray-700 hover:bg-gray-200">
-                  <Tag className="mr-2 h-4 w-4" />
-                  Add Tags
-                </button>
-                <button className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-md text-gray-700 hover:bg-gray-200">
-                  <MapPin className="mr-2 h-4 w-4" />
-                  Add Location
-                </button>
-              </div>
-            </div>
-            
-            <div className="flex justify-end items-center p-6 border-t bg-gray-50">
-              <button 
-                onClick={() => setFormVisible(false)} 
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg mr-4 hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-              <button 
-                className="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-              >
-                <div className="flex items-center">
-                  <Send className="mr-2 h-4 w-4" />
-                  Publish Post
-                </div>
-              </button>
+              <BidForm />
             </div>
           </div>
         </div>

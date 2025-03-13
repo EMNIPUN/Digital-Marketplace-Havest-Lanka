@@ -6,7 +6,6 @@ function FarmerRoutes() {
    return (
       <Routes>
          <Route path="/dashboard" element={<FarmerDashboardPage />} />
-
       </Routes>
    )
 }

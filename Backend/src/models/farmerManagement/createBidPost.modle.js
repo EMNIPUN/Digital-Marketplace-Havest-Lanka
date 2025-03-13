@@ -1,0 +1,36 @@
+import mongoose from "mongoose";
+
+const BidPostSchema = new mongoose.Schema({
+    farmerId:{
+        type:String,
+        required:true
+    },
+    cropsName:{
+        type:String,
+        required:true
+    },
+    cropsCategory:{
+        type:String,
+        required:true
+    },
+    description:{
+        type:String,
+        required:true
+    },
+    price:{
+      type: Number,
+      required: true,
+    },
+    quantity:{
+      type: Number,
+      required: true,
+    },
+    location:{
+      type: String,
+      required: true,
+    },
+    
+});
+
+const BidPost = mongoose.model('BidPost', BidPostSchema);
+export default BidPost;
