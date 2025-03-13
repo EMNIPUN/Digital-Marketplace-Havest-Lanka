@@ -1,0 +1,33 @@
+/* Sidebar */
+::-webkit-scrollbar {
+   width: 3px;
+   height: 12px;
+}
+
+::-webkit-scrollbar-track {
+   background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+   background: #cecece;
+   border-radius: 10px;
+}
+
+/* Shopowner dashboard swiper */
+.custom-swiper .swiper-pagination-bullet {
+   width: 8px;
+   height: 8px;
+   background-color: #e2e4e7;
+   opacity: 1;
+   transition: all 0.3s;
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+   background-color: var(--mainGreen);
+   transform: scale(1.3);
+}
+
+input:focus {
+   outline-color: none;
+   outline-style: none;
+}
