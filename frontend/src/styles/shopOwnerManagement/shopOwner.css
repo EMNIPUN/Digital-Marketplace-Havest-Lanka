@@ -1,6 +1,6 @@
 /* Sidebar */
 ::-webkit-scrollbar {
-   width: 3px;
+   width: 4px;
    height: 12px;
 }
 
@@ -9,7 +9,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-   background: #cecece;
+   background: #ababab;
    border-radius: 10px;
 }
 

@@ -6,6 +6,7 @@ import ShopOwnerSideBar from "../components/shopOwnerManagement/ShopOwnerSideBar
 import ShopOwnerDashboard from "../pages/shopOwnerManagement/ShopOwnerDashboard";
 import ShopOwnerNavBar from "../components/shopOwnerManagement/ShopOwnerNavBar";
 import FindCrops from "../pages/shopOwnerManagement/FindCrops";
+import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 
 function ShopOwnerRoutes() {
    return (
@@ -24,6 +25,7 @@ function ShopOwnerRoutes() {
                   <Route path="/" element={<FindCrops />}></Route>
                </Routes>
             </div>
+            <ShopOwnerFooter />
          </div>
       </div>
    );

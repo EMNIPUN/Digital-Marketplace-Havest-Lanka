@@ -21,7 +21,7 @@ function ShopOwnerDashboard() {
       <div className="p-[20px] flex flex-col gap-5">
          <div className="w-full  flex  gap-5">
             {/* Spend */}
-            <div className="w-full bg-white shadow-sm rounded p-[20px]">
+            <div className="w-full bg-white shadow-sm rounded border border-gray-200 p-[20px]">
                <h3 className="text-gray-600">Total spend in this month</h3>
                <div className="flex items-center justify-between mt-5">
                   <div className="flex flex-col gap-1">
@@ -50,7 +50,7 @@ function ShopOwnerDashboard() {
             </div>
 
             {/* Orders */}
-            <div className="w-full bg-white shadow-sm rounded p-[20px]">
+            <div className="w-full bg-white shadow-sm rounded border border-gray-200 p-[20px]">
                <h3 className="text-gray-600">Order details in this month</h3>
                <div className="flex items-center justify-between mt-5">
                   <div className="flex flex-col gap-1">
