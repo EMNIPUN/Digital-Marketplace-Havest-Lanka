@@ -17,7 +17,7 @@ function ShopOwnerNavBar() {
                   </div>
                   <p className="text-gray-600 text-sm">Welcome Chathush!</p>
                   {/* <i className="bi bi-person text-xl bg-main-green text-white px-2 py-1 rounded-full"></i> */}
-                  <img src={User} width="30px" alt="" />
+                  <img src={User} width="33px" alt="" />
                </div>
             </div>
          </nav>

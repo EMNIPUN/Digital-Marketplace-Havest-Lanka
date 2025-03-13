@@ -1,10 +1,9 @@
 import React from "react";
-import logo from "../../assets/shopOwnerManagement/logo-white.jpg";
 
 function ShopOwnerFooter() {
    return (
       <footer className="px-[20px] bg-gray-100 rounded">
-         <footer class="bg-white text-gray-600 pt-10">
+         <footer class="bg-white text-gray-600 pt-10 shadow-sm border border-gray-200">
             <div class="container mx-auto px-5 grid grid-cols-1 md:grid-cols-4 gap-6">
                <div>
                   <h2 class="text-xl font-semibold mb-4">About Us</h2>

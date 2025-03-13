@@ -69,22 +69,22 @@ function ShopOwnerSideBar() {
                   Main Menu
                </p>
                <ul className="flex flex-col gap-1 text-gray-700">
-                  <li className={`rounded-md ${activeItemClass}`}>
-                     <Link
-                        to="/shopOwner"
-                        className="flex gap-2 items-center py-2 px-3"
-                     >
-                        <FcSearch className="text-xl" />
-                        <p>Find Crops</p>
-                     </Link>
-                  </li>
                   <li className="rounded-md hover:bg-gray-50">
                      <Link
-                        to="/shopOwner/dashboard"
+                        to="/shopOwner/"
                         className="flex gap-2 items-center py-2 px-3"
                      >
                         <FcBarChart className="text-xl" />
                         <p>Dashboard</p>
+                     </Link>
+                  </li>
+                  <li className={`rounded-md ${activeItemClass}`}>
+                     <Link
+                        to="/shopOwner/findCrops"
+                        className="flex gap-2 items-center py-2 px-3"
+                     >
+                        <FcSearch className="text-xl" />
+                        <p>Find Crops</p>
                      </Link>
                   </li>
                   <li className="rounded-md hover:bg-gray-50">
@@ -122,15 +122,14 @@ function ShopOwnerSideBar() {
                {expandedSections.orderManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
                      <li className="rounded-md hover:bg-gray-50">
-                        <a
-                           href="#"
+                        <Link
+                           to="/shopOwner/orders"
                            className="flex gap-2 items-center py-2 px-3"
                         >
                            <FcDocument className="text-xl" />
-                           <p>All Orders</p>
-                        </a>
+                           <p>Orders</p>
+                        </Link>
                      </li>
-                     
                   </ul>
                )}
             </div>
@@ -173,8 +172,6 @@ function ShopOwnerSideBar() {
                   </ul>
                )}
             </div>
-
-           
          </div>
 
          <div className="mt-auto border-t border-gray-100 p-4">
