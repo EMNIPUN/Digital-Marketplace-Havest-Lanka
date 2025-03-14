@@ -21,10 +21,26 @@ function ShopOwnerSideBar() {
       settings: true,
    });
 
+   const [activeNavLink, setActiveNavLink] = useState({
+      dashboard: true,
+      findcrops: false,
+      inbox: false,
+      orders: false,
+      inventory: false,
+      finance: false,
+   });
+
    const toggleSection = (section) => {
       setExpandedSections((prev) => ({
          ...prev,
          [section]: !prev[section],
+      }));
+   };
+
+   const toggleActiveLink = (link) => {
+      setActiveNavLink((prev) => ({
+         ...prev,
+         [link]: !prev[link],
       }));
    };
 
@@ -69,7 +85,14 @@ function ShopOwnerSideBar() {
                   Main Menu
                </p>
                <ul className="flex flex-col gap-1 text-gray-700">
-                  <li className="rounded-md hover:bg-gray-50">
+                  <li
+                     onClick={() => toggleActiveLink("dashboard")}
+                     className={`rounded-md ${
+                        activeNavLink.dashboard
+                           ? activeItemClass
+                           : "hover:bg-gray-50"
+                     } `}
+                  >
                      <Link
                         to="/shopOwner/"
                         className="flex gap-2 items-center py-2 px-3"
@@ -78,7 +101,14 @@ function ShopOwnerSideBar() {
                         <p>Dashboard</p>
                      </Link>
                   </li>
-                  <li className="rounded-md hover:bg-gray-50">
+                  <li
+                     onClick={() => toggleActiveLink("findcrops")}
+                     className={`rounded-md ${
+                        activeNavLink.findcrops
+                           ? activeItemClass
+                           : "hover:bg-gray-50"
+                     } `}
+                  >
                      <Link
                         to="/shopOwner/findCrops"
                         className="flex gap-2 items-center py-2 px-3"
@@ -87,7 +117,13 @@ function ShopOwnerSideBar() {
                         <p>Find Crops</p>
                      </Link>
                   </li>
-                  <li className="rounded-md hover:bg-gray-50">
+                  <li
+                     className={`rounded-md ${
+                        activeNavLink.inbox
+                           ? activeItemClass
+                           : "hover:bg-gray-50"
+                     } `}
+                  >
                      <Link
                         to="/shopOwner/inbox"
                         className="flex items-center justify-between py-2 px-3"
@@ -121,7 +157,13 @@ function ShopOwnerSideBar() {
 
                {expandedSections.orderManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
-                     <li className="rounded-md hover:bg-gray-50">
+                     <li
+                        className={`rounded-md ${
+                           activeNavLink.orders
+                              ? activeItemClass
+                              : "hover:bg-gray-50"
+                        } `}
+                     >
                         <Link
                            to="/shopOwner/orders"
                            className="flex gap-2 items-center py-2 px-3"
@@ -151,7 +193,13 @@ function ShopOwnerSideBar() {
 
                {expandedSections.shopManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
-                     <li className="rounded-md hover:bg-gray-50">
+                     <li
+                        className={`rounded-md ${
+                           activeNavLink.inventory
+                              ? activeItemClass
+                              : "hover:bg-gray-50"
+                        } `}
+                     >
                         <Link
                            to="/shopOwner/inventory"
                            className="flex gap-2 items-center py-2 px-3"
@@ -160,7 +208,13 @@ function ShopOwnerSideBar() {
                            <p>Manage Inventory</p>
                         </Link>
                      </li>
-                     <li className="rounded-md hover:bg-gray-50">
+                     <li
+                        className={`rounded-md ${
+                           activeNavLink.finance
+                              ? activeItemClass
+                              : "hover:bg-gray-50"
+                        } `}
+                     >
                         <a
                            href="#"
                            className="flex gap-2 items-center py-2 px-3"
