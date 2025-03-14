@@ -1,5 +1,5 @@
 import React from "react";
-import User from "../../assets/shopOwnerManagement/user-ico.ico";
+import Profile from "../../assets/shopOwnerManagement/profile.png";
 
 function ShopOwnerOrders() {
    return (
@@ -31,7 +31,6 @@ function ShopOwnerOrders() {
                         <th class="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Status
                         </th>
-                       
                      </tr>
                   </thead>
 
@@ -41,13 +40,12 @@ function ShopOwnerOrders() {
                            <div class="text-sm font-medium text-sec-green">
                               #ORD12345
                            </div>
-                           
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                            <div class="flex items-center">
                               <div class="h-10 w-10 flex-shrink-0">
                                  <img
-                                    src={User}
+                                    src={Profile}
                                     class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
                                     alt="buyer"
                                  />
@@ -79,7 +77,6 @@ function ShopOwnerOrders() {
                               Delivered
                            </span>
                         </td>
-                       
                      </tr>
 
                      <tr class="hover:bg-blue-50 transition duration-150">
@@ -87,13 +84,12 @@ function ShopOwnerOrders() {
                            <div class="text-sm font-medium text-sec-green">
                               #ORD12346
                            </div>
-                           
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                            <div class="flex items-center">
                               <div class="h-10 w-10 flex-shrink-0">
                                  <img
-                                    src={User}
+                                    src={Profile}
                                     class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
                                     alt="buyer"
                                  />
@@ -127,7 +123,6 @@ function ShopOwnerOrders() {
                               On Delivery
                            </span>
                         </td>
-                       
                      </tr>
 
                      <tr class="hover:bg-blue-50 transition duration-150">
@@ -135,13 +130,12 @@ function ShopOwnerOrders() {
                            <div class="text-sm font-medium text-sec-green">
                               #ORD12347
                            </div>
-                           
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                            <div class="flex items-center">
                               <div class="h-10 w-10 flex-shrink-0">
                                  <img
-                                    src={User}
+                                    src={Profile}
                                     class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
                                     alt="buyer"
                                  />
@@ -171,8 +165,6 @@ function ShopOwnerOrders() {
                               Cancelled
                            </span>
                         </td>
-                        
-                        
                      </tr>
                   </tbody>
                </table>

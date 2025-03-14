@@ -17,22 +17,22 @@ function ShopOwnerFooter() {
                   <h2 class="text-xl font-semibold mb-4">Quick Links</h2>
                   <ul class="space-y-2">
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Home
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            How It Works
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Features
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Contact Us
                         </a>
                      </li>
@@ -43,22 +43,22 @@ function ShopOwnerFooter() {
                   <h2 class="text-xl font-semibold mb-4">Categories</h2>
                   <ul class="space-y-2">
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Fruits & Vegetables
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Grains & Pulses
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Dairy Products
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Transport Services
                         </a>
                      </li>
@@ -69,17 +69,17 @@ function ShopOwnerFooter() {
                   <h2 class="text-xl font-semibold mb-4">Support</h2>
                   <ul class="space-y-2">
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Help Center
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Privacy Policy
                         </a>
                      </li>
                      <li>
-                        <a href="#" class="text-gray-400 hover:text-white">
+                        <a href="#" class="text-gray-400 ">
                            Terms of Service
                         </a>
                      </li>
@@ -87,13 +87,13 @@ function ShopOwnerFooter() {
 
                   <h2 class="text-xl font-semibold mt-6 mb-4">Follow Us</h2>
                   <div class="flex space-x-4">
-                     <a href="#" class="text-gray-400 hover:text-white">
+                     <a href="#" class="text-gray-400 ">
                         <i class="fab fa-facebook"></i> Facebook
                      </a>
-                     <a href="#" class="text-gray-400 hover:text-white">
+                     <a href="#" class="text-gray-400 ">
                         <i class="fab fa-twitter"></i> Twitter
                      </a>
-                     <a href="#" class="text-gray-400 hover:text-white">
+                     <a href="#" class="text-gray-400 ">
                         <i class="fab fa-instagram"></i> Instagram
                      </a>
                   </div>

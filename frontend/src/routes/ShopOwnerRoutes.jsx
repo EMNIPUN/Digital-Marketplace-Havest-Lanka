@@ -8,6 +8,7 @@ import ShopOwnerNavBar from "../components/shopOwnerManagement/ShopOwnerNavBar";
 import FindCrops from "../pages/shopOwnerManagement/FindCrops";
 import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
+import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 
 function ShopOwnerRoutes() {
    return (
@@ -20,8 +21,9 @@ function ShopOwnerRoutes() {
             <div className="mt-14">
                <Routes>
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>
-                  <Route path="/findCrops" element={<FindCrops />}></Route>
+                  <Route path="/findcrops" element={<FindCrops />}></Route>
                   <Route path="/orders" element={<ShopOwnerOrders />}></Route>
+                  <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
                </Routes>
             </div>
             <ShopOwnerFooter />

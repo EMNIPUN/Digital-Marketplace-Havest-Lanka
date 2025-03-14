@@ -1,6 +1,6 @@
 import React from "react";
 import CropPost from "../../components/shopOwnerManagement/CropPost";
-import User from "../../assets/shopOwnerManagement/user-ico.ico";
+import Profile from "../../assets/shopOwnerManagement/profile.png";
 
 function FindCrops() {
    const active = "bg-main-green text-white";
@@ -12,7 +12,7 @@ function FindCrops() {
          farmer: {
             name: "Akindu Nayanajith",
             rating: 4.9,
-            image: User, // Replace with the actual image path
+            image: Profile, // Replace with the actual image path
          },
          price: "120 LKR/kg",
          location: "Badulla",
@@ -26,7 +26,7 @@ function FindCrops() {
          farmer: {
             name: "Kasun Perera",
             rating: 4.7,
-            image: User, // Replace with the actual image path
+            image: Profile, // Replace with the actual image path
          },
          price: "90 LKR/kg",
          location: "Kandy",
@@ -40,7 +40,7 @@ function FindCrops() {
          farmer: {
             name: "Nuwan Bandara",
             rating: 4.8,
-            image: User, // Replace with the actual image path
+            image: Profile, // Replace with the actual image path
          },
          price: "110 LKR/kg",
          location: "Nuwara Eliya",
