@@ -30,7 +30,7 @@ function CropPost(props) {
          </div>
          <div className="line w-full h-px bg-gray-200"></div>
          <div>
-            <p className="tracking-wide font-light text-base">
+            <p className="tracking-wide font-light text-sm">
               {description}
             </p>
          </div>

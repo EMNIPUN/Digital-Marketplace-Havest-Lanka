@@ -152,13 +152,13 @@ function ShopOwnerSideBar() {
                {expandedSections.shopManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
                      <li className="rounded-md hover:bg-gray-50">
-                        <a
-                           href="#"
+                        <Link
+                           to="/shopOwner/inventory"
                            className="flex gap-2 items-center py-2 px-3"
                         >
                            <FcShop className="text-xl" />
                            <p>Manage Inventory</p>
-                        </a>
+                        </Link>
                      </li>
                      <li className="rounded-md hover:bg-gray-50">
                         <a

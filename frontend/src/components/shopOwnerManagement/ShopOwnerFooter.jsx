@@ -101,7 +101,7 @@ function ShopOwnerFooter() {
             </div>
 
             <div class="mt-5 text-center text-gray-500 text-sm border-t border-gray-200 py-5">
-               © 2025 Marketplace. All rights reserved.
+               © 2025 Harvest Lanka. All rights reserved.
             </div>
          </footer>
       </footer>

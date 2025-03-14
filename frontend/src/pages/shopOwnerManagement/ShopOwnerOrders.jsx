@@ -35,18 +35,18 @@ function ShopOwnerOrders() {
                   </thead>
 
                   <tbody class="divide-y divide-gray-200">
-                     <tr class="hover:bg-blue-50 transition duration-150">
+                     <tr class="hover:bg-gray-50 transition duration-150">
                         <td class="px-6 py-4 whitespace-nowrap">
                            <div class="text-sm font-medium text-sec-green">
                               #ORD12345
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 ">
                            <div class="flex items-center">
-                              <div class="h-10 w-10 flex-shrink-0">
+                              <div class="h-10 w-10 ">
                                  <img
                                     src={Profile}
-                                    class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
+                                    class="h-10 w-10 rounded-full object-cover "
                                     alt="buyer"
                                  />
                               </div>
@@ -66,28 +66,28 @@ function ShopOwnerOrders() {
                            </div>
                            <div class="text-xs text-gray-500">2kg package</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4">
                            <div class="text-sm font-semibold text-gray-900">
                               LKR 6,000
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        <td class="px-6 py-4 ">
+                           <span class="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
                               <span class="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
                               Delivered
                            </span>
                         </td>
                      </tr>
 
-                     <tr class="hover:bg-blue-50 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap">
+                     <tr class="hover:bg-gray-50 transition duration-150">
+                        <td class="px-6 py-4 ">
                            <div class="text-sm font-medium text-sec-green">
                               #ORD12346
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4">
                            <div class="flex items-center">
-                              <div class="h-10 w-10 flex-shrink-0">
+                              <div class="h-10 w-10 ">
                                  <img
                                     src={Profile}
                                     class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
@@ -112,28 +112,28 @@ function ShopOwnerOrders() {
                               1.5kg package
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 ">
                            <div class="text-sm font-semibold text-gray-900">
                               LKR 3,600
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                        <td class="px-6 py-4 ">
+                           <span class="px-3 py-1 inline-flex text-xs  font-semibold rounded-full bg-yellow-100 text-yellow-800">
                               <span class="h-2 w-2 rounded-full bg-yellow-600 mr-1.5 mt-1"></span>
                               On Delivery
                            </span>
                         </td>
                      </tr>
 
-                     <tr class="hover:bg-blue-50 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap">
+                     <tr class="hover:bg-gray-50 transition duration-150">
+                        <td class="px-6 py-4">
                            <div class="text-sm font-medium text-sec-green">
                               #ORD12347
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 ">
                            <div class="flex items-center">
-                              <div class="h-10 w-10 flex-shrink-0">
+                              <div class="h-10 w-10 ">
                                  <img
                                     src={Profile}
                                     class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
@@ -154,13 +154,13 @@ function ShopOwnerOrders() {
                            <div class="text-sm text-gray-900">Green Beans</div>
                            <div class="text-xs text-gray-500">1kg package</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 ">
                            <div class="text-sm font-semibold text-gray-900">
                               LKR 2,750
                            </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        <td class="px-6 py-4 ">
+                           <span class="px-3 py-1 inline-flex text-xs  font-semibold rounded-full bg-red-100 text-red-800">
                               <span class="h-2 w-2 rounded-full bg-red-600 mr-1.5 mt-1"></span>
                               Cancelled
                            </span>

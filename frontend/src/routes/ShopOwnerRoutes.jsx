@@ -9,6 +9,7 @@ import FindCrops from "../pages/shopOwnerManagement/FindCrops";
 import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
+import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
 
 function ShopOwnerRoutes() {
    return (
@@ -24,6 +25,10 @@ function ShopOwnerRoutes() {
                   <Route path="/findcrops" element={<FindCrops />}></Route>
                   <Route path="/orders" element={<ShopOwnerOrders />}></Route>
                   <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
+                  <Route
+                     path="/inventory"
+                     element={<ManageInventory />}
+                  ></Route>
                </Routes>
             </div>
             <ShopOwnerFooter />
