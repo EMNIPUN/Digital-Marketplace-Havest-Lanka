@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import user from "../../assets/shopOwnerManagement/user-ico.ico";
 import logo from "../../assets/shopOwnerManagement/logo-white.jpg";
-import { Link, Links } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
    FcBarChart,
    FcSearch,
    FcSms,
-   FcSettings,
    FcShop,
    FcDocument,
-   FcFolder,
    FcServices,
 } from "react-icons/fc";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
@@ -38,13 +36,12 @@ function ShopOwnerSideBar() {
    };
 
    const toggleActiveLink = (link) => {
-      setActiveNavLink((prev) => ({
-         ...prev,
-         [link]: !prev[link],
-      }));
+      setActiveNavLink({
+         [link]: true,
+      });
    };
 
-   const activeItemClass = "bg-green-50 text-green-700 font-medium rounded-md";
+   const activeItemClass = "bg-gray-100 text-gray-700 font-medium rounded-md";
 
    return (
       <aside className="so-side-bar w-80 bg-white h-screen overflow-y-auto  shadow-sm flex flex-col gap-4 fixed top-0 left-0 z-50">
@@ -118,6 +115,7 @@ function ShopOwnerSideBar() {
                      </Link>
                   </li>
                   <li
+                     onClick={() => toggleActiveLink("inbox")}
                      className={`rounded-md ${
                         activeNavLink.inbox
                            ? activeItemClass
@@ -158,6 +156,7 @@ function ShopOwnerSideBar() {
                {expandedSections.orderManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
                      <li
+                        onClick={() => toggleActiveLink("orders")}
                         className={`rounded-md ${
                            activeNavLink.orders
                               ? activeItemClass
@@ -194,6 +193,7 @@ function ShopOwnerSideBar() {
                {expandedSections.shopManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
                      <li
+                        onClick={() => toggleActiveLink("inventory")}
                         className={`rounded-md ${
                            activeNavLink.inventory
                               ? activeItemClass
@@ -209,6 +209,7 @@ function ShopOwnerSideBar() {
                         </Link>
                      </li>
                      <li
+                        onClick={() => toggleActiveLink("finance")}
                         className={`rounded-md ${
                            activeNavLink.finance
                               ? activeItemClass
