@@ -13,7 +13,6 @@ function BidForm() {
     const [quantity, setQuantity] = useState("");
     const [location, setLocation] = useState("");
 
-
   const districts = ["Ampara","Anuradhapura","Badulla","Batticaloa","Colombo","Galle","Gampaha","Hambantota","Jaffna","Kalutara","Kandy","Kegalle","Kilinochchi",
     "Kurunegala","Mannar","Matale","Matara","Monaragala","Mullaitivu","Nuwara Eliya","Polonnaruwa","Puttalam","Ratnapura","Trincomalee","Vavuniya"];
 
@@ -30,7 +29,8 @@ function BidForm() {
                 quantity: quantity,
                 location: location,
             };
-            await axios.post("http://localhost:8005/api/createBidPost", bidPostData);
+            console.log(bidPostData);
+            await axios.post("http://localhost:8005/api/BidPost", bidPostData);
             setShowForm(false);
         }catch(error){
             console.log(error);
@@ -63,6 +63,7 @@ function BidForm() {
                     placeholder="Enter a descriptive title for your post"
                 />
             </div>
+
         </div>
         
         <div className="mb-6">

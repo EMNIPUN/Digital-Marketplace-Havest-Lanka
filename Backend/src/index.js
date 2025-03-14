@@ -2,7 +2,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import connectDB from './config/db.js';
-import bidPostRouter from './routes/farmerManagement/createBidPost.routes.js';
+import bidPostRouter from './routes/farmerManagement/BidPost.routes.js';
 
 const app = express();
 
@@ -11,9 +11,9 @@ app.use(cors());
 
 connectDB();
 
-app.use('/api/createBidPost', bidPostRouter);
+app.use('/api/BidPost', bidPostRouter);
 
-const port = 8005;
+const port = 8005; 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

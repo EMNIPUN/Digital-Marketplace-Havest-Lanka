@@ -1,4 +1,17 @@
-import BidPost from "../../models/farmerManagement/createBidPost.modle.js";
+import BidPost from "../../models/farmerManagement/BidPost.modle.js";
+
+export const getAllBidPosts = async (req, res) => {
+    const bidPosts = await BidPost.find();
+    res.status(200).json(bidPosts);
+};
+
+export const getBidsByFarmerId = async (req, res) => {
+    
+    const farmerId = req.params.farmerId;
+    const bidPosts = await BidPost.find({ farmerId});
+    res.status(200).json(bidPosts);
+    return;
+}
 
 export const createBidPost = async (req, res) => {
     const bidPost = req.body;
