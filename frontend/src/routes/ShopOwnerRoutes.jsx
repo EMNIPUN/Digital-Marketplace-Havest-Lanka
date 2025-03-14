@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "../styles/shopOwnerManagement/shopOwner.css";
 
@@ -10,8 +10,11 @@ import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
+import AddInventoryItem from "../components/shopOwnerManagement/AddInventoryItem";
 
 function ShopOwnerRoutes() {
+   const [isClickAddItem, setIsClickAddItem] = useState(false);
+
    return (
       <div className="w-full flex bg-gray-100">
          <div className="max-w-64">
@@ -19,6 +22,9 @@ function ShopOwnerRoutes() {
          </div>
          <div className="w-full pl-80">
             <ShopOwnerNavBar />
+            {isClickAddItem && (
+               <AddInventoryItem setIsClickAddItem={setIsClickAddItem} />
+            )}
             <div className="mt-14">
                <Routes>
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>
@@ -27,7 +33,11 @@ function ShopOwnerRoutes() {
                   <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
                   <Route
                      path="/inventory"
-                     element={<ManageInventory />}
+                     element={
+                        <ManageInventory
+                           setIsClickAddItem={setIsClickAddItem}
+                        />
+                     }
                   ></Route>
                </Routes>
             </div>

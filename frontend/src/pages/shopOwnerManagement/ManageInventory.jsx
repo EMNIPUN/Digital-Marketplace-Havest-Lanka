@@ -1,6 +1,8 @@
 import React from "react";
 
-function ManageInventory() {
+function ManageInventory(props) {
+   const { setIsClickAddItem } = props;
+
    return (
       <div className="p-[20px]">
          <div class=" bg-white p-5 shadow-sm rounded-sm border border-gray-200 ">
@@ -8,7 +10,10 @@ function ManageInventory() {
                <h2 class="text-xl font-semibold text-gray-800">
                   Manage Inventory
                </h2>
-               <button class="bg-main-green text-white px-4 py-2 rounded-sm hover:bg-green-600">
+               <button
+                  onClick={() => setIsClickAddItem(true)}
+                  class="bg-main-green text-white px-4 py-2 rounded-sm hover:bg-green-600"
+               >
                   + Add Item
                </button>
             </div>
