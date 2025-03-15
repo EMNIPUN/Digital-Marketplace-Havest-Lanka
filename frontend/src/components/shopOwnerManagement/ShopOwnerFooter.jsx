@@ -15,7 +15,7 @@ function ShopOwnerFooter() {
 
                <div>
                   <h2 class="text-xl font-semibold mb-4">Quick Links</h2>
-                  <ul class="space-y-2">
+                  <ul class="space-y-2 text-sm">
                      <li>
                         <a href="#" class="text-gray-400 ">
                            Home
@@ -41,7 +41,7 @@ function ShopOwnerFooter() {
 
                <div>
                   <h2 class="text-xl font-semibold mb-4">Categories</h2>
-                  <ul class="space-y-2">
+                  <ul class="space-y-2 text-sm">
                      <li>
                         <a href="#" class="text-gray-400 ">
                            Fruits & Vegetables
@@ -67,7 +67,7 @@ function ShopOwnerFooter() {
 
                <div>
                   <h2 class="text-xl font-semibold mb-4">Support</h2>
-                  <ul class="space-y-2">
+                  <ul class="space-y-2 text-sm">
                      <li>
                         <a href="#" class="text-gray-400 ">
                            Help Center
@@ -86,7 +86,7 @@ function ShopOwnerFooter() {
                   </ul>
 
                   <h2 class="text-xl font-semibold mt-6 mb-4">Follow Us</h2>
-                  <div class="flex space-x-4">
+                  <div class="flex space-x-4 text-sm">
                      <a href="#" class="text-gray-400 ">
                         <i class="fab fa-facebook"></i> Facebook
                      </a>

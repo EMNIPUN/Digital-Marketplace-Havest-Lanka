@@ -2,7 +2,9 @@ import React from "react";
 import CropPost from "../../components/shopOwnerManagement/CropPost";
 import Profile from "../../assets/shopOwnerManagement/profile.png";
 
-function FindCrops() {
+function FindCrops(props) {
+   const { setIsClickViewCropDetails } = props;
+
    const active = "bg-main-green text-white";
 
    const cropPosts = [
@@ -12,7 +14,7 @@ function FindCrops() {
          farmer: {
             name: "Akindu Nayanajith",
             rating: 4.9,
-            image: Profile, 
+            image: Profile,
          },
          price: "120 LKR/kg",
          location: "Badulla",
@@ -26,7 +28,7 @@ function FindCrops() {
          farmer: {
             name: "Kasun Perera",
             rating: 4.7,
-            image: Profile, 
+            image: Profile,
          },
          price: "90 LKR/kg",
          location: "Kandy",
@@ -40,7 +42,7 @@ function FindCrops() {
          farmer: {
             name: "Nuwan Bandara",
             rating: 4.8,
-            image: Profile, 
+            image: Profile,
          },
          price: "110 LKR/kg",
          location: "Nuwara Eliya",
@@ -54,7 +56,7 @@ function FindCrops() {
          farmer: {
             name: "Saman Wijesinghe",
             rating: 4.6,
-            image: Profile, 
+            image: Profile,
          },
          price: "80 LKR/kg",
          location: "Kurunegala",
@@ -68,7 +70,7 @@ function FindCrops() {
          farmer: {
             name: "Chathura Silva",
             rating: 4.9,
-            image: Profile, 
+            image: Profile,
          },
          price: "130 LKR/kg",
          location: "Anuradhapura",
@@ -82,7 +84,7 @@ function FindCrops() {
          farmer: {
             name: "Dilshan Rathnayake",
             rating: 4.7,
-            image: Profile, 
+            image: Profile,
          },
          price: "95 LKR/kg",
          location: "Rathnapura",
@@ -91,7 +93,6 @@ function FindCrops() {
          bids: 14,
       },
    ];
-   
 
    return (
       <section className="w-full p-[20px] flex flex-col gap-5">
@@ -134,6 +135,7 @@ function FindCrops() {
                   description={post.description}
                   bids={post.bids}
                   farmer={post.farmer}
+                  setIsClickViewCropDetails={setIsClickViewCropDetails}
                />
             ))}
          </div>

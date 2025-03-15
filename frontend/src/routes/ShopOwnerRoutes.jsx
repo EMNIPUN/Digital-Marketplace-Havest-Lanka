@@ -11,9 +11,11 @@ import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
 import AddInventoryItem from "../components/shopOwnerManagement/AddInventoryItem";
+import CropDetails from "../components/shopOwnerManagement/CropDetails";
 
 function ShopOwnerRoutes() {
    const [isClickAddItem, setIsClickAddItem] = useState(false);
+   const [isClickViewCropDetails, setIsClickViewCropDetails] = useState(false);
 
    return (
       <div className="w-full flex bg-gray-100">
@@ -25,10 +27,22 @@ function ShopOwnerRoutes() {
             {isClickAddItem && (
                <AddInventoryItem setIsClickAddItem={setIsClickAddItem} />
             )}
+            {isClickViewCropDetails && (
+               <CropDetails
+                  setIsClickViewCropDetails={setIsClickViewCropDetails}
+               />
+            )}
             <div className="mt-14">
                <Routes>
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>
-                  <Route path="/findcrops" element={<FindCrops />}></Route>
+                  <Route
+                     path="/findcrops"
+                     element={
+                        <FindCrops
+                           setIsClickViewCropDetails={setIsClickViewCropDetails}
+                        />
+                     }
+                  ></Route>
                   <Route path="/orders" element={<ShopOwnerOrders />}></Route>
                   <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
                   <Route
