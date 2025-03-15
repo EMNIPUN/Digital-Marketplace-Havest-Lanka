@@ -2,15 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { 
   Loader, 
   AlertCircle, 
-  CheckCircle2, 
-  Clock, 
-  Wheat, 
-  IndianRupee,
-  Calendar,
-  Package
 } from 'lucide-react';
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
+import axios from 'axios';
 
 function MyBids() {
 
@@ -18,49 +13,54 @@ function MyBids() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate fetching bids
-    const sampleBids = [
-      {
-        id: 1,
-        cropName: 'Rice',
-        description: 'High-quality Nadu rice harvested this season. Well-dried and ready for bulk orders. Ideal for wholesalers, retailers, and direct consumers looking for premium Sri Lankan rice.',
-        price : '120',
-        quantity: '1000 kg',
-        location: 'Anuradhapura',
-      },
-      {
-        id: 2,
-        cropName: 'Wheat',
-        description: 'High-quality Nadu rice harvested this season. Well-dried and ready for bulk orders. Ideal for wholesalers, retailers, and direct consumers looking for premium Sri Lankan rice.',
-        price : '120',
-        quantity: '1000 kg',
-        location: 'Anuradhapura',
-      }
-    ];
-    
-    // Simulate API call
+
+    axios
+      .get("http://localhost:8005/api/BidPost/IT23283930-E-M-N-D-EKANAYAKE")
+      .then((response) => {
+        console.log(response.data);
+        setBids(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setTimeout(() => {
-      setBids(sampleBids);
       setLoading(false);
     }, 1000);
+    
   }, []);
 
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
+      <>
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader className="w-8 h-8 animate-spin text-blue-500" />
+        </div>
+      </>
     );
   }
 
   return (
     <>
         <Navigation />
-        <div className="p-6">
-          <h1 className="text-2xl font-light mb-6 text-gray-800 flex items-center gap-2 justify-center">
-              My Posted Bids
-          </h1>
+        <div className="">
+
+          <div className='h-[300px] w-full relative'
+            style={{
+              backgroundImage: 'url("https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
+              <h1 className=" text-xl font-bold text-gray-100 text-center">
+                  My Posted Bids
+              </h1>
+              <p className='text-gray-100'>Manage your posted bids here</p>
+            </div>
+          </div>
 
           <section>
               <h1>Onging Bids</h1>
@@ -80,9 +80,6 @@ function MyBids() {
                   </div>
               )}
           </section>
-
-
-
         </div>
     </>
   );

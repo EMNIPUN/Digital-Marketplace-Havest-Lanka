@@ -6,7 +6,7 @@ import {Routes, Route} from "react-router-dom";
 function FarmerRoutes() {
    return (
       <Routes>
-         <Route path="/dashboard" element={<FarmerDashboardPage />} />
+         <Route path="/" element={<FarmerDashboardPage />} />
          <Route path="/mybids" element={<MyBids />} />
       </Routes>
    )

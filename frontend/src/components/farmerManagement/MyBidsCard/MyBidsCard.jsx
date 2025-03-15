@@ -1,54 +1,101 @@
-import React from 'react'
-import { Calendar, DollarSign, Package, Timer, User } from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { Clock, Award, User, Wheat,Tag } from 'lucide-react';
 
-function MyBidsCard({ bid }) {
+const MyBidsCard = ({ bid }) => {
+
+
+  // State for countdown timer
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  // Update countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const difference = bid.endTime - now;
+      
+      if (difference > 0) {
+        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((difference / (1000 * 60)) % 60);
+        const seconds = Math.floor((difference / 1000) % 60);
+        
+        setTimeLeft({ hours, minutes, seconds });
+      } else {
+        clearInterval(timer);
+        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+      }
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [bid.endTime]);
+
+  // Format time with leading zeros
+  const formatTime = (value) => {
+    return value.toString().padStart(2, '0');
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-300">
-      {/* Bid Header */}
-      <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-semibold text-gray-800">Bid #{bid?.id || '001'}</h3>
-          <p className="text-sm text-gray-500 mt-1">Created on {bid?.date || '2024-03-20'}</p>
-      </div>
+    <div className=" bg-white rounded-lg overflow-hidden shadow-md">
 
-      {/* Bid Details */}
-      <div className="space-y-4 bg-gray-50 rounded-lg p-4 mb-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center bg-white p-3 rounded-lg border border-gray-100">
-            <Package className="w-5 h-5 mr-3 text-blue-600" />
-            <div>
-              <p className="text-sm text-gray-500">Crops Name</p>
-              <p className="font-medium text-gray-800">{bid.cropName}</p>
-            </div>
-          </div>
+      <div className="p-6">
 
-          <div className="flex items-center bg-white p-3 rounded-lg border border-gray-100">
-            <DollarSign className="w-5 h-5 mr-3 text-green-600" />
-            <div>
-              <p className="text-sm text-gray-500">Bid Amount</p>
-              <p className="font-medium text-gray-800">${bid?.amount || '250'}/ton</p>
-            </div>
-          </div>
+        <div className="flex items-center mb-4 bg-slate-200 rounded-lg w-[145px] px-2 ">
+          <Tag size={16} className="text-sm text-gray-500 gap-2 mr-2"></Tag>
+          <h2 className="text-base font-medium text-gray-800 ">{bid.cropsName}</h2>
         </div>
-        <div className="flex items-center bg-white p-3 rounded-lg border border-gray-100">
-            <Timer className="w-5 h-5 mr-3 text-orange-600" />
+        
+        <div className='flex justify-between items-center gap-3'>
+
+            <div className="mb-4">
+              <div className="flex items-center mb-2">
+                <p className="text-sm text-gray-600 line-clamp-2 w-[400px]">{bid.description}</p>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-700">Starting Price(Rs) : {bid.price}</span>
+                <span className="text-gray-700">Quantity: {bid.quantity}</span>
+              </div>
+            </div>
+            
             <div>
-              <p className="text-sm text-gray-500">Expires in</p>
-              <p className="font-medium text-gray-800">{bid?.expiresIn || '2 days'}</p>
+              <div className="flex items-center mb-2">
+                <Clock size={16} className="mr-2 text-blue-600" />
+                <span className="text-sm text-gray-600">Auction ends in:</span>
+              </div>
+              <div className="flex justify-center space-x-4">
+                <div className="flex flex-col items-center">
+                  <div className="text-2xl font-bold bg-green-600 text-white py-2 px-3 rounded-md">
+                    {formatTime(timeLeft.hours)}
+                  </div>
+                  <span className="text-xs mt-1 text-gray-600">Hours</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="text-2xl font-bold bg-green-600 text-white py-2 px-3 rounded-md">
+                    {formatTime(timeLeft.minutes)}
+                  </div>
+                  <span className="text-xs mt-1 text-gray-600">Minutes</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="text-2xl font-bold bg-green-600 text-white py-2 px-3 rounded-md">
+                    {formatTime(timeLeft.seconds)}
+                  </div>
+                  <span className="text-xs mt-1 text-gray-600">Seconds</span>
+                </div>
+              </div>
             </div>
         </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex justify-between">
-        <button className="text-green-600 bg-white hover:text-green-700 py-2 px-4 rounded-lg">
-          View Details
-        </button>
-        <button className="text-gray-600  hover:text-green-600 py-2 px-4 rounded-lg">
-          Edit Bid
-        </button>
+        
+        
+        <div className="mt-6 flex justify-between">
+          <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200">
+            Place Bid
+          </button>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyBidsCard
+export default MyBidsCard;

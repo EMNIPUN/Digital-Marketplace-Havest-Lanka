@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaUser } from 'react-icons/fa'
 import logo from '@/assets/farmerManagement/Navigation/avest.png';
+import { Link } from 'react-router-dom';
 
 function Navigation() {
   return (
@@ -12,11 +13,20 @@ function Navigation() {
           </div>
 
           <ul className="flex justify-end space-x-5 p-4 items-center">
-            <li className=" text-black-600 hover:text-green-600 cursor-pointer font-medium">Home</li>
+            <Link to="/farmer">
+              <li className="text-slate-800 hover:text-green-600 cursor-pointer font-normal">Dashboard</li>
+            </Link>
+
             <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">Daily Prices</li>
+
             <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">Orders</li>
+
             <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">Shops</li>
-            <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">My Bids</li>
+
+            <Link to="/farmer/mybids">
+              <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">My Bids</li>
+            </Link>
+
             <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">
               <FaUser className="w-5 h-5" />
             </li>
