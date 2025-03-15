@@ -16,6 +16,9 @@ export const getBidsByFarmerId = async (req, res) => {
 export const createBidPost = async (req, res) => {
     const bidPost = req.body;
 
+    const bidEndTime = new Date();
+    bidEndTime.setHours(bidEndTime.getHours()+24);
+
     if (
         !bidPost.farmerId ||
         !bidPost.cropsName ||
@@ -38,6 +41,7 @@ export const createBidPost = async (req, res) => {
         price: bidPost.price,
         quantity: bidPost.quantity,
         location: bidPost.location,
+        bidEndTime: bidEndTime,
     })
     
     res.status(201).send();

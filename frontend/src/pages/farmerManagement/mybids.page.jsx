@@ -62,8 +62,7 @@ function MyBids() {
             </div>
           </div>
 
-          <section>
-              <h1>Onging Bids</h1>
+          <section className='mt-8 p-6'>
               {bids.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                     {

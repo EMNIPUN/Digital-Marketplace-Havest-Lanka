@@ -3,39 +3,28 @@ import { Clock, Award, User, Wheat,Tag } from 'lucide-react';
 
 const MyBidsCard = ({ bid }) => {
 
+  function calculateTimeLeft() {
+    const difference = new Date(bid.bidEndTime) - new Date();
+    if (difference <= 0) return { hours: 0, minutes: 0, seconds: 0 };
 
-  // State for countdown timer
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+    return {
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    }
+  }
 
-  // Update countdown timer
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      const difference = bid.endTime - now;
-      
-      if (difference > 0) {
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / (1000 * 60)) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
-        
-        setTimeLeft({ hours, minutes, seconds });
-      } else {
-        clearInterval(timer);
-        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-      }
-    }, 1000);
-    
-    return () => clearInterval(timer);
-  }, [bid.endTime]);
 
-  // Format time with leading zeros
-  const formatTime = (value) => {
-    return value.toString().padStart(2, '0');
-  };
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
 
   return (
     <div className=" bg-white rounded-lg overflow-hidden shadow-md">
@@ -67,19 +56,19 @@ const MyBidsCard = ({ bid }) => {
               <div className="flex justify-center space-x-4">
                 <div className="flex flex-col items-center">
                   <div className="text-2xl font-bold bg-green-600 text-white py-2 px-3 rounded-md">
-                    {formatTime(timeLeft.hours)}
+                    {timeLeft.hours}
                   </div>
                   <span className="text-xs mt-1 text-gray-600">Hours</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="text-2xl font-bold bg-green-600 text-white py-2 px-3 rounded-md">
-                    {formatTime(timeLeft.minutes)}
+                    {timeLeft.minutes}
                   </div>
                   <span className="text-xs mt-1 text-gray-600">Minutes</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="text-2xl font-bold bg-green-600 text-white py-2 px-3 rounded-md">
-                    {formatTime(timeLeft.seconds)}
+                    {timeLeft.seconds}
                   </div>
                   <span className="text-xs mt-1 text-gray-600">Seconds</span>
                 </div>

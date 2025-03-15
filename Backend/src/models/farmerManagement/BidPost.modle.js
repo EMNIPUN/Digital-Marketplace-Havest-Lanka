@@ -29,6 +29,10 @@ const BidPostSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    bidEndTime:{
+      type: Date,
+      required: true,
+    },
     
 });
 
