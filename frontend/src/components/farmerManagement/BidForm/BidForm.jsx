@@ -16,6 +16,8 @@ function BidForm() {
   const districts = ["Ampara","Anuradhapura","Badulla","Batticaloa","Colombo","Galle","Gampaha","Hambantota","Jaffna","Kalutara","Kandy","Kegalle","Kilinochchi",
     "Kurunegala","Mannar","Matale","Matara","Monaragala","Mullaitivu","Nuwara Eliya","Polonnaruwa","Puttalam","Ratnapura","Trincomalee","Vavuniya"];
 
+    const Category = ["Vegetables","Fruits","Nuts","Spices","Other"];
+
 
     const handleSubmit = async (e) => {
         try{
@@ -54,14 +56,19 @@ function BidForm() {
             </div>
             <div className='w-[300px]'>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Crops Category</label>
-                <input 
+                <select
                     name='cropsCategory'
                     value={cropsCategory}
                     onChange={(e) => setCropsCategory(e.target.value)}
-                    type="text" 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" 
-                    placeholder="Enter a descriptive title for your post"
-                />
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    >
+                    <option value="">Select a category</option>
+                    {Category.map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
+                    ))}
+                </select>
             </div>
 
         </div>
@@ -84,7 +91,7 @@ function BidForm() {
                 name='price'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                type="text" 
+                type="number" 
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" 
                 placeholder="0.00"
             />

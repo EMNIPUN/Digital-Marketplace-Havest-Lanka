@@ -35,9 +35,28 @@ function MyBids() {
     return (
       <>
         <Navigation />
-        <div className="flex items-center justify-center min-h-screen">
-          <Loader className="w-8 h-8 animate-spin text-blue-500" />
+        <div className='h-[300px] w-full relative'
+            style={{
+              backgroundImage: 'url("https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
+              <h1 className=" text-xl font-bold text-gray-100 text-center">
+                  My Posted Bids
+              </h1>
+              <p className='text-gray-100'>Manage your posted bids here</p>
+            </div>
+          </div>
+
+        <div className="flex space-x-2 justify-center items-start mt-20 bg-white h-screen">
+          <span className="sr-only">Loading...</span>
+          <div className="h-3 w-3 bg-black/60 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="h-3 w-3 bg-black/60 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="h-3 w-3 bg-black/60 rounded-full animate-bounce"></div>
         </div>
+
       </>
     );
   }

@@ -1,3 +1,4 @@
+import DailyPrice from "@/pages/farmerManagement/dailyprice.page";
 import FarmerDashboardPage from "@/pages/farmerManagement/farmerdashboard.page";
 import MyBids from "@/pages/farmerManagement/mybids.page";
 import React from "react";
@@ -8,6 +9,7 @@ function FarmerRoutes() {
       <Routes>
          <Route path="/" element={<FarmerDashboardPage />} />
          <Route path="/mybids" element={<MyBids />} />
+         <Route path="/dailyprice" element={<DailyPrice />} />
       </Routes>
    )
 }

@@ -16,8 +16,10 @@ function Navigation() {
             <Link to="/farmer">
               <li className="text-slate-800 hover:text-green-600 cursor-pointer font-normal">Dashboard</li>
             </Link>
-
-            <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">Daily Prices</li>
+            
+            <Link to="/farmer/dailyprice">
+              <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">Daily Prices</li>
+            </Link>
 
             <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">Orders</li>
 
