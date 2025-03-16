@@ -1,3 +1,4 @@
+import { response } from "express";
 import Inventory from "../../models/shopOwnerManagement/inventory.js";
 
 const getInventoryDetails = (req, res) => {
@@ -28,4 +29,38 @@ const addItem = (req, res) => {
       });
 };
 
-export default { getInventoryDetails, addItem };
+const updateItem = (req, res) => {
+   const { id } = req.params;
+   const { shopOwnerId, itemName, itemCategory, quantity } = req.body;
+
+   Inventory.findByIdAndUpdate(
+      id,
+      {
+         shopOwnerId,
+         itemName,
+         itemCategory,
+         quantity,
+      },
+      { new: true }
+   )
+      .then((response) => {
+         res.json(response);
+      })
+      .catch((error) => {
+         res.json(error);
+      });
+};
+
+const deleteItem = (req, res) => {
+   const { id } = req.params;
+
+   Inventory.findByIdAndDelete(id)
+      .then((response) => {
+         res.json(response);
+      })
+      .catch((error) => {
+         res.json(error);
+      });
+};
+
+export default { getInventoryDetails, addItem, updateItem, deleteItem };
