@@ -2,6 +2,7 @@ import React from 'react'
 import SideNav from './SideNav'
 import TopNav from './TopNav'
 import Body from './Body'
+import Token from '../logins/Token'
 
 function DashboardLayout() {
     return (

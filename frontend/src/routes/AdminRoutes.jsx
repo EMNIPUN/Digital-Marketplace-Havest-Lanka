@@ -4,11 +4,13 @@ import DashboardLayout from "../components/userManagement/dashboard/DashboardLay
 
 function AdminRoutes() {
    return (
-      <DashboardLayout>
-         <Routes>
-            <Route path="/*" ></Route>
-         </Routes>
-      </DashboardLayout>
+      <>
+         <DashboardLayout>
+            <Routes>
+               <Route path="/*" ></Route>
+            </Routes>
+         </DashboardLayout>
+      </>
    );
 }
 
