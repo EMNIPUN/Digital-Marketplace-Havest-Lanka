@@ -4,5 +4,6 @@ import express from "express";
 const router = express.Router();
 
 router.get("/getInventory", inventoryController.getInventoryDetails);
+router.post("/addItem", inventoryController.addItem);
 
 export default router;

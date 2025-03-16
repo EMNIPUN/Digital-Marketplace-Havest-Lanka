@@ -10,4 +10,22 @@ const getInventoryDetails = (req, res) => {
       });
 };
 
-export default { getInventoryDetails };
+const addItem = (req, res) => {
+   const inventory = new Inventory({
+      shopOwnerId: req.body.shopOwnerId,
+      itemName: req.body.itemName,
+      itemCategory: req.body.itemCategory,
+      quantity: req.body.quantity,
+   });
+
+   inventory
+      .save()
+      .then((response) => {
+         res.json(response);
+      })
+      .catch((error) => {
+         res.json(error);
+      });
+};
+
+export default { getInventoryDetails, addItem };
