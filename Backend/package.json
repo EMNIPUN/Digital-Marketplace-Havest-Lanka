@@ -22,6 +22,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
+    "nodeman": "^1.1.2",
     "nodemon": "^3.1.9"
   },
   "keywords": [],

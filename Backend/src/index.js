@@ -12,6 +12,8 @@ import loginRoutes from "./routes/userManagement/loginRoutes.js"
 import logoutRoutes from "./routes/userManagement/logoutRoutes.js"
 import checkAuthRoutes from "./routes/userManagement/checkAuthRoutes.js"
 
+import inventoryRoutes from "./routes/shopOwnerManagement/inventoryRoutes.js";
+
 const app = express();
 
 app.use(express.json());
@@ -39,6 +41,8 @@ app.use("/logout", logoutRoutes);
 app.use("/check-auth", checkAuthRoutes);
 
 app.use('/api/BidPost', bidPostRouter);
+
+app.use("/api/inventory", inventoryRoutes);
 
 const port = 8005; 
 app.listen(port, () => {
