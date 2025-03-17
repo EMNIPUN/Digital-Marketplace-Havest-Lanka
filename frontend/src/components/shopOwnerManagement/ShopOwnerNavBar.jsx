@@ -10,7 +10,7 @@ function ShopOwnerNavBar() {
 
                <div className="flex gap-5 items-center">
                   <div className="relative">
-                     <i class="bi bi-bell-fill text-yellow-500 text-lg "></i>
+                     <i className="bi bi-bell-fill text-yellow-500 text-lg "></i>
                      <p className="w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center text-xs absolute -top-1 -right-2">
                         3
                      </p>

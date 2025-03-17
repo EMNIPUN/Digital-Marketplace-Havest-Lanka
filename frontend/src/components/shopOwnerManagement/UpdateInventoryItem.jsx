@@ -1,35 +1,36 @@
 import React from "react";
 
-function AddInventoryItem(props) {
+function UpdateInventoryItem(props) {
    const {
-      setIsClickAddItem,
-      addInventoryItem,
+      setIsClickUpdateItem,
+      updateItem,
       handelChange,
       inventoryFormData,
+      selectedItem,
    } = props;
 
    const closeForm = (e) => {
-      if (e.target.id === "AddInventoryForm") {
-         setIsClickAddItem(false);
+      if (e.target.id === "UpdateInventoryForm") {
+         setIsClickUpdateItem(false);
       }
    };
 
    return (
       <div
          className="w-full h-screen z-[100] bg-black/80 fixed top-0 left-0 flex items-center justify-center"
-         id="AddInventoryForm"
+         id="UpdateInventoryForm"
          onClick={closeForm}
       >
          <form
             onSubmit={(e) => {
                e.preventDefault();
-               addInventoryItem(inventoryFormData);
+               updateItem(inventoryFormData, selectedItem);
             }}
             action=""
             className="bg-white px-10 py-16 w-1/3 flex flex-col gap-5 items-center text-gray-700 rounded shadow"
          >
             <div className="text-lg font-semibold uppercase ">
-               Add Item to Inventory
+               Update Item in Inventory
             </div>
 
             <div className="flex flex-col gap-1 text-sm w-full">
@@ -83,11 +84,11 @@ function AddInventoryItem(props) {
                type="submit"
                className="w-full bg-main-green text-white py-2 rounded-sm"
             >
-               Add Item
+               Update Item
             </button>
          </form>
       </div>
    );
 }
 
-export default AddInventoryItem;
+export default UpdateInventoryItem;

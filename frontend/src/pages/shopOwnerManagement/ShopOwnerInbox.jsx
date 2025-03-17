@@ -39,38 +39,38 @@ function ShopOwnerInbox() {
 
    return (
       <div className="p-[20px]">
-         <div class="w-full p-5 bg-white shadow-sm border border-gray-200 rounded-sm">
-            <div class="px-5 py-4 border-b">
-               <h2 class="text-xl font-semibold text-gray-700">Inbox</h2>
+         <div className="w-full p-5 bg-white shadow-sm border border-gray-200 rounded-sm">
+            <div className="px-5 py-4 border-b">
+               <h2 className="text-xl font-semibold text-gray-700">Inbox</h2>
             </div>
 
-            <div class="divide-y">
+            <div className="divide-y">
                {inboxMessages.map((chat) => (
                   <div
-                     class="flex items-center px-5 py-4 hover:bg-gray-50 cursor-pointer"
+                     className="flex items-center px-5 py-4 hover:bg-gray-50 cursor-pointer"
                      key={chat.id}
                   >
                      <img
                         src={Profile}
-                        class="w-10 h-10 rounded-full"
+                        className="w-10 h-10 rounded-full"
                         alt="User"
                      />
-                     <div class="ml-4 flex-1">
-                        <div class="flex justify-between items-center">
-                           <h3 class="font-semibold text-sm text-gray-800">
+                     <div className="ml-4 flex-1">
+                        <div className="flex justify-between items-center">
+                           <h3 className="font-semibold text-sm text-gray-800">
                               {chat.name}
                            </h3>
                            <div className="flex items-center justify-center gap-2">
                               {chat.unread && (
-                                 <span class="w-3 h-3 bg-green-500 rounded-full ml-2"></span>
+                                 <span className="w-3 h-3 bg-green-500 rounded-full ml-2"></span>
                               )}
 
-                              <span class="text-xs text-gray-500">
+                              <span className="text-xs text-gray-500">
                                  {chat.time}
                               </span>
                            </div>
                         </div>
-                        <p class="text-sm tracking-wide text-gray-500 w-4/5">
+                        <p className="text-sm tracking-wide text-gray-500 w-4/5">
                            {chat.message}
                         </p>
                      </div>

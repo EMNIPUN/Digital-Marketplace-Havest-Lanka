@@ -11,157 +11,157 @@ function ShopOwnerOrders() {
             </div>
          </div>
 
-         <div class="w-full mx-auto bg-white shadow-sm rounded-sm border border-gray-200">
-            <div class="overflow-x-auto">
-               <table class="w-full text-left border-collapse">
+         <div className="w-full mx-auto bg-white shadow-sm rounded-sm border border-gray-200">
+            <div className="overflow-x-auto">
+               <table className="w-full text-left border-collapse">
                   <thead>
-                     <tr class=" border-b border-gray-200">
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                     <tr className=" border-b border-gray-200">
+                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Order ID
                         </th>
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Customer
                         </th>
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Product
                         </th>
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Price
                         </th>
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Status
                         </th>
                      </tr>
                   </thead>
 
-                  <tbody class="divide-y divide-gray-200">
-                     <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           <div class="text-sm font-medium text-sec-green">
+                  <tbody className="divide-y divide-gray-200">
+                     <tr className="hover:bg-gray-50 transition duration-150">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                           <div className="text-sm font-medium text-sec-green">
                               #ORD12345
                            </div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <div class="flex items-center">
-                              <div class="h-10 w-10 ">
+                        <td className="px-6 py-4 ">
+                           <div className="flex items-center">
+                              <div className="h-10 w-10 ">
                                  <img
                                     src={Profile}
-                                    class="h-10 w-10 rounded-full object-cover "
+                                    className="h-10 w-10 rounded-full object-cover "
                                     alt="buyer"
                                  />
                               </div>
-                              <div class="ml-4">
-                                 <div class="text-sm font-medium text-gray-900">
+                              <div className="ml-4">
+                                 <div className="text-sm font-medium text-gray-900">
                                     Akindu Nayanajith
                                  </div>
-                                 <div class="text-xs text-gray-500">
+                                 <div className="text-xs text-gray-500">
                                     akindu@example.com
                                  </div>
                               </div>
                            </div>
                         </td>
-                        <td class="px-6 py-4">
-                           <div class="text-sm text-gray-900">
+                        <td className="px-6 py-4">
+                           <div className="text-sm text-gray-900">
                               Organic Tomatoes
                            </div>
-                           <div class="text-xs text-gray-500">2kg package</div>
+                           <div className="text-xs text-gray-500">2kg package</div>
                         </td>
-                        <td class="px-6 py-4">
-                           <div class="text-sm font-semibold text-gray-900">
+                        <td className="px-6 py-4">
+                           <div className="text-sm font-semibold text-gray-900">
                               LKR 6,000
                            </div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <span class="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
-                              <span class="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
+                        <td className="px-6 py-4 ">
+                           <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
+                              <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
                               Delivered
                            </span>
                         </td>
                      </tr>
 
-                     <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="px-6 py-4 ">
-                           <div class="text-sm font-medium text-sec-green">
+                     <tr className="hover:bg-gray-50 transition duration-150">
+                        <td className="px-6 py-4 ">
+                           <div className="text-sm font-medium text-sec-green">
                               #ORD12346
                            </div>
                         </td>
-                        <td class="px-6 py-4">
-                           <div class="flex items-center">
-                              <div class="h-10 w-10 ">
+                        <td className="px-6 py-4">
+                           <div className="flex items-center">
+                              <div className="h-10 w-10 ">
                                  <img
                                     src={Profile}
-                                    class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
+                                    className="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
                                     alt="buyer"
                                  />
                               </div>
-                              <div class="ml-4">
-                                 <div class="text-sm font-medium text-gray-900">
+                              <div className="ml-4">
+                                 <div className="text-sm font-medium text-gray-900">
                                     Kasun Perera
                                  </div>
-                                 <div class="text-xs text-gray-500">
+                                 <div className="text-xs text-gray-500">
                                     kasun@example.com
                                  </div>
                               </div>
                            </div>
                         </td>
-                        <td class="px-6 py-4">
-                           <div class="text-sm text-gray-900">
+                        <td className="px-6 py-4">
+                           <div className="text-sm text-gray-900">
                               Fresh Carrots
                            </div>
-                           <div class="text-xs text-gray-500">
+                           <div className="text-xs text-gray-500">
                               1.5kg package
                            </div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <div class="text-sm font-semibold text-gray-900">
+                        <td className="px-6 py-4 ">
+                           <div className="text-sm font-semibold text-gray-900">
                               LKR 3,600
                            </div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <span class="px-3 py-1 inline-flex text-xs  font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                              <span class="h-2 w-2 rounded-full bg-yellow-600 mr-1.5 mt-1"></span>
+                        <td className="px-6 py-4 ">
+                           <span className="px-3 py-1 inline-flex text-xs  font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                              <span className="h-2 w-2 rounded-full bg-yellow-600 mr-1.5 mt-1"></span>
                               On Delivery
                            </span>
                         </td>
                      </tr>
 
-                     <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="px-6 py-4">
-                           <div class="text-sm font-medium text-sec-green">
+                     <tr className="hover:bg-gray-50 transition duration-150">
+                        <td className="px-6 py-4">
+                           <div className="text-sm font-medium text-sec-green">
                               #ORD12347
                            </div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <div class="flex items-center">
-                              <div class="h-10 w-10 ">
+                        <td className="px-6 py-4 ">
+                           <div className="flex items-center">
+                              <div className="h-10 w-10 ">
                                  <img
                                     src={Profile}
-                                    class="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
+                                    className="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
                                     alt="buyer"
                                  />
                               </div>
-                              <div class="ml-4">
-                                 <div class="text-sm font-medium text-gray-900">
+                              <div className="ml-4">
+                                 <div className="text-sm font-medium text-gray-900">
                                     Nuwan Bandara
                                  </div>
-                                 <div class="text-xs text-gray-500">
+                                 <div className="text-xs text-gray-500">
                                     nuwan@example.com
                                  </div>
                               </div>
                            </div>
                         </td>
-                        <td class="px-6 py-4">
-                           <div class="text-sm text-gray-900">Green Beans</div>
-                           <div class="text-xs text-gray-500">1kg package</div>
+                        <td className="px-6 py-4">
+                           <div className="text-sm text-gray-900">Green Beans</div>
+                           <div className="text-xs text-gray-500">1kg package</div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <div class="text-sm font-semibold text-gray-900">
+                        <td className="px-6 py-4 ">
+                           <div className="text-sm font-semibold text-gray-900">
                               LKR 2,750
                            </div>
                         </td>
-                        <td class="px-6 py-4 ">
-                           <span class="px-3 py-1 inline-flex text-xs  font-semibold rounded-full bg-red-100 text-red-800">
-                              <span class="h-2 w-2 rounded-full bg-red-600 mr-1.5 mt-1"></span>
+                        <td className="px-6 py-4 ">
+                           <span className="px-3 py-1 inline-flex text-xs  font-semibold rounded-full bg-red-100 text-red-800">
+                              <span className="h-2 w-2 rounded-full bg-red-600 mr-1.5 mt-1"></span>
                               Cancelled
                            </span>
                         </td>
