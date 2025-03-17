@@ -2,7 +2,6 @@ import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import connectDB from './config/db.js';
-import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser';
 
@@ -15,25 +14,28 @@ import checkAuthRoutes from "./routes/userManagement/checkAuthRoutes.js"
 
 const app = express();
 
+app.use(express.json());
+app.use(bodyParser.json());
+
 const corsOptions = {
-    origin: 'http://localhost:5173',
-    credentials: true,
+  origin: 'http://localhost:5173',
+  credentials: true,
 };
 
 
-app.use(express.json());
+
 app.use(cors(corsOptions));
 app.use(cookieParser());
-app.use(bodyParser.json());
+
 
 connectDB();
-
 
 
 // Use Routes
 app.use("/user", userRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);
+
 app.use("/check-auth", checkAuthRoutes);
 
 app.use('/api/BidPost', bidPostRouter);

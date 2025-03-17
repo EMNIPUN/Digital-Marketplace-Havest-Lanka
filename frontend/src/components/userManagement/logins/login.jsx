@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { BoxArrowIn } from '../icons/Icons'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { BASE_URL } from '../BaseUrl'
-import Token from './Token'
 
 function Login(props) {
 
@@ -25,7 +23,7 @@ function Login(props) {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(`${BASE_URL}/login`, { email, password, role: findRole() }, { withCredentials: true })
+            const response = await axios.post(`http://localhost:8005/login`, { email, password, role: findRole() }, { withCredentials: true })
             switch (findRole()) {
                 case 'marketmanager':
                     navigate("/admin");
