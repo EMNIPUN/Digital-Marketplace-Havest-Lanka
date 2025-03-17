@@ -1,6 +1,5 @@
 import { jwtDecode } from 'jwt-decode'
 import Cookies from 'js-cookie'
-import react from 'react'
 import {useNavigate} from 'react-router-dom'
 
 const Token = () => {

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
@@ -49,6 +48,3 @@ const port = 8005;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-=======
-// hello how are you    
->>>>>>> dada2e348ed44e2674c7a46217cb3f83605fbc40

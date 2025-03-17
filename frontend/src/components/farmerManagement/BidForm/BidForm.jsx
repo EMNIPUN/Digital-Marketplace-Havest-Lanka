@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Send, MapPin, Check } from 'lucide-react';
 import axios from 'axios';
+// import Token from '@/components/userManagement/logins/Token';
 
 function BidForm() {
 
@@ -20,6 +21,7 @@ function BidForm() {
 
 
     const handleSubmit = async (e) => {
+        // console.log(Token());
         try{
             e.preventDefault();
             const bidPostData = {
