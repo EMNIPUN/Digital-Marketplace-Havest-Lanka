@@ -7,11 +7,13 @@ function UpdateInventoryItem(props) {
       handelChange,
       inventoryFormData,
       selectedItem,
+      setSelectedItemId,
    } = props;
 
    const closeForm = (e) => {
       if (e.target.id === "UpdateInventoryForm") {
          setIsClickUpdateItem(false);
+         setSelectedItemId("");
       }
    };
 

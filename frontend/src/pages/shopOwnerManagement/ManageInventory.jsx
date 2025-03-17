@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AddInventoryItem from "../../components/shopOwnerManagement/AddInventoryItem";
 import UpdateInventoryItem from "../../components/shopOwnerManagement/UpdateInventoryItem";
+import DeleteInventoryItem from "../../components/shopOwnerManagement/deleteInventoryItem";
 
 function ManageInventory(props) {
    const [isClickAddItem, setIsClickAddItem] = useState(false);
    const [isClickUpdateItem, setIsClickUpdateItem] = useState(false);
+   const [isClickDeleteItem, setIsClickDeleteItem] = useState(false);
    const [selectedItem, setSelectedItemId] = useState("");
    const [inventoryData, setInventoryData] = useState([]);
    const [inventoryFormData, setInventoryFormData] = useState({
@@ -83,6 +85,20 @@ function ManageInventory(props) {
             });
             getInventoryData();
             setIsClickUpdateItem(false);
+            setSelectedItemId("");
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   const deleteItem = (id) => {
+      axios
+         .post(`http://localhost:8005/api/inventory/deleteItem/${id}`)
+         .then(() => {
+            getInventoryData();
+            setIsClickDeleteItem(false);
+            setSelectedItemId("");
          })
          .catch((error) => {
             console.log(error);
@@ -100,7 +116,7 @@ function ManageInventory(props) {
                   onClick={() => {
                      setIsClickAddItem(true);
                   }}
-                  className="bg-main-green text-white px-4 py-2 rounded-sm hover:bg-green-600"
+                  className="bg-sec-green text-white px-4 py-2 rounded-sm hover:bg-opacity-80"
                >
                   + Add Item
                </button>
@@ -147,7 +163,13 @@ function ManageInventory(props) {
                               >
                                  <i className="bi bi-pencil-fill"></i>
                               </button>
-                              <button className="bg-gray-500 text-white px-3 py-2 rounded ">
+                              <button
+                                 onClick={() => {
+                                    setIsClickDeleteItem(true);
+                                    setSelectedItemId(item._id);
+                                 }}
+                                 className="bg-gray-500 text-white px-3 py-2 rounded "
+                              >
                                  <i className="bi bi-trash-fill"></i>
                               </button>
                            </td>
@@ -173,6 +195,15 @@ function ManageInventory(props) {
                handelChange={handelChange}
                inventoryFormData={inventoryFormData}
                selectedItem={selectedItem}
+               setSelectedItemId={setSelectedItemId}
+            />
+         )}
+         {isClickDeleteItem && (
+            <DeleteInventoryItem
+               setIsClickDeleteItem={setIsClickDeleteItem}
+               selectedItem={selectedItem}
+               setSelectedItemId={setSelectedItemId}
+               deleteItem={deleteItem}
             />
          )}
       </div>
