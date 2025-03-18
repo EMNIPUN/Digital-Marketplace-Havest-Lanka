@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "../styles/shopOwnerManagement/shopOwner.css";
-
 import ShopOwnerSideBar from "../components/shopOwnerManagement/ShopOwnerSideBar";
 import ShopOwnerDashboard from "../pages/shopOwnerManagement/ShopOwnerDashboard";
 import ShopOwnerNavBar from "../components/shopOwnerManagement/ShopOwnerNavBar";
@@ -10,11 +9,9 @@ import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
-import AddInventoryItem from "../components/shopOwnerManagement/AddInventoryItem";
 import CropDetails from "../components/shopOwnerManagement/CropDetails";
 
 function ShopOwnerRoutes() {
-   const [isClickAddItem, setIsClickAddItem] = useState(false);
    const [isClickViewCropDetails, setIsClickViewCropDetails] = useState(false);
 
    return (
@@ -24,9 +21,7 @@ function ShopOwnerRoutes() {
          </div>
          <div className="w-full pl-80">
             <ShopOwnerNavBar />
-            {isClickAddItem && (
-               <AddInventoryItem setIsClickAddItem={setIsClickAddItem} />
-            )}
+
             {isClickViewCropDetails && (
                <CropDetails
                   setIsClickViewCropDetails={setIsClickViewCropDetails}
@@ -47,11 +42,7 @@ function ShopOwnerRoutes() {
                   <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
                   <Route
                      path="/inventory"
-                     element={
-                        <ManageInventory
-                           setIsClickAddItem={setIsClickAddItem}
-                        />
-                     }
+                     element={<ManageInventory />}
                   ></Route>
                </Routes>
             </div>

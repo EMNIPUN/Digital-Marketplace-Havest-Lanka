@@ -1,9 +1,16 @@
 import React from "react";
 
 function AddInventoryItem(props) {
+   const {
+      setIsClickAddItem,
+      addInventoryItem,
+      handelChange,
+      inventoryFormData,
+   } = props;
+
    const closeForm = (e) => {
       if (e.target.id === "AddInventoryForm") {
-         props.setIsClickAddItem(false);
+         setIsClickAddItem(false);
       }
    };
 
@@ -14,21 +21,29 @@ function AddInventoryItem(props) {
          onClick={closeForm}
       >
          <form
+            onSubmit={(e) => {
+               e.preventDefault();
+               addInventoryItem(inventoryFormData);
+            }}
             action=""
             className="bg-white px-10 py-16 w-1/3 flex flex-col gap-5 items-center text-gray-700 rounded shadow"
          >
             <div className="text-lg font-semibold uppercase ">
                Add Item to Inventory
             </div>
+
             <div className="flex flex-col gap-1 text-sm w-full">
                <label htmlFor="" className="font-medium text-black">
                   Item Name
                </label>
                <input
                   type="text"
+                  name="itemName"
                   className="border border-gray-300 py-2 px-5 w-full rounded-sm font-light"
                   required
                   placeholder="Eg: Carrots"
+                  value={inventoryFormData.itemName}
+                  onChange={handelChange}
                />
             </div>
             <div className="flex flex-col gap-1 text-sm w-full">
@@ -38,8 +53,11 @@ function AddInventoryItem(props) {
                <select
                   className="border border-gray-300 py-2 px-5 w-full rounded-sm text-gray-600"
                   required
+                  name="itemCategory"
+                  value={inventoryFormData.itemCategory}
+                  onChange={handelChange}
                >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                      Select Category
                   </option>
                   <option value="Fruit">Fruit</option>
@@ -53,12 +71,18 @@ function AddInventoryItem(props) {
                </label>
                <input
                   type="text"
+                  name="quantity"
                   className="border border-gray-300 py-2 px-5 w-full rounded-sm"
                   required
                   placeholder="Eg: 100Kg"
+                  value={inventoryFormData.quantity}
+                  onChange={handelChange}
                />
             </div>
-            <button className="w-full bg-main-green text-white py-2 rounded-sm">
+            <button
+               type="submit"
+               className="w-full bg-main-green text-white py-2 rounded-sm"
+            >
                Add Item
             </button>
          </form>

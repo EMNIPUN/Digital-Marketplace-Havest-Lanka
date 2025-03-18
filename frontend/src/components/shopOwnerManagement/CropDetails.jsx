@@ -36,16 +36,18 @@ function CropDetails(props) {
                   <h2 className="text-2xl font-semibold text-gray-800 capitalize">
                      Fresh Organic Tomatoes - 500 lbs Available
                   </h2>
-                  <div class="flex flex-wrap gap-x-10 gap-y-2">
-                     <div class="flex items-center gap-2">
+                  <div className="flex flex-wrap gap-x-10 gap-y-2">
+                     <div className="flex items-center gap-2">
                         <i className="bi bi-currency-exchange text-sm text-yellow-500"></i>
-                        <h4 class="text-gray-600 font-medium">Price per Kg:</h4>
-                        <span class=" font-medium">120 LKR</span>
+                        <h4 className="text-gray-600 font-medium">
+                           Price per Kg:
+                        </h4>
+                        <span className=" font-medium">120 LKR</span>
                      </div>
-                     <div class="flex items-center gap-2">
+                     <div className="flex items-center gap-2">
                         <i className="bi bi-geo-fill text-sm text-rose-500"></i>
-                        <h4 class="text-gray-600 font-medium">Location:</h4>
-                        <span class="font-medium">Badulla</span>
+                        <h4 className="text-gray-600 font-medium">Location:</h4>
+                        <span className="font-medium">Badulla</span>
                      </div>
                   </div>
                   <p className="text-sm text-gray-600 tracking-wide">
