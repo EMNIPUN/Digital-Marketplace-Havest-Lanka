@@ -6,16 +6,24 @@ import {
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
 import axios from 'axios';
+import Token from '@/components/userManagement/logins/Token';
 
 function MyBids() {
+
+
+  const token = Token();
 
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  console.log(token);
+  const farmerId = token.userId;
+  console.log(farmerId);
+
   useEffect(() => {
 
     axios
-      .get("http://localhost:8005/api/BidPost/IT23283930-E-M-N-D-EKANAYAKE")
+      .get("http://localhost:8005/api/BidPost/"+farmerId)
       .then((response) => {
         console.log(response.data);
         setBids(response.data);

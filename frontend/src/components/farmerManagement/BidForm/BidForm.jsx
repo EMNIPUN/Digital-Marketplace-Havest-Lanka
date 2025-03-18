@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Send, MapPin, Check } from 'lucide-react';
 import axios from 'axios';
-// import Token from '@/components/userManagement/logins/Token';
+import Token from '@/components/userManagement/logins/Token';
 
 function BidForm() {
+
+    const token = Token();
 
     const [showForm, setShowForm] = useState(true);
 
@@ -19,13 +21,17 @@ function BidForm() {
 
     const Category = ["Vegetables","Fruits","Nuts","Spices","Other"];
 
+    console.log(token);
+    const farmerId = token.userId;
+    console.log(farmerId);
+
 
     const handleSubmit = async (e) => {
-        // console.log(Token());
+
         try{
             e.preventDefault();
             const bidPostData = {
-                farmerId: "IT23283930-E-M-N-D-EKANAYAKE",
+                farmerId: farmerId,
                 cropsName: cropsName,
                 cropsCategory: cropsCategory,
                 description: description,
