@@ -10,21 +10,22 @@ function ManageInventory(props) {
    const [isClickDeleteItem, setIsClickDeleteItem] = useState(false);
    const [selectedItem, setSelectedItemId] = useState("");
    const [inventoryData, setInventoryData] = useState([]);
+   const sid = "SO1";
    const [inventoryFormData, setInventoryFormData] = useState({
-      shopOwnerId: "",
+      shopOwnerId: sid,
       itemName: "",
       itemCategory: "",
       quantity: "",
    });
 
    useEffect(() => {
-      getInventoryData();
+      getInventoryDataById();
    }, []);
 
    // Inventory data getting func
-   const getInventoryData = () => {
+   const getInventoryDataById = () => {
       axios
-         .get("http://localhost:8005/api/inventory/getInventory")
+         .get(`http://localhost:8005/api/inventory/getInventoryById/${sid}`)
          .then((response) => {
             setInventoryData(response.data);
          })
@@ -50,7 +51,7 @@ function ManageInventory(props) {
                itemCategory: "",
                quantity: "",
             });
-            getInventoryData();
+            getInventoryDataById();
             setIsClickAddItem(false);
          })
          .catch((error) => {
@@ -83,7 +84,7 @@ function ManageInventory(props) {
                itemCategory: "",
                quantity: "",
             });
-            getInventoryData();
+            getInventoryDataById();
             setIsClickUpdateItem(false);
             setSelectedItemId("");
          })
@@ -96,7 +97,7 @@ function ManageInventory(props) {
       axios
          .post(`http://localhost:8005/api/inventory/deleteItem/${id}`)
          .then(() => {
-            getInventoryData();
+            getInventoryDataById();
             setIsClickDeleteItem(false);
             setSelectedItemId("");
          })
