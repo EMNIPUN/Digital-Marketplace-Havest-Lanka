@@ -2,7 +2,7 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import connectDB from "./config/db.js";
-import inventoryRoutes from "./routes/shopOwnerManagement/inventoryRoutes.js";
+import inventoryRoutes from "./routes/shopOwnerManagement/inventory.routes.js";
 
 const app = express();
 

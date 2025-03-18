@@ -11,6 +11,18 @@ const getInventoryDetails = (req, res) => {
       });
 };
 
+const getInventoryDetailsById = async (req, res) => {
+   const shopOwnerId = req.params.shopOwnerId;
+
+   Inventory.find({ shopOwnerId })
+      .then((response) => {
+         res.json(response);
+      })
+      .catch((error) => {
+         res.json(error);
+      });
+};
+
 const addItem = (req, res) => {
    const inventory = new Inventory({
       shopOwnerId: req.body.shopOwnerId,
@@ -63,4 +75,10 @@ const deleteItem = (req, res) => {
       });
 };
 
-export default { getInventoryDetails, addItem, updateItem, deleteItem };
+export default {
+   getInventoryDetails,
+   addItem,
+   updateItem,
+   deleteItem,
+   getInventoryDetailsById,
+};
