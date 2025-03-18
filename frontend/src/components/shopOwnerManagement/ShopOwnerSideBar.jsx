@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import user from "../../assets/shopOwnerManagement/user-ico.ico";
 import logo from "../../assets/shopOwnerManagement/logo-white.jpg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
    FcBarChart,
    FcSearch,

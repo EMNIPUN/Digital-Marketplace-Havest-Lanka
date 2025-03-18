@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CropPost from "../../components/shopOwnerManagement/CropPost";
 import Profile from "../../assets/shopOwnerManagement/profile.png";
+import axios from "axios";
 
 function FindCrops(props) {
    const { setIsClickViewCropDetails } = props;
 
    const active = "bg-main-green text-white";
+
+   const [cropsPostData, setCropPostData] = useState([]);
 
    const cropPosts = [
       {
@@ -94,6 +97,21 @@ function FindCrops(props) {
       },
    ];
 
+   const getCropPostDetails = () => {
+      axios
+         .get("http://localhost:8005/api/BidPost")
+         .then((resposnse) => {
+            setCropPostData(resposnse.data);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   useEffect(() => {
+      getCropPostDetails();
+   });
+
    return (
       <section className="w-full p-[20px] flex flex-col gap-5">
          {/* Search bar */}
@@ -126,10 +144,10 @@ function FindCrops(props) {
 
          {/* Crop Posts */}
          <div className="flex w-full items-center gap-5 flex-col">
-            {cropPosts.map((post) => (
+            {cropsPostData.map((post) => (
                <CropPost
-                  key={post.id}
-                  title={post.title}
+                  key={post._id}
+                  title={post.cropsName}
                   price={post.price}
                   location={post.location}
                   description={post.description}
