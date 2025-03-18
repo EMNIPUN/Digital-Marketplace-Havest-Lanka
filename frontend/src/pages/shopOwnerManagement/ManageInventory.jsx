@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AddInventoryItem from "../../components/shopOwnerManagement/AddInventoryItem";
-import UpdateInventoryItem from "../../components/shopOwnerManagement/UpdateInventoryItem";
-import DeleteInventoryItem from "../../components/shopOwnerManagement/deleteInventoryItem";
+import AddInventoryItem from "../../components/shopOwnerManagement/inventory/AddInventoryItem";
+import UpdateInventoryItem from "../../components/shopOwnerManagement/inventory/UpdateInventoryItem";
+import DeleteInventoryItem from "../../components/shopOwnerManagement/inventory/DeleteInventoryItem";
 
 function ManageInventory(props) {
    const [isClickAddItem, setIsClickAddItem] = useState(false);
@@ -122,8 +122,8 @@ function ManageInventory(props) {
                </button>
             </div>
 
-            <div className="overflow-x-auto">
-               <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left">
+            <div className="overflow-x-auto min-h-56">
+               <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left ">
                   <thead>
                      <tr className=" text-gray-700 border-b border-gray-200">
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
