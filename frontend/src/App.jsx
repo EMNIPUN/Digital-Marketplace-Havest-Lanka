@@ -13,8 +13,8 @@ import LandingPage from "./pages/LandingPage";
 function App() {
    return (
       <Routes>
+         <Route index element={<LandingPage />} />
          <Route element={<CheckAuth />} path="/*">
-            <Route index element={<LandingPage />} />
             <Route path="shopOwner/*" element={<ShopOwnerRoutes />} />
             <Route path="farmer/*" element={<FarmerRoutes />} />
             <Route path="transport/*" element={<TransportRoutes />} />
