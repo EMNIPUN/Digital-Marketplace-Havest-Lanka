@@ -16,13 +16,14 @@ import slide1 from "../../assets/hero-1.jpg";
 import slide2 from "../../assets/hero-2.jpg";
 import slide3 from "../../assets/hero-3.jpg";
 
-function HeroSlider() {
+function HeroSlider(props) {
+   const { setScrollNavbar, scrollNavbar } = props;
    return (
       <div>
          {" "}
          <Swiper
             modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-            spaceBetween={20}
+            spaceBetween={0}
             slidesPerView={1}
             pagination={{ clickable: true }}
             style={{ width: "100%", height: "100vh" }}
@@ -46,6 +47,7 @@ function HeroSlider() {
                   <button className="bg-sec-green w-36 h-12 rounded text-base font-medium uppercase">
                      Join Now
                   </button>
+
                   <img
                      src={slide3}
                      alt="Slide 1"
@@ -62,8 +64,8 @@ function HeroSlider() {
                <div className=" bg-black/60 w-full h-screen flex flex-col gap-5 items-start justify-center text-white rounded-sm relative px-[120px]">
                   <div className="flex gap-1 flex-col">
                      <h4 className="text-5xl font-medium w-3/5 leading-tight">
-                        Take Control of Your Produce and Earn 100% profit that You Truly
-                        Deserve.
+                        Take Control of Your Produce and Earn 100% profit that
+                        You Truly Deserve.
                      </h4>
                      <p className="text-base font-light tracking-wide text-white">
                         Join with harvest Lanka and make trading easy
@@ -72,6 +74,7 @@ function HeroSlider() {
                   <button className="bg-sec-green w-36 h-12 rounded text-base font-medium uppercase">
                      Lear More
                   </button>
+
                   <img
                      src={slide2}
                      alt="Slide 1"
@@ -99,6 +102,7 @@ function HeroSlider() {
                   <button className="bg-sec-green w-36 h-12 rounded text-base font-medium uppercase">
                      Contact
                   </button>
+
                   <img
                      src={slide1}
                      alt="Slide 1"

@@ -148,7 +148,6 @@ function ManageInventory(props) {
                            <td className="px-3 py-2">{item.itemName}</td>
                            <td className="px-3 py-2">{item.itemCategory}</td>
                            <td className="px-3 py-2">{item.quantity} kg</td>
-
                            <td className="px-3 py-2 flex justify-start gap-1">
                               <button
                                  onClick={() => {

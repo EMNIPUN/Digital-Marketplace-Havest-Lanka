@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const VegetablePriceMarquee = () => {
    // Sample vegetable price data
@@ -85,6 +86,19 @@ const VegetablePriceMarquee = () => {
          change: 0.05,
       },
    ]);
+
+   const [title, setTitle] = useState(true);
+   const location = useLocation();
+
+   const checkLocation = () => {
+      if ((location.path = "/")) {
+         setTitle(false);
+      }
+   };
+
+   useEffect(() => {
+      checkLocation();
+   });
 
    // For a realistic effect, we'll update one random price every few seconds
    useEffect(() => {
@@ -182,41 +196,49 @@ const VegetablePriceMarquee = () => {
    };
 
    return (
-      <div className="w-full bg-white border border-gray-200 shadow-sm  overflow-hidden">
-         <div className="flex items-center bg-green-700 text-white p-3">
-            <div className="flex items-center mr-2">
-               <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-               >
-                  <path
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     strokeWidth="2"
-                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  ></path>
-               </svg>
-               <h2 className="font-bold text-lg">Live Market Prices</h2>
+      <div
+         className={`w-full bg-white border-gray-200 border  shadow-sm  overflow-hidden`}
+      >
+         {title && (
+            <div className="flex items-center bg-green-700 text-white p-3">
+               <div className="flex items-center mr-2">
+                  <svg
+                     className="w-5 h-5 mr-2"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg"
+                  >
+                     <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                     ></path>
+                  </svg>
+                  <h2 className="font-bold text-lg">Live Market Prices</h2>
+               </div>
+               <div className="text-xs bg-green-800 py-1 px-2 rounded">
+                  Last Updated: {new Date().toLocaleTimeString()}
+               </div>
             </div>
-            <div className="text-xs bg-green-800 py-1 px-2 rounded">
-               Last Updated: {new Date().toLocaleTimeString()}
-            </div>
-         </div>
+         )}
 
          <div className="relative overflow-hidden">
-            <div className="flex animate-marquee whitespace-nowrap py-3 bg-gray-50">
+            <div
+               className={`flex animate-marquee whitespace-nowrap py-1 ${
+                  title ? " bg-gray-50" : ""
+               }`}
+            >
                {priceData.map((item) => (
                   <div
                      key={item.id}
-                     className="flex items-center mx-6 px-4 py-2 bg-white rounded-md shadow-sm border border-gray-100"
+                     className="flex items-center mx-2 px-4 py-2 text-sm bg-white rounded-md shadow-sm border border-gray-100"
                   >
-                     <span className="font-semibold text-gray-800 mr-2">
+                     <span className="font-medium text-gray-800 mr-2">
                         {item.name}:
                      </span>
-                     <span className="text-gray-900 font-bold">
+                     <span className="text-gray-900 font-medium">
                         ${item.price.toFixed(2)}
                      </span>
                      <span className="text-xs text-gray-500 mx-1">
@@ -265,11 +287,13 @@ const styles = `
 }
 `;
 
-const VegetablePriceMarqueeWithStyles = () => (
-   <>
-      <style>{styles}</style>
-      <VegetablePriceMarquee />
-   </>
-);
+function DailyPrice() {
+   return (
+      <>
+         <style>{styles}</style>
+         <VegetablePriceMarquee />
+      </>
+   );
+}
 
-export default VegetablePriceMarqueeWithStyles;
+export default DailyPrice;
