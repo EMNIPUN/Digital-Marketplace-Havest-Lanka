@@ -8,12 +8,13 @@ import AdminRoutes from "./routes/AdminRoutes";
 import LoginRoutes from "./routes/LoginRoutes";
 import LogoutRoute from "./routes/LogoutRoutes";
 import CheckAuth from "./components/userManagement/logins/CheckAuth";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
    return (
       <Routes>
          <Route element={<CheckAuth />} path="/*">
-            <Route index element={<Test />} />
+            <Route index element={<LandingPage />} />
             <Route path="shopOwner/*" element={<ShopOwnerRoutes />} />
             <Route path="farmer/*" element={<FarmerRoutes />} />
             <Route path="transport/*" element={<TransportRoutes />} />

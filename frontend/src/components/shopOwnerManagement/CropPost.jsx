@@ -18,10 +18,10 @@ function CropPost(props) {
             <div className="flex flex-col gap-1">
                <h3 className="text-gray-800 text-lg font-medium">{title}</h3>
                <div className="farmer-name flex gap-2 items-center text-sm">
-                  <img src={farmer.image} width="25px" alt="" />
-                  <p className="text-sm tracking-wide">{farmer.name}</p>
+                  <img src={User} width="25px" alt="" />
+                  <p className="text-sm tracking-wide">{farmer}</p>
                   <p>|</p>
-                  <div className="font-medium text-sm">{farmer.rating}</div>
+                  <div className="font-medium text-sm">{}</div>
                </div>
             </div>
             <div className="flex flex-col gap-1 items-end">
