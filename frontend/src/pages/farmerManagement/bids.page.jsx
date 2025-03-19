@@ -8,7 +8,7 @@ import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
 import axios from 'axios';
 import Token from '@/components/userManagement/logins/Token';
 
-function MyBids() {
+function Bids() {
 
 
   const token = Token();
@@ -16,14 +16,14 @@ function MyBids() {
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(token);
+  // console.log(token);
   const farmerId = token.userId;
-  console.log(farmerId);
+  // console.log(farmerId);
 
   useEffect(() => {
 
     axios
-      .get("http://localhost:8005/api/BidPost/"+farmerId)
+      .get("http://localhost:8005/api/BidPost/ownbids/"+farmerId)
       .then((response) => {
         console.log(response.data);
         setBids(response.data);
@@ -94,7 +94,7 @@ function MyBids() {
                   <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                     {
                       bids.map((bid, index) => {
-                        return <MyBidsCard key={index} bid={bid} />
+                        return (<MyBidsCard key={index} bid={bid} />)
                       })
                     }
                   </div>
@@ -111,4 +111,4 @@ function MyBids() {
   );
 }
 
-export default MyBids;
+export default Bids;

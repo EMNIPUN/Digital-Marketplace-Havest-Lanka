@@ -21,9 +21,9 @@ function BidForm() {
 
     const Category = ["Vegetables","Fruits","Nuts","Spices","Other"];
 
-    console.log(token);
+    // console.log(token);
     const farmerId = token.userId;
-    console.log(farmerId);
+    // console.log(farmerId);
 
 
     const handleSubmit = async (e) => {
@@ -49,7 +49,7 @@ function BidForm() {
     }
 
   return showForm ? (
-    <form>              
+    <form onSubmit={handleSubmit}>              
         <div className="mb-6 flex gap-6">
             <div className='w-[300px]'>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Crops Name</label>
@@ -141,7 +141,6 @@ function BidForm() {
         <div className="flex justify-end items-center p-6 border-t bg-gray-50">
             <button 
                 type='submit'
-                onClick={handleSubmit}
                 className="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
             <div className="flex items-center">

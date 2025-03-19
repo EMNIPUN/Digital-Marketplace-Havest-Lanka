@@ -5,6 +5,13 @@ export const getAllBidPosts = async (req, res) => {
     res.status(200).json(bidPosts);
 };
 
+export const getBidPostById = async (req, res) => {
+    const bitpostId = req.params.bitpostId;
+    const bidPost = await BidPost.findById(bitpostId);
+    res.status(200).json(bidPost);
+    return;
+};
+
 export const getBidsByFarmerId = async (req, res) => {
     
     const farmerId = req.params.farmerId;
@@ -47,3 +54,42 @@ export const createBidPost = async (req, res) => {
     res.status(201).send();
     return;
 }
+
+export const updateBitPost = async (req, res) => {
+    const bitpostId = req.params.bitpostId;
+    const updatebidPost = req.body;
+
+    if (
+        !updatebidPost.cropsName ||
+        !updatebidPost.cropsCategory ||
+        !updatebidPost.description ||
+        !updatebidPost.price ||
+        !updatebidPost.quantity ||
+        !updatebidPost.location
+    ) {
+        return res.status(400).json({
+            message: "Missing required fields",
+        });
+    }
+
+    await BidPost.findByIdAndUpdate
+    (bitpostId, updatebidPost)
+
+    res.status(200).send();
+    return;
+}
+
+export const deleteBitPost = async (req, res) => {
+    const {bitpostId} = req.params;
+    await BidPost.findByIdAndDelete(bitpostId);
+
+    if (!bitpostId) {
+        return res.status(404).json({ message: "Bid post not found" });
+    }
+
+    res.json({ message: "Bid post deleted successfully" });
+
+    return;
+
+}
+    
