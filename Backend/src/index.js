@@ -38,11 +38,8 @@ connectDB();
 app.use("/user", userRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);
-
 app.use("/check-auth", checkAuthRoutes);
-
 app.use('/api/BidPost', bidPostRouter);
-
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/bid", bidRoutes);
 
