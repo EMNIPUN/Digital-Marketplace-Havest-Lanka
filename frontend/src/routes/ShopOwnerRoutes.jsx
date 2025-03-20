@@ -9,35 +9,23 @@ import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
-import CropDetails from "../components/shopOwnerManagement/CropDetails";
 
 function ShopOwnerRoutes() {
-   const [isClickViewCropDetails, setIsClickViewCropDetails] = useState(false);
-
    return (
       <div className="w-full flex bg-gray-100">
          <div className="max-w-64">
+            {/* Side bar showing */}
             <ShopOwnerSideBar />
          </div>
          <div className="w-full pl-80">
+            {/* Navbar showing */}
             <ShopOwnerNavBar />
 
-            {isClickViewCropDetails && (
-               <CropDetails
-                  setIsClickViewCropDetails={setIsClickViewCropDetails}
-               />
-            )}
             <div className="mt-14">
+               {/* Routes for shopowner's pages */}
                <Routes>
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>
-                  <Route
-                     path="/findcrops"
-                     element={
-                        <FindCrops
-                           setIsClickViewCropDetails={setIsClickViewCropDetails}
-                        />
-                     }
-                  ></Route>
+                  <Route path="/findcrops" element={<FindCrops />}></Route>
                   <Route path="/orders" element={<ShopOwnerOrders />}></Route>
                   <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
                   <Route
@@ -46,6 +34,7 @@ function ShopOwnerRoutes() {
                   ></Route>
                </Routes>
             </div>
+            {/* Footer showing */}
             <ShopOwnerFooter />
          </div>
       </div>

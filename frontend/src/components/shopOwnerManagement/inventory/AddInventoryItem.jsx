@@ -8,6 +8,7 @@ function AddInventoryItem(props) {
       inventoryFormData,
    } = props;
 
+   // close function for item add form
    const closeForm = (e) => {
       if (e.target.id === "AddInventoryForm") {
          setIsClickAddItem(false);

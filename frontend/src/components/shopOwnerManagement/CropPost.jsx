@@ -1,31 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import User from "../../assets/shopOwnerManagement/user-ico.ico";
+import axios from "axios";
+import CropDetails from "./CropDetails";
 
 function CropPost(props) {
    const {
       title,
+      quantity,
       price,
       location,
       description,
       bids,
-      farmer,
-      setIsClickViewCropDetails,
+      farmerId,
+      postId,
    } = props;
+
+   // set crop dtails showing
+   const [isClickViewCropDetails, setIsClickViewCropDetails] = useState(false);
 
    return (
       <div className="w-full p-5 rounded-sm bg-white flex flex-col gap-5 text-gray-600 border border-gray-200 shadow-sm">
          <div className="w-full flex items-center justify-between">
             <div className="flex flex-col gap-1">
-               <h3 className="text-gray-800 text-lg font-medium">{title}</h3>
+               <h3 className="text-gray-800 text-lg font-medium">
+                  {title} - {quantity} Kg available
+               </h3>
                <div className="farmer-name flex gap-2 items-center text-sm">
                   <img src={User} width="25px" alt="" />
-                  <p className="text-sm tracking-wide">{farmer}</p>
-                  <p>|</p>
+                  <p className="text-sm tracking-wide">{}</p>
+                  <p>{farmerId} | 4.9</p>
                   <div className="font-medium text-sm">{}</div>
                </div>
             </div>
             <div className="flex flex-col gap-1 items-end">
-               <h3 className="text-gray-700 text-lg font-semibold">{price}</h3>
+               <h3 className="text-gray-700 text-lg font-semibold">
+                  {price} / Kg
+               </h3>
                <div className="flex gap-2 items-center justify-center">
                   <i className="bi bi-geo-fill text-sm text-rose-500"></i>
                   <p className="text-sm text-gray-500 tracking-wide">
@@ -48,10 +58,24 @@ function CropPost(props) {
                   <p>View Details</p>
                   <i className="bi bi-arrow-right"></i>
                </button>
-               
             </div>
             <div className="text-sm font-medium">{bids} bids posted</div>
          </div>
+         
+         {/* Crop details component */}
+         {isClickViewCropDetails && (
+            <CropDetails
+               setIsClickViewCropDetails={setIsClickViewCropDetails}
+               title={title}
+               price={price}
+               location={location}
+               quantity={quantity}
+               description={description}
+               farmerId={farmerId}
+               bids={bids}
+               postId={postId}
+            />
+         )}
       </div>
    );
 }

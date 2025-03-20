@@ -1,6 +1,7 @@
 import { response } from "express";
 import Inventory from "../../models/shopOwnerManagement/inventory.js";
 
+// get details
 const getInventoryDetails = (req, res) => {
    Inventory.find()
       .then((response) => {
@@ -11,6 +12,7 @@ const getInventoryDetails = (req, res) => {
       });
 };
 
+// get details by id
 const getInventoryDetailsById = async (req, res) => {
    const shopOwnerId = req.params.shopOwnerId;
 
@@ -23,6 +25,7 @@ const getInventoryDetailsById = async (req, res) => {
       });
 };
 
+// add details
 const addItem = (req, res) => {
    const inventory = new Inventory({
       shopOwnerId: req.body.shopOwnerId,
@@ -41,6 +44,7 @@ const addItem = (req, res) => {
       });
 };
 
+// update details
 const updateItem = (req, res) => {
    const { id } = req.params;
    const { shopOwnerId, itemName, itemCategory, quantity } = req.body;
@@ -63,6 +67,8 @@ const updateItem = (req, res) => {
       });
 };
 
+
+//delete details
 const deleteItem = (req, res) => {
    const { id } = req.params;
 

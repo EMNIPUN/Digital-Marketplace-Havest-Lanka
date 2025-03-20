@@ -4,98 +4,9 @@ import Profile from "../../assets/shopOwnerManagement/profile.png";
 import axios from "axios";
 
 function FindCrops(props) {
-   const { setIsClickViewCropDetails } = props;
-
-   const active = "bg-main-green text-white";
-
+  
+   // showing products listing
    const [cropsPostData, setCropPostData] = useState([]);
-
-   const cropPosts = [
-      {
-         id: 1,
-         title: "Fresh Organic Tomatoes - 500 lbs Available",
-         farmer: {
-            name: "Akindu Nayanajith",
-            rating: 4.9,
-            image: Profile,
-         },
-         price: "120 LKR/kg",
-         location: "Badulla",
-         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero tempora debitis in fugiat veniam corrupti ex cumque expedita voluptate architecto. Eos, vel minus! Deleniti voluptate cum adipisci porro quo omnis.",
-         bids: 12,
-      },
-      {
-         id: 2,
-         title: "Organic Green Beans - 300 lbs Available",
-         farmer: {
-            name: "Kasun Perera",
-            rating: 4.7,
-            image: Profile,
-         },
-         price: "90 LKR/kg",
-         location: "Kandy",
-         description:
-            "High-quality organic green beans, freshly harvested and ready for sale. Ensure fresh supply for your needs.",
-         bids: 8,
-      },
-      {
-         id: 3,
-         title: "Fresh Carrots - 250 lbs Available",
-         farmer: {
-            name: "Nuwan Bandara",
-            rating: 4.8,
-            image: Profile,
-         },
-         price: "110 LKR/kg",
-         location: "Nuwara Eliya",
-         description:
-            "Naturally grown carrots with a sweet taste and rich in nutrients. Ideal for both cooking and raw consumption.",
-         bids: 15,
-      },
-      {
-         id: 4,
-         title: "Organic Cabbage - 400 lbs Available",
-         farmer: {
-            name: "Saman Wijesinghe",
-            rating: 4.6,
-            image: Profile,
-         },
-         price: "80 LKR/kg",
-         location: "Kurunegala",
-         description:
-            "Fresh organic cabbage with crisp leaves, ideal for salads, soups, and stir-fry dishes. Grown without harmful chemicals.",
-         bids: 10,
-      },
-      {
-         id: 5,
-         title: "Premium Red Onions - 600 lbs Available",
-         farmer: {
-            name: "Chathura Silva",
-            rating: 4.9,
-            image: Profile,
-         },
-         price: "130 LKR/kg",
-         location: "Anuradhapura",
-         description:
-            "Handpicked red onions with a strong flavor, perfect for culinary use. Freshly harvested and ready for bulk purchase.",
-         bids: 18,
-      },
-      {
-         id: 6,
-         title: "Organic Potatoes - 500 lbs Available",
-         farmer: {
-            name: "Dilshan Rathnayake",
-            rating: 4.7,
-            image: Profile,
-         },
-         price: "95 LKR/kg",
-         location: "Rathnapura",
-         description:
-            "Farm-fresh potatoes with a smooth texture, great for fries, mashed potatoes, and other dishes.",
-         bids: 14,
-      },
-   ];
 
    const getCropPostDetails = () => {
       axios
@@ -147,13 +58,16 @@ function FindCrops(props) {
             {cropsPostData.map((post) => (
                <CropPost
                   key={post._id}
+                  postId={post._id}
+                  farmerId={post.farmerId}
                   title={post.cropsName}
+                  quantity={post.quantity}
                   price={post.price}
                   location={post.location}
                   description={post.description}
                   bids={post.bids}
                   farmer={post.farmer}
-                  setIsClickViewCropDetails={setIsClickViewCropDetails}
+                 
                />
             ))}
          </div>

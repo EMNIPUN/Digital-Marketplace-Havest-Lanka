@@ -4,6 +4,7 @@ function DeleteInventoryItem(props) {
    const { selectedItem, setIsClickDeleteItem, setSelectedItemId, deleteItem } =
       props;
 
+   // close function for item delete popup
    const closeForm = (e) => {
       if (e.target.id === "deleteInventoryForm") {
          setIsClickDeleteItem(false);

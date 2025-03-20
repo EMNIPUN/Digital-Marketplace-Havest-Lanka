@@ -10,6 +10,7 @@ function UpdateInventoryItem(props) {
       setSelectedItemId,
    } = props;
 
+   // close function for item update form
    const closeForm = (e) => {
       if (e.target.id === "UpdateInventoryForm") {
          setIsClickUpdateItem(false);

@@ -13,6 +13,7 @@ import logoutRoutes from "./routes/userManagement/logoutRoutes.js"
 import checkAuthRoutes from "./routes/userManagement/checkAuthRoutes.js"
 
 import inventoryRoutes from "./routes/shopOwnerManagement/inventory.routes.js";
+import bidRoutes from "./routes/shopOwnerManagement/bid.routes.js"
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/check-auth", checkAuthRoutes);
 app.use('/api/BidPost', bidPostRouter);
 
 app.use("/api/inventory", inventoryRoutes);
+app.use("/api/bid", bidRoutes);
 
 const port = 8005; 
 app.listen(port, () => {

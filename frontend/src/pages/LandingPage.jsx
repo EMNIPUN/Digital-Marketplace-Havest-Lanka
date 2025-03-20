@@ -48,11 +48,13 @@ function LandingPage() {
                      <Link to="">Contact</Link>
                   </li>
                   <div className="flex gap-2">
-                     <li
-                        className={`py-2 w-24 flex items-center justify-center rounded border-white border  text-white`}
-                     >
-                        <Link to="">Log In</Link>
-                     </li>
+                     <Link to="/login/farmer-login">
+                        <li
+                           className={`py-2 w-24 flex items-center justify-center rounded border-white border  text-white`}
+                        >
+                           Log In
+                        </li>
+                     </Link>
                      <li
                         className={`${
                            scrollNavbar
@@ -224,7 +226,7 @@ function LandingPage() {
                </div>
             </div>
             {/* How it's work */}
-            <div className="w-full  flex flex-col px-[120px] py-16 gap-14">
+            <div className="w-full  flex flex-col px-[120px] py-24 gap-14">
                <div className="w-full flex items-center justify-center">
                   <h2 className="text-4xl text-black text-center w-3/5 font-semibold">
                      How It Works – Seamless Trading for Farmers & Shop Owners.

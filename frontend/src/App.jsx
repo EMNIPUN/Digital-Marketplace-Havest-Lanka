@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import Test from "./components/Test";
 import ShopOwnerRoutes from "./routes/ShopOwnerRoutes";
 import FarmerRoutes from "./routes/FarmerRoutes";
 import TransportRoutes from "./routes/TransportRoutes";
