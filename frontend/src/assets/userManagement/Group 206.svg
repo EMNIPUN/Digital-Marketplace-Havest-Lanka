@@ -1,0 +1,18 @@
+<svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 0H54V54H0V0Z" fill="white" fill-opacity="0.01"/>
+<path d="M54 0H0V54H54V0Z" fill="white" fill-opacity="0.01"/>
+<path d="M42.7501 9H11.2501C10.0074 9 9.00006 10.0074 9.00006 11.25V42.75C9.00006 43.9927 10.0074 45 11.2501 45H42.7501C43.9927 45 45.0001 43.9927 45.0001 42.75V11.25C45.0001 10.0074 43.9927 9 42.7501 9Z" fill="#00B074" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linejoin="round"/>
+<path d="M33.75 20.25H20.25V33.75H33.75V20.25Z" fill="#43CCF8" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+<path d="M16.7728 2.25V9" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.7728 45V51.75" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M27 2.25V9" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M27 45V51.75" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M37.2272 2.25V9" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M37.2272 45V51.75" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.25 16.7728H9" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 16.7728H51.75" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.25 27H9" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 27H51.75" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.25 37.2272H9" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45 37.2272H51.75" stroke="black" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

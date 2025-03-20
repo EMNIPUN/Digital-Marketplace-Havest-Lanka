@@ -8,17 +8,19 @@ import AdminRoutes from "./routes/AdminRoutes";
 import LoginRoutes from "./routes/LoginRoutes";
 import LogoutRoute from "./routes/LogoutRoutes";
 import CheckAuth from "./components/userManagement/logins/CheckAuth";
+import ProfilePage from "./pages/userManagement/ProfilePage";
 
 function App() {
    return (
       <Routes>
+         <Route index element={<Test />} />
          <Route element={<CheckAuth />} path="/*">
-            <Route index element={<Test />} />
             <Route path="shopOwner/*" element={<ShopOwnerRoutes />} />
             <Route path="farmer/*" element={<FarmerRoutes />} />
             <Route path="transport/*" element={<TransportRoutes />} />
             <Route path="admin/*" element={<AdminRoutes />} />
             <Route path="finance/*" element={<FinanceRoutes />} />
+            <Route path="profile/*" element={<ProfilePage />} />
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />

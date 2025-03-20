@@ -13,6 +13,7 @@ import checkAuthRoutes from "./routes/userManagement/checkAuthRoutes.js"
 dotenv.config();
 
 const app = express();
+app.use(express.json())
 
 // Middlewares
 app.use(bodyParser.json());

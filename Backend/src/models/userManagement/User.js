@@ -21,6 +21,9 @@ const UserSchema = new mongoose.Schema({
     "role": {
         type: String,
         default: "farmer"
+    },
+    "displayPicture": {
+        type: String
     }
 }, { timestamps: true })
 

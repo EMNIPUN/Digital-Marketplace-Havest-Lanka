@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Logout from "../components/userManagement/logins/logOut";
+import Logout from "../components/userManagement/logins/Logout";
 
 function LogoutRoute() {
     return (
