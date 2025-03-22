@@ -118,24 +118,46 @@ function ManageInventory(props) {
    return (
       <div className="p-[20px]">
          <div className=" bg-white p-5 shadow-sm rounded-sm border border-gray-200 ">
-            <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-200">
+            <div className="flex justify-between items-center mb-4 pb-2  border-gray-200">
                <h2 className="text-xl font-semibold text-gray-800">
                   Manage Inventory
                </h2>
-               <button
-                  onClick={() => {
-                     setIsClickAddItem(true);
-                  }}
-                  className="bg-sec-green text-white px-4 py-2 rounded-sm hover:bg-opacity-80"
-               >
-                  + Add Item
-               </button>
+               <div className="flex gap-2">
+                  <div className="flex gap-2">
+                     <select
+                        name=""
+                        id=""
+                        className="py-2 px-4 h-10 border border-gray-300 w-64 rounded text-gray-600"
+                     >
+                        <option value="" disabled>
+                           Select Category
+                        </option>
+                        <option value="Fruit">Fruit</option>
+                        <option value="Vegetable">Vegetable</option>
+                        <option value="Nuts">Nuts</option>
+                        <option value="Spices">Spices</option>
+                        <option value="Other">Other</option>
+                     </select>
+                     <button className="bg-sec-green text-white px-4 h-10 py-2 rounded-sm hover:bg-opacity-80">
+                        Filter
+                     </button>
+                  </div>
+                  <div className="line w-px h-10 bg-gray-200"></div>
+                  <button
+                     onClick={() => {
+                        setIsClickAddItem(true);
+                     }}
+                     className="bg-sec-green text-white px-4 h-10 py-2 rounded-sm hover:bg-opacity-80"
+                  >
+                     + Add New Item
+                  </button>
+               </div>
             </div>
 
             <div className="overflow-x-auto min-h-56">
                <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left ">
                   <thead>
-                     <tr className=" text-gray-700 border-b border-gray-200">
+                     <tr className=" text-gray-700 border-b border-gray-200 bg-gray-100">
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
                            Item Name
                         </th>
@@ -146,12 +168,13 @@ function ManageInventory(props) {
                            Quantity
                         </th>
 
-                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider w-12">
                            Actions
                         </th>
                      </tr>
                   </thead>
                   <tbody className="text-gray-500 text-sm divide-y">
+                     {/* Showing inventory data */}
                      {inventoryData.map((item) => (
                         <tr className="border-b" key={item._id}>
                            <td className="px-3 py-2">{item.itemName}</td>
@@ -205,6 +228,8 @@ function ManageInventory(props) {
                updateItem={updateItem}
                handelChange={handelChange}
                inventoryFormData={inventoryFormData}
+               setInventoryFormData={setInventoryFormData}
+               sid={sid}
                selectedItem={selectedItem}
                setSelectedItemId={setSelectedItemId}
             />
@@ -217,6 +242,8 @@ function ManageInventory(props) {
                selectedItem={selectedItem}
                setSelectedItemId={setSelectedItemId}
                deleteItem={deleteItem}
+               setInventoryFormData={setInventoryFormData}
+               sid={sid}
             />
          )}
       </div>

@@ -8,6 +8,8 @@ function UpdateInventoryItem(props) {
       inventoryFormData,
       selectedItem,
       setSelectedItemId,
+      setInventoryFormData,
+      sid
    } = props;
 
    // close function for item update form
@@ -15,6 +17,12 @@ function UpdateInventoryItem(props) {
       if (e.target.id === "UpdateInventoryForm") {
          setIsClickUpdateItem(false);
          setSelectedItemId("");
+         setInventoryFormData({
+            shopOwnerId: sid,
+            itemName: "",
+            itemCategory: "",
+            quantity: "",
+         });
       }
    };
 
@@ -66,6 +74,8 @@ function UpdateInventoryItem(props) {
                   </option>
                   <option value="Fruit">Fruit</option>
                   <option value="Vegetable">Vegetable</option>
+                  <option value="Nuts">Nuts</option>
+                  <option value="Spices">Spices</option>
                   <option value="Other">Other</option>
                </select>
             </div>
