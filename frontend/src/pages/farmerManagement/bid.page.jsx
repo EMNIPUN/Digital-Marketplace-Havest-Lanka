@@ -14,18 +14,19 @@ function Bid({}) {
   console.log(id);
 
   const [bidDetails, setBidDetails] = useState({});
-  
 
+  const getBidDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:8005/api/BidPost/'+id);
+      console.log(response.data)
+      setBidDetails(response.data)
+    } catch (error) {
+      console.error("Error fetching bid details")
+    }
+  }
+  
   useEffect(() => {
-    axios
-      .get('http://localhost:8005/api/BidPost/'+id)
-      .then((response) => {
-        console.log(response.data)
-        setBidDetails(response.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    getBidDetails();
   },[]);
 
 
@@ -100,7 +101,7 @@ function Bid({}) {
               </div>
               
               <div className="p-6">
-                <EditBidPost bidDetails={bidDetails}  />
+                <EditBidPost bidDetails={bidDetails} onUpdate={getBidDetails()}  />
               </div>
             </div>
           </div>

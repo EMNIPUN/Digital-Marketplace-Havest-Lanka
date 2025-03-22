@@ -4,9 +4,9 @@ import axios from 'axios';
 
 function EditBidPost({bidDetails, onUpdate}) {
 
-  console.log(bidDetails);
-  const id = bidDetails._id;
-  console.log(bidDetails._id);
+  // console.log(bidDetails);
+  // const id = bidDetails._id;
+  // console.log(bidDetails._id);
 
   const [showForm, setShowForm] = useState(true);
 
@@ -34,21 +34,21 @@ function EditBidPost({bidDetails, onUpdate}) {
       location: location,
     };
     console.log(updateBidPostData);
+    try {
 
-    try{
-      await axios
-          .put("http://localhost:8005/api/BidPost/"+bidDetails._id, updateBidPostData);
-          setShowForm(false)
+      await axios.put("http://localhost:8005/api/BidPost/" + bidDetails._id, updateBidPostData);
+      console.log("Bid Post Updated Successfully");
+      setShowForm(false);
+      onUpdate(updateBidPostData);
 
-          
-          
-    }catch(error){
-      console.error("Error updating bid post")
+    } catch (error) {
+
+      console.log(error);
+
     }
-
   }
 
-  return showForm ? ( 
+  return showForm ? (  
       <form onSubmit={handleUpdateSubmit} className="space-y-6">
         <div className='flex gap-1'>
             <div className='w-[300px]'>
