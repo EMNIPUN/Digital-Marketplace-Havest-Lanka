@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const BidPostSchema = new mongoose.Schema({
     farmerId:{
-        type:String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required:true
     },
     cropsName:{

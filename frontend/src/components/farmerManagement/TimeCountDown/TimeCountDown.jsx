@@ -25,7 +25,7 @@ function TimeCountDown({ bidTime }) {  // Accept props correctly
     }, [bidTime]);  
 
     return (
-        <div className="bg-green-50 rounded-xl p-4">
+        <div className="bg-green-50 rounded-xl p-4 text w-[250px]">
             <div className="flex items-center mb-3">
                 <Clock size={18} className="text-green-600 mr-2" />
                 <span className="text-sm font-medium text-gray-700">Auction ends in</span>

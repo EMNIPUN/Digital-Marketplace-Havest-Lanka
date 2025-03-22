@@ -1,37 +1,54 @@
 import React, { useState } from 'react'
-import { Send, MapPin, Check } from 'lucide-react';
+import { Send, MapPin, Check, TrainTrack } from 'lucide-react';
+import axios from 'axios';
 
-function EditBidPost({bid}) {
+function EditBidPost({bidDetails, onUpdate}) {
 
-  const [cropsName, setCropsName] = useState("");
-  const [cropsCategory, setCropsCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [location, setLocation] = useState("");
+  console.log(bidDetails);
+  const id = bidDetails._id;
+  console.log(bidDetails._id);
+
+  const [showForm, setShowForm] = useState(true);
+
+  const [cropsName, setCropsName] = useState(bidDetails.cropsName);
+  const [cropsCategory, setCropsCategory] = useState(bidDetails.cropsCategory);
+  const [description, setDescription] = useState(bidDetails.description);
+  const [price, setPrice] = useState(bidDetails.price);
+  const [quantity, setQuantity] = useState(bidDetails.quantity);
+  const [location, setLocation] = useState(bidDetails.location);
+
+
 
   const districts = ["Ampara","Anuradhapura","Badulla","Batticaloa","Colombo","Galle","Gampaha","Hambantota","Jaffna","Kalutara","Kandy","Kegalle","Kilinochchi",
     "Kurunegala","Mannar","Matale","Matara","Monaragala","Mullaitivu","Nuwara Eliya","Polonnaruwa","Puttalam","Ratnapura","Trincomalee","Vavuniya"];
 
-    
-    console.log(bid._id);
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
-    // const updateBidPostData = {
-    //   cropsName: cropsName,
-    //   cropsCategory: cropsCategory,
-    //   description: description,
-    //   price: price,
-    //   quantity: quantity,
-    //   location: location,
-    // };
-    // console.log(updateBidPostData);
-    // await axios.put("http://localhost:8005/api/BidPost/"+bid.id, updateBidPostData);
-    // alert("Bid post updated successfully");
+    const updateBidPostData = {
+      cropsName: cropsName,
+      cropsCategory: cropsCategory,
+      description: description,
+      price: price,
+      quantity: quantity,
+      location: location,
+    };
+    console.log(updateBidPostData);
+
+    try{
+      await axios
+          .put("http://localhost:8005/api/BidPost/"+bidDetails._id, updateBidPostData);
+          setShowForm(false)
+
+          
+          
+    }catch(error){
+      console.error("Error updating bid post")
+    }
+
   }
 
-  return ( 
+  return showForm ? ( 
       <form onSubmit={handleUpdateSubmit} className="space-y-6">
         <div className='flex gap-1'>
             <div className='w-[300px]'>
@@ -157,6 +174,16 @@ function EditBidPost({bid}) {
           </button>
         </div>
       </form>
+  ): (
+      <div className="flex justify-center items-center p-8">
+          <div className="bg-white rounded-lg shadow-xl p-6 text-center">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                  <Check className="h-6 w-6 text-green-600" />
+              </div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Post Published Successfully!</h2>
+              <p className="text-gray-600 mb-6">Your bid post has been created and is now visible to buyers.</p>
+          </div>
+      </div>
   )
 }
 
