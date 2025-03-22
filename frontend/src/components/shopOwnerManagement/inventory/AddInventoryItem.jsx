@@ -63,6 +63,8 @@ function AddInventoryItem(props) {
                   </option>
                   <option value="Fruit">Fruit</option>
                   <option value="Vegetable">Vegetable</option>
+                  <option value="Nuts">Nuts</option>
+                  <option value="Spices">Spices</option>
                   <option value="Other">Other</option>
                </select>
             </div>

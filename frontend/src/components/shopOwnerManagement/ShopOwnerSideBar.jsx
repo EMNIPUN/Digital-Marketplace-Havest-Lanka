@@ -13,19 +13,11 @@ import {
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 
 function ShopOwnerSideBar() {
+   // Side bar section display
    const [expandedSections, setExpandedSections] = useState({
       orderManagement: true,
       shopManagement: true,
       settings: true,
-   });
-
-   const [activeNavLink, setActiveNavLink] = useState({
-      dashboard: true,
-      findcrops: false,
-      inbox: false,
-      orders: false,
-      inventory: false,
-      finance: false,
    });
 
    const toggleSection = (section) => {
@@ -35,18 +27,61 @@ function ShopOwnerSideBar() {
       }));
    };
 
-   const toggleActiveLink = (link) => {
-      setActiveNavLink({
-         [link]: true,
-      });
+   // Side bar active page showing
+   const [activeNavLink, setActiveNavLink] = useState({
+      dashboard: false,
+      findcrops: false,
+      inbox: false,
+      orders: false,
+      inventory: false,
+      finance: false,
+   });
+
+   const location = useLocation();
+
+   const findActiveLink = () => {
+      if (
+         location.pathname === "/shopOwner/" ||
+         location.pathname === "/shopOwner"
+      ) {
+         setActiveNavLink({
+            dashboard: true,
+         });
+      } else if (location.pathname === "/shopOwner/findCrops") {
+         setActiveNavLink({
+            findcrops: true,
+         });
+      } else if (location.pathname === "/shopOwner/inbox") {
+         setActiveNavLink({
+            inbox: true,
+         });
+      } else if (location.pathname === "/shopOwner/orders") {
+         setActiveNavLink({
+            orders: true,
+         });
+      } else if (location.pathname === "/shopOwner/inventory") {
+         setActiveNavLink({
+            inventory: true,
+         });
+      } else if (location.pathname === "/shopOwner/finance") {
+         setActiveNavLink({
+            finance: true,
+         });
+      }
    };
 
-   const activeItemClass = "bg-gray-100 text-gray-700 font-medium rounded-md";
+   useEffect(() => {
+      findActiveLink();
+   }, [location.pathname]);
+
+   const activeItemClass = "bg-gray-100 text-gray-700 font-medium ";
 
    return (
       <aside className="so-side-bar w-80 bg-white h-screen overflow-y-auto  shadow-sm flex flex-col gap-4 fixed top-0 left-0 z-50">
          <div className=" px-6 py-2 ">
-            <img src={logo} className="w-32" alt="" />
+            <Link to="/">
+               <img src={logo} className="w-32" alt="" />
+            </Link>
          </div>
 
          <div className="profile flex items-center flex-col gap-3 px-6 py-3">
@@ -83,7 +118,6 @@ function ShopOwnerSideBar() {
                </p>
                <ul className="flex flex-col gap-1 text-gray-700">
                   <li
-                     onClick={() => toggleActiveLink("dashboard")}
                      className={`rounded-md ${
                         activeNavLink.dashboard
                            ? activeItemClass
@@ -99,7 +133,6 @@ function ShopOwnerSideBar() {
                      </Link>
                   </li>
                   <li
-                     onClick={() => toggleActiveLink("findcrops")}
                      className={`rounded-md ${
                         activeNavLink.findcrops
                            ? activeItemClass
@@ -115,7 +148,6 @@ function ShopOwnerSideBar() {
                      </Link>
                   </li>
                   <li
-                     onClick={() => toggleActiveLink("inbox")}
                      className={`rounded-md ${
                         activeNavLink.inbox
                            ? activeItemClass
@@ -156,7 +188,6 @@ function ShopOwnerSideBar() {
                {expandedSections.orderManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
                      <li
-                        onClick={() => toggleActiveLink("orders")}
                         className={`rounded-md ${
                            activeNavLink.orders
                               ? activeItemClass
@@ -193,7 +224,6 @@ function ShopOwnerSideBar() {
                {expandedSections.shopManagement && (
                   <ul className="flex flex-col gap-1 text-gray-700">
                      <li
-                        onClick={() => toggleActiveLink("inventory")}
                         className={`rounded-md ${
                            activeNavLink.inventory
                               ? activeItemClass
@@ -209,20 +239,19 @@ function ShopOwnerSideBar() {
                         </Link>
                      </li>
                      <li
-                        onClick={() => toggleActiveLink("finance")}
                         className={`rounded-md ${
                            activeNavLink.finance
                               ? activeItemClass
                               : "hover:bg-gray-50"
                         } `}
                      >
-                        <a
-                           href="#"
+                        <Link
+                           to="/shopOwner/finance"
                            className="flex gap-2 items-center py-2 px-3"
                         >
                            <FcServices className="text-xl" />
                            <p>Finance & Anylitics</p>
-                        </a>
+                        </Link>
                      </li>
                   </ul>
                )}
