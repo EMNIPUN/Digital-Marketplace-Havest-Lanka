@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema({
     },
     "displayPicture": {
         type: String
+    },
+    "status": {
+        type: Boolean,
+        required: true
     }
 }, { timestamps: true })
 

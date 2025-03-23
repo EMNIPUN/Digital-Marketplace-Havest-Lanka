@@ -8,12 +8,17 @@ import DriverRegistrationPage from "../pages/userManagement/dashboardPages/Drive
 import FinanceManagerRegistrationPage from "../pages/userManagement/dashboardPages/FinanceManagerRegistrationPage";
 import MarketManagerRegistrationPage from "../pages/userManagement/dashboardPages/MarketManagerRegistrationPage";
 import AccountManagementPage from "../pages/userManagement/dashboardPages/AccountManagementPage";
+import ReportsPage from "../pages/userManagement/dashboardPages/ReportsPage";
+import ActivityMonitoringPage from "../pages/userManagement/dashboardPages/ActivityMonitoringPage";
+import SystemConfigurationsPage from "../pages/userManagement/dashboardPages/SystemConfigurationsPage";
 
 function AdminRoutes() {
    return (
       <Routes>
          <Route path="/*" element={<DashboardLayout />}>
             <Route index element={<AdminDashboardHome />} />
+
+            <Route path="account-management" element={<AccountManagementPage />} />
 
             <Route path="user-registration" >
                <Route index element={<AdminDashboardRegistrationPage />} />
@@ -23,7 +28,11 @@ function AdminRoutes() {
                <Route path="market-manager" element={<MarketManagerRegistrationPage />} />
             </Route>
 
-            <Route path="account-management" element={<AccountManagementPage />} />
+            <Route path="reports" element={<ReportsPage />} />
+
+            <Route path="activity-monitoring" element={<ActivityMonitoringPage />} />
+
+            <Route path="system-configurations" element={<SystemConfigurationsPage />} />
          </Route>
       </Routes>
    );

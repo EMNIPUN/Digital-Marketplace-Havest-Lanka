@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 export const registerUser = async (req, res) => {
     try {
-        let { email, name, number, password, role = "farmer" } = req.body;
+        let { email, name, number, password, role = "farmer", displayPicture, status } = req.body;
 
         //Check duplicate emails
         const existingUser = await User.findOne({ email });
@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({ email, name, number, password: hashedPassword, role });
+        const newUser = new User({ email, name, number, password: hashedPassword, role, displayPicture, status });
         await newUser.save();
 
         res.status(201).json({ message: "User registered successfully", user: newUser });

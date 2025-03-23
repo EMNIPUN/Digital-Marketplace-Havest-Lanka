@@ -22,7 +22,8 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "systeminformation": "^5.25.11"
   },
   "keywords": [],
   "devDependencies": {

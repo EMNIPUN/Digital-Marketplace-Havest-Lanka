@@ -2,6 +2,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import User from '../../models/userManagement/User.js'
+import { IncreseActiveSessions } from './ActiveTokens.js'
 
 export const Login = async (req, res) => {
     try {
@@ -24,6 +25,8 @@ export const Login = async (req, res) => {
             sameSite: "Strict",
             maxAge: 60 * 60 * 24 * 1000
         })
+
+        IncreseActiveSessions()
 
         res.status(200).json({ message: "Login successfull" })
     } catch (e) {

@@ -9,6 +9,8 @@ import userRoutes from "./routes/userManagement/userRoutes.js";
 import loginRoutes from "./routes/userManagement/loginRoutes.js"
 import logoutRoutes from "./routes/userManagement/logoutRoutes.js"
 import checkAuthRoutes from "./routes/userManagement/checkAuthRoutes.js"
+import adminRoutes from "./routes/userManagement/adminRoutes.js"
+import { trackRequest } from "./controllers/userManagement/fetch/SystemLoad.js";
 
 dotenv.config();
 
@@ -29,10 +31,12 @@ app.use(cookieParser())
 const PORT = process.env.PORT || 5000;
 
 // Use Routes
+app.use(trackRequest)
 app.use("/user", userRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);
 app.use("/check-auth", checkAuthRoutes);
+app.use("/api/admin", adminRoutes);
 
 mongoose
     .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

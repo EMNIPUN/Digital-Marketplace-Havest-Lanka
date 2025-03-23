@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Loading */
+
+@keyframes grow {
+
+   0%,
+   100% {
+      transform: scale(1);
+   }
+
+   50% {
+      transform: scale(1.5);
+   }
+}
+
 /* Global styles */
 :root {
    --mainGreen: #108a01;
@@ -36,7 +50,7 @@
 
 
 @layer base {
-  :root {
+   :root {
       --background: 0 0% 100%;
       --foreground: 0 0% 3.9%;
       --card: 0 0% 100%;
@@ -63,7 +77,8 @@
       --chart-5: 27 87% 67%;
       --radius: 0.5rem;
    }
-  .dark {
+
+   .dark {
       --background: 0 0% 3.9%;
       --foreground: 0 0% 98%;
       --card: 0 0% 3.9%;
@@ -94,10 +109,11 @@
 
 
 @layer base {
-  * {
-    @apply border-border;
+   * {
+      @apply border-border;
    }
-  body {
-    @apply bg-background text-foreground;
+
+   body {
+      @apply bg-background text-foreground;
    }
 }
