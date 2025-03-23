@@ -5,10 +5,12 @@ import { Pencil, Trash2,X } from 'lucide-react';
 import axios from 'axios'
 import TimeCountDown from '@/components/farmerManagement/TimeCountDown/TimeCountDown';
 import EditBidPost from '@/components/farmerManagement/EditBidPost/EditBidPost';
+import BidPlacementCard from '@/components/farmerManagement/BidPlacementCard/BidPlacementCard';
 
 function Bid({}) {
 
   const [isVisibale, setIsVisible] = useState(false);
+  const [bidplacementDetails, setBidPlacementDetails] = useState([]);
 
   const { id } = useParams();
   console.log(id);
@@ -24,17 +26,21 @@ function Bid({}) {
       console.error("Error fetching bid details")
     }
   }
+
+  const getBidPlacementDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:8005/api/bid/getBids/67dc1ec6bc1107012f9e6e19');
+      console.log(response.data)
+      setBidPlacementDetails(response.data)
+    } catch (error) {
+      console.error("Error fetching bid placement details")
+    }
+  }
   
   useEffect(() => {
     getBidDetails();
+    getBidPlacementDetails();
   },[]);
-
-
-  const shopOwnerBids = [
-    { id: 1, name: "Shop Owner 1", bid: "₹2200/quintal", time: "2 hours ago" },
-    { id: 2, name: "Shop Owner 2", bid: "₹2150/quintal", time: "3 hours ago" },
-    { id: 3, name: "Shop Owner 3", bid: "₹2100/quintal", time: "5 hours ago" },
-  ]
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -108,34 +114,15 @@ function Bid({}) {
         )}
         
 
-        {/* Shop Owner Bids Section */}
         <div className="mt-8">
           <h3 className="text-xl font-semibold text-gray-900 mb-4">Current Bids</h3>
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <ul className="divide-y divide-gray-200">
-              {shopOwnerBids.map((bid) => (
-                <li key={bid.id} className="p-6 hover:bg-gray-50">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-lg font-medium text-gray-900">{bid.name}</p>
-                      <p className="text-sm text-gray-500">{bid.time}</p>
-                    </div>
-                    <div className="text-xl font-bold text-green-600">
-                      {bid.bid}
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {
+              bidplacementDetails.map((bidplacementDetail, index)=>{
+                return (<BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} />)
+              })
+            }
         </div>
 
-        {/* Place Bid Button */}
-        <div className="mt-8 flex justify-center">
-          <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
-            Place Your Bid
-          </button>
-        </div>
       </div>
     </div>
   )
