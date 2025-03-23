@@ -6,7 +6,8 @@ import Token from "../userManagement/logins/Token";
 function CropDetails(props) {
    const {
       setIsClickViewCropDetails,
-      title,
+
+      product,
       quantity,
       price,
       location,
@@ -43,13 +44,14 @@ function CropDetails(props) {
 
    useEffect(() => {
       getBids();
-   });
+   },[]);
 
    // set bid data
    const [bidFormData, setBidFormData] = useState({
       farmerId: farmerId,
       postId: postId,
       shopOwnerId: shopOwnerId,
+      product: product,
       quantity: "",
       price: "",
       status: "pending",
@@ -60,6 +62,7 @@ function CropDetails(props) {
          farmerId: data.farmerId,
          shopOwnerId: data.shopOwnerId,
          postId: data.postId,
+         product: data.product,
          quantity: data.quantity,
          price: data.price,
          status: data.status,
@@ -72,6 +75,7 @@ function CropDetails(props) {
                farmerId: farmerId,
                postId: postId,
                shopOwnerId: shopOwnerId,
+               product: product,
                quantity: "",
                price: "",
                status: "pending",
@@ -126,7 +130,7 @@ function CropDetails(props) {
                {/* Post details */}
                <div className="flex flex-col gap-4">
                   <h2 className="text-2xl font-semibold text-gray-800 capitalize">
-                     {title} - {quantity} Kgs Available
+                     {product} - {quantity} Kgs Available
                   </h2>
                   <div className="flex flex-wrap gap-x-10 gap-y-2">
                      <div className="flex items-center gap-2">
@@ -160,7 +164,7 @@ function CropDetails(props) {
                   {!isPlacedBid ? (
                      <form
                         action=""
-                        className="w-full flex flex-col md:flex-row items-center gap-4 justify-between"
+                        className="w-full flex flex-col md:flex-row items-center gap-2 justify-between"
                         onSubmit={(e) => {
                            e.preventDefault();
                            addBids(bidFormData);
@@ -168,18 +172,32 @@ function CropDetails(props) {
                      >
                         <div className="relative w-full">
                            <input
-                              type="text"
-                              placeholder="Enter quantity you want"
+                              type="number"
+                              placeholder={`Enter quantity (Max : ${quantity} Kg)`}
                               className="w-full h-12 px-4 py-3 rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 text-gray-700 text-sm shadow-sm focus:outline-none"
                               required
                               name="quantity"
                               value={bidFormData.quantity}
                               onChange={handleChnage}
+                              min="1"
+                              max={quantity}
+                              onInvalid={(e) => {
+                                 if (e.target.value < 1) {
+                                    e.target.setCustomValidity(
+                                       `Quantity must be between 1 Kg & ${quantity} Kg.`
+                                    );
+                                 } else if (e.target.value > quantity) {
+                                    e.target.setCustomValidity(
+                                       `Maximum allowed quantity is ${quantity} Kg.`
+                                    );
+                                 }
+                              }}
+                              onInput={(e) => e.target.setCustomValidity("")}
                            />
                         </div>
                         <div className="relative w-full">
                            <input
-                              type="text"
+                              type="number"
                               placeholder="Enter your Price per Kg"
                               className="w-full h-12 px-4 py-3 rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 text-gray-700 text-sm shadow-sm focus:outline-none"
                               required
@@ -190,7 +208,7 @@ function CropDetails(props) {
                         </div>
                         <button
                            type="submit"
-                           className="w-full  h-12 px-6 py-3 bg-sec-green hover:bg-green-700 text-white font-medium rounded text-sm shadow-md transition-all duration-200 flex items-center justify-center whitespace-nowrap"
+                           className="w-1/2cd backend  h-12 px-6 py-3 bg-sec-green hover:bg-green-700 text-white font-medium rounded text-sm shadow-md transition-all duration-200 flex items-center justify-center whitespace-nowrap"
                         >
                            Place Bid
                         </button>

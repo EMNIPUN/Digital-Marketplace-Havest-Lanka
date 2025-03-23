@@ -67,12 +67,24 @@ const updateItem = (req, res) => {
       });
 };
 
-
 //delete details
 const deleteItem = (req, res) => {
    const { id } = req.params;
 
    Inventory.findByIdAndDelete(id)
+      .then((response) => {
+         res.json(response);
+      })
+      .catch((error) => {
+         res.json(error);
+      });
+};
+
+// find items from category name
+const getInventoryDetailsByCategory = (req, res) => {
+   const category = req.params;
+
+   Inventory.find({ category })
       .then((response) => {
          res.json(response);
       })
@@ -87,4 +99,5 @@ export default {
    updateItem,
    deleteItem,
    getInventoryDetailsById,
+   getInventoryDetailsByCategory,
 };

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import User from "../../assets/shopOwnerManagement/user-ico.ico";
+import User from "../../assets/shopOwnerManagement/profile.png";
 import axios from "axios";
 import CropDetails from "./CropDetails";
 
 function CropPost(props) {
    const {
-      title,
+      product,
       quantity,
       price,
       location,
@@ -23,7 +23,7 @@ function CropPost(props) {
          <div className="w-full flex items-center justify-between">
             <div className="flex flex-col gap-1">
                <h3 className="text-gray-800 text-lg font-medium">
-                  {title} - {quantity} Kg available
+                  {product} - {quantity} Kg available
                </h3>
                <div className="farmer-name flex gap-2 items-center text-sm">
                   <img src={User} width="25px" alt="" />
@@ -61,12 +61,12 @@ function CropPost(props) {
             </div>
             <div className="text-sm font-medium">{bids} bids posted</div>
          </div>
-         
+
          {/* Crop details component */}
          {isClickViewCropDetails && (
             <CropDetails
                setIsClickViewCropDetails={setIsClickViewCropDetails}
-               title={title}
+               product={product}
                price={price}
                location={location}
                quantity={quantity}

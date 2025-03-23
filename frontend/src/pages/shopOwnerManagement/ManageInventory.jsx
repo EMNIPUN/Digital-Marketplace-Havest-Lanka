@@ -18,6 +18,16 @@ function ManageInventory(props) {
    const token = Token();
    const sid = token.userId;
 
+   // filter items
+   const [selectedCategory, setSelectedCategory] = useState("All");
+
+   const handelChangeOnCategory = (e) => {
+      e.preventDefault();
+      setSelectedCategory(e.target.value);
+   };
+
+   console.log(selectedCategory);
+
    // showing inventory items
    const [inventoryData, setInventoryData] = useState([]);
 
@@ -124,25 +134,28 @@ function ManageInventory(props) {
                </h2>
                <div className="flex gap-2">
                   <div className="flex gap-2">
-                     <select
-                        name=""
-                        id=""
-                        className="py-2 px-4 h-10 border border-gray-300 w-64 rounded text-gray-600"
+                     <form
+                        action=""
+                        className="flex gap-2"
+                        onSubmit={handelChangeOnCategory}
                      >
-                        <option value="" disabled>
-                           Select Category
-                        </option>
-                        <option value="Fruit">Fruit</option>
-                        <option value="Vegetable">Vegetable</option>
-                        <option value="Nuts">Nuts</option>
-                        <option value="Spices">Spices</option>
-                        <option value="Other">Other</option>
-                     </select>
-                     <button className="bg-sec-green text-white px-4 h-10 py-2 rounded-sm hover:bg-opacity-80">
-                        Filter
-                     </button>
+                        <select
+                           name=""
+                           id=""
+                           defaultValue={"All"}
+                           onChange={handelChangeOnCategory}
+                           className="py-2 px-4 h-10 border border-gray-300 w-64 rounded text-gray-600 text-sm focus:outline-none focus:ring-gray-400"
+                        >
+                           <option value="All">All Category</option>
+                           <option value="Fruit">Fruit</option>
+                           <option value="Vegetable">Vegetable</option>
+                           <option value="Nuts">Nuts</option>
+                           <option value="Spices">Spices</option>
+                           <option value="Other">Other</option>
+                        </select>
+                     </form>
                   </div>
-                  <div className="line w-px h-10 bg-gray-200"></div>
+                  <div className="line w-px h-auto6 bg-gray-200"></div>
                   <button
                      onClick={() => {
                         setIsClickAddItem(true);
@@ -155,7 +168,7 @@ function ManageInventory(props) {
             </div>
 
             <div className="overflow-x-auto min-h-56">
-               <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left ">
+               <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left border border-gray-200">
                   <thead>
                      <tr className=" text-gray-700 border-b border-gray-200 bg-gray-100">
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
@@ -174,39 +187,45 @@ function ManageInventory(props) {
                      </tr>
                   </thead>
                   <tbody className="text-gray-500 text-sm divide-y">
-                     {/* Showing inventory data */}
-                     {inventoryData.map((item) => (
-                        <tr className="border-b" key={item._id}>
-                           <td className="px-3 py-2">{item.itemName}</td>
-                           <td className="px-3 py-2">{item.itemCategory}</td>
-                           <td className="px-3 py-2">{item.quantity} kg</td>
-                           <td className="px-3 py-2 flex justify-start gap-1">
-                              <button
-                                 onClick={() => {
-                                    setIsClickUpdateItem(true);
-                                    setInventoryFormData({
-                                       itemName: item.itemName,
-                                       itemCategory: item.itemCategory,
-                                       quantity: item.quantity,
-                                    });
-                                    setSelectedItemId(item._id);
-                                 }}
-                                 className="bg-sec-green text-white px-3 py-2 rounded "
-                              >
-                                 <i className="bi bi-pencil-fill"></i>
-                              </button>
-                              <button
-                                 onClick={() => {
-                                    setIsClickDeleteItem(true);
-                                    setSelectedItemId(item._id);
-                                 }}
-                                 className="bg-gray-500 text-white px-3 py-2 rounded "
-                              >
-                                 <i className="bi bi-trash-fill"></i>
-                              </button>
-                           </td>
-                        </tr>
-                     ))}
+                     {/* Showing all inventory data */}
+                     {inventoryData
+                        .filter(
+                           (item) =>
+                              selectedCategory === "All" ||
+                              item.itemCategory === selectedCategory
+                        )
+                        .map((item) => (
+                           <tr className="border-b" key={item._id}>
+                              <td className="px-3 py-2">{item.itemName}</td>
+                              <td className="px-3 py-2">{item.itemCategory}</td>
+                              <td className="px-3 py-2">{item.quantity} kg</td>
+                              <td className="px-3 py-2 flex justify-start gap-1">
+                                 <button
+                                    onClick={() => {
+                                       setIsClickUpdateItem(true);
+                                       setInventoryFormData({
+                                          itemName: item.itemName,
+                                          itemCategory: item.itemCategory,
+                                          quantity: item.quantity,
+                                       });
+                                       setSelectedItemId(item._id);
+                                    }}
+                                    className="bg-sec-green text-white px-3 py-2 rounded "
+                                 >
+                                    <i className="bi bi-pencil-fill"></i>
+                                 </button>
+                                 <button
+                                    onClick={() => {
+                                       setIsClickDeleteItem(true);
+                                       setSelectedItemId(item._id);
+                                    }}
+                                    className="bg-gray-500 text-white px-3 py-2 rounded "
+                                 >
+                                    <i className="bi bi-trash-fill"></i>
+                                 </button>
+                              </td>
+                           </tr>
+                        ))}
                   </tbody>
                </table>
             </div>

@@ -22,11 +22,11 @@ function ShopOwnerRoutes() {
             {/* Navbar showing */}
             <ShopOwnerNavBar />
             {/* Daily pprice showing */}
-            <div className="mt-14">
+            <div className="mt-14 fixed top-0 z-50">
                <DailyPrice />
             </div>
 
-            <div className="">
+            <div className="mt-28">
                {/* Routes for shopowner's pages */}
                <Routes>
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>

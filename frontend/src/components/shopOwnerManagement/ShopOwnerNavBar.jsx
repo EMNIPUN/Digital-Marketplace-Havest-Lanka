@@ -1,7 +1,12 @@
 import React from "react";
-import User from "../../assets/shopOwnerManagement/user-ico.ico"
+import User from "../../assets/shopOwnerManagement/user-ico.ico";
+import Token from "../userManagement/logins/Token";
 
 function ShopOwnerNavBar() {
+   // shop owner details
+   const token = Token();
+   const shopOwnerName = token.name;
+
    return (
       <header className="w-full  bg-white fixed  z-40 right-0">
          <nav className="w-full flex flex-col ">
@@ -15,7 +20,9 @@ function ShopOwnerNavBar() {
                         3
                      </p>
                   </div>
-                  <p className="text-gray-600 text-sm">Welcome Chathush!</p>
+                  <p className="text-gray-600 text-sm">
+                     Welcome {shopOwnerName}!
+                  </p>
                   {/* <i className="bi bi-person text-xl bg-main-green text-white px-2 py-1 rounded-full"></i> */}
                   <img src={User} width="33px" alt="" />
                </div>

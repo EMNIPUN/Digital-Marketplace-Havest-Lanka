@@ -8,6 +8,10 @@ router.get(
    "/getInventoryById/:shopOwnerId",
    inventoryController.getInventoryDetailsById
 );
+router.get(
+   "/getInventoryByCategory",
+   inventoryController.getInventoryDetailsByCategory
+);
 router.post("/addItem", inventoryController.addItem);
 router.post("/updateItem/:id", inventoryController.updateItem);
 router.post("/deleteItem/:id", inventoryController.deleteItem);

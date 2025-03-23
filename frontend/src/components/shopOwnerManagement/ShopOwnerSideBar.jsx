@@ -11,8 +11,15 @@ import {
    FcServices,
 } from "react-icons/fc";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import Token from "../userManagement/logins/Token";
 
 function ShopOwnerSideBar() {
+   // Shop owner details
+   const token = Token();
+   const shopOwnerName = token.name;
+   const shopOwnerLevel = 2;
+   const shopOwnerRating = 5.0;
+
    // Side bar section display
    const [expandedSections, setExpandedSections] = useState({
       orderManagement: true,
@@ -94,11 +101,11 @@ function ShopOwnerSideBar() {
                <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
             </div>
             <div className="text-center">
-               <h4 className=" text-base font-semibold">Chathush Vishmika</h4>
+               <h4 className=" text-base font-semibold">{shopOwnerName}</h4>
                <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                  Level 2 |
+                  Level {shopOwnerLevel} |
                   <span className="text-yellow-500 font-medium flex items-center">
-                     5.0
+                     {shopOwnerRating}
                   </span>
                </p>
             </div>
