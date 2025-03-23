@@ -43,4 +43,19 @@ const addBids = (req, res) => {
       .catch((error) => res.json(error));
 };
 
+<<<<<<< HEAD
 export default { getBids, addBids, getAllBids };
+=======
+// update details
+const updateBid = async (req, res) => {
+   const bidId = req.params.bidId;
+   const updateBidData = req.body;
+
+   await Bid.findByIdAndUpdate(bidId, updateBidData)
+
+   res.status(200).json({ message: "Bid updated successfully" });
+   return;
+};
+
+export default { getBids, addBids, updateBid };
+>>>>>>> dabb83b4fd0246dfd7b9b715982d702eed816dc5
