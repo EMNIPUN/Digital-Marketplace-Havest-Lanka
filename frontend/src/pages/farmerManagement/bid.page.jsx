@@ -11,6 +11,7 @@ function Bid({}) {
 
   const [isVisibale, setIsVisible] = useState(false);
   const [bidplacementDetails, setBidPlacementDetails] = useState([]);
+  const [shopOwnerDetails, setShopOwnerDetails] = useState([]);
 
   const { id } = useParams();
   console.log(id);
@@ -29,17 +30,28 @@ function Bid({}) {
 
   const getBidPlacementDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:8005/api/bid/getBids/67dc1ec6bc1107012f9e6e19');
+      const response = await axios.get('http://localhost:8005/api/bid/getBids/'+id);
       console.log(response.data)
       setBidPlacementDetails(response.data)
     } catch (error) {
       console.error("Error fetching bid placement details")
     }
   }
+
+  // const getShopOwnerDetails = async () => {
+  //   try{
+  //     const response = await axios.get('http://localhost:8005/api/shopOwner/getShopOwners/67d449c87529dbd1f613d6f4');
+  //     console.log(response.data)
+  //     setShopOwnerDetails(response.data)
+  //   }catch(error){
+  //     console.error("Error fetching shop owner details")
+  //   }
+  // }
   
   useEffect(() => {
     getBidDetails();
     getBidPlacementDetails();
+    // getShopOwnerDetails();
   },[]);
 
   return (
@@ -118,7 +130,7 @@ function Bid({}) {
           <h3 className="text-xl font-semibold text-gray-900 mb-4">Current Bids</h3>
             {
               bidplacementDetails.map((bidplacementDetail, index)=>{
-                return (<BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} />)
+                return (<BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} shopOwnerDetails={shopOwnerDetails} />)
               })
             }
         </div>

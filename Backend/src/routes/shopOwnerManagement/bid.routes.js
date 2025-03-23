@@ -5,5 +5,6 @@ const route = express.Router();
 
 route.get("/getBids/:postId", bidController.getBids);
 route.post("/addBids", bidController.addBids);
+route.put("/updateBid/:bidId", bidController.updateBid);
 
 export default route;

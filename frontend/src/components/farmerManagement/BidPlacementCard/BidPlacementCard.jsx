@@ -1,57 +1,105 @@
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart,MailPlus, PhoneOutgoing, Package, DollarSign  } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
-function BidPlacementCard({bidplacementDetails}) {
+function BidPlacementCard({bidplacementDetails, shopOwnerDetails}) {
+
+  const handleAcceptBid =  async (e) => {
+    toast("Wow so easy!")
+    e.preventDefault();
+    console.log(bidplacementDetails._id);
+    const acceptBidData = {
+      status: "Accepted"
+    };
+    try{
+      await axios.put("http://localhost:8005/api/bid/updateBid/"+bidplacementDetails._id, acceptBidData);
+      console.log("Bid Accepted Successfully");
+
+    }catch(error){
+      console.log(error);
+    }
+  }
 
   return (
-    <div className="relative flex bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-100">
+    <div className="p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-100">
       {/* Status badge */}
       {/* <div className="absolute top-3 right-3 z-10">
         <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-          bids.status === 'Active' ? 'bg-green-100 text-green-800' :
-          bids.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-          bids.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+          bidplacementDetails.status === 'Active' ? 'bg-green-100 text-green-800' :
+          bidplacementDetails.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+          bidplacementDetails.status === 'Accepted' ? 'bg-blue-100 text-blue-800' :
           'bg-gray-100 text-gray-800'
         }`}>
-          {bids.status || 'Active'}
+          {bidplacementDetails.status || 'Active'}
         </span>
       </div> */}
 
 
-      <div className="flex-1 p-4 pl-0">
-        <div className="mb-3">
+      <div className="flex justify-between items-center gap-4">
+
+        {/* farmer details */}
+        <div className="mb-3 flex-col items-center gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">{bidplacementDetails.postId}</h3>
-          </div>
-          <div className="flex items-center mt-1">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-              dsf sdfsdf sdfsdf
-            </span>
+            <h3 className="text-lg font-semibold text-gray-900">Saman Kumara</h3>
             <span className="ml-2 text-xs text-gray-500">
-              Posted 3 day ago
+              ( 3 hours ago )
             </span>
+          </div>
+          <div className='flex items-center gap-2 mt-6'>
+            <MailPlus className='w-5 h-5 text-gray-500' />
+            <p className="text-sm text-gray-500">samankumara@email.com</p>
+          </div>
+          <div className='flex items-center gap-2 mt-4'>
+            <PhoneOutgoing  className='w-5 h-5 text-gray-500' />
+            <p className="text-sm text-gray-500">+94 712 33 4012</p>
           </div>
         </div>
+
+        <div className='w-[1px] h-[100px] bg-gray-300 mt-4'></div>
+
 
         {/* Crop details */}
-        <div className="grid grid-cols-3 gap-x-4 gap-y-2 mb-3">
-
-          <div>
-            <p className="text-xs text-gray-500">Quantity</p>
-            <p className="font-medium text-gray-900">sdfsdfsdf kg</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500">Price per kg</p>
-            <p className="font-medium text-green-600">sdfsdfsd sdfsdf</p>
+        <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="flex items-start space-x-3">
+              <div className="p-2 bg-blue-50 rounded-md">
+                <Package className="text-blue-600 h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-gray-500 mb-1">Quantity</p>
+                <p className="font-semibold text-gray-900">{bidplacementDetails.price}kg</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start space-x-3">
+              <div className="p-2 bg-green-50 rounded-md">
+              </div>
+              <div>
+                <p className="text-xs font-medium text-gray-500 mb-1">Price per kg</p>
+                <p className="font-semibold text-green-600">Rs.{bidplacementDetails.price}.00/kg</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Action button */}
-        <div className="mt-4 flex justify-end">
-          <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-            View Details
+        <div className='w-[1px] h-[100px] bg-gray-300 mt-4'></div>
+
+        {/* Action buttons */}
+        <div className=" flex items-center justify-center gap-2 mr-20">
+          <button 
+            className="px-2 py-1 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            type='submit'
+            onClick={handleAcceptBid}
+          >
+            Accept Bid
           </button>
+          <button className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+            Reject Bid
+          </button>
+          <ToastContainer />
         </div>
+
       </div>
     </div>
   );

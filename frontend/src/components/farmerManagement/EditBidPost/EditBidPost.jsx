@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Send, MapPin, Check, TrainTrack } from 'lucide-react';
+import { Send, MapPin, Check, TrainTrack, Loader } from 'lucide-react';
 import axios from 'axios';
 
 function EditBidPost({bidDetails, onUpdate}) {
@@ -9,6 +9,7 @@ function EditBidPost({bidDetails, onUpdate}) {
   // console.log(bidDetails._id);
 
   const [showForm, setShowForm] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [cropsName, setCropsName] = useState(bidDetails.cropsName);
   const [cropsCategory, setCropsCategory] = useState(bidDetails.cropsCategory);
@@ -22,6 +23,9 @@ function EditBidPost({bidDetails, onUpdate}) {
   const districts = ["Ampara","Anuradhapura","Badulla","Batticaloa","Colombo","Galle","Gampaha","Hambantota","Jaffna","Kalutara","Kandy","Kegalle","Kilinochchi",
     "Kurunegala","Mannar","Matale","Matara","Monaragala","Mullaitivu","Nuwara Eliya","Polonnaruwa","Puttalam","Ratnapura","Trincomalee","Vavuniya"];
 
+  const handleUpdateicons = async () => {
+    setIsLoading(true);
+  }
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
@@ -168,9 +172,12 @@ function EditBidPost({bidDetails, onUpdate}) {
           </button>
           <button 
             type="submit" 
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-[200px] flex justify-center items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            onClick={handleUpdateicons}
           >
-            Update Bid
+            {
+              isLoading ? <Loader className="h-4 w-4 animate-spin" /> : "Update Bid" 
+            }
           </button>
         </div>
       </form>
