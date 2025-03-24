@@ -26,8 +26,6 @@ function ManageInventory(props) {
       setSelectedCategory(e.target.value);
    };
 
-   console.log(selectedCategory);
-
    // showing inventory items
    const [inventoryData, setInventoryData] = useState([]);
 
@@ -78,12 +76,52 @@ function ManageInventory(props) {
          });
    };
 
+   // validations
+   const [alreadyIn, setAlreadyIn] = useState(false);
+   const [isEmpty, setIsEmpty] = useState({
+      name: false,
+      category: false,
+      quantity: false,
+   });
+
    const handelChange = (e) => {
+      const findedItem = inventoryData.find(
+         (item) => item.itemName === e.target.value
+      );
+
+      // check item was already added
+      if (findedItem != null && e.target.value === findedItem.itemName) {
+         setAlreadyIn(true);
+      } else {
+         setAlreadyIn(false);
+      }
+
+      // check item name length
+      if (e.target.name === "itemName") {
+         if (e.target.value.length < 2 || e.target.value.length > 25) {
+            setIsEmpty((prev) => ({ ...prev, name: true }));
+         } else {
+            setIsEmpty((prev) => ({ ...prev, name: false }));
+         }
+      }
+
+      // check item quantity lenght
+      if (e.target.name === "quantity") {
+         if (e.target.value > 999999) {
+            setIsEmpty((prev) => ({ ...prev, quantity: true }));
+         } else {
+            setIsEmpty((prev) => ({ ...prev, quantity: false }));
+         }
+      }
+
       setInventoryFormData({
          ...inventoryFormData,
          [e.target.name]: e.target.value,
       });
    };
+
+   // check if the item already in
+   const checkItem = () => {};
 
    // Inventory update function
    const updateItem = (data, id) => {
@@ -133,7 +171,10 @@ function ManageInventory(props) {
                   Manage Inventory
                </h2>
                <div className="flex gap-2">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-center ">
+                     <div className="text-xs tracking-wide uppercase font-semibold text-gray-500">
+                        Filter By:
+                     </div>
                      <form
                         action=""
                         className="flex gap-2"
@@ -180,6 +221,9 @@ function ManageInventory(props) {
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
                            Quantity
                         </th>
+                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                           Updated Date
+                        </th>
 
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider w-12">
                            Actions
@@ -199,6 +243,7 @@ function ManageInventory(props) {
                               <td className="px-3 py-2">{item.itemName}</td>
                               <td className="px-3 py-2">{item.itemCategory}</td>
                               <td className="px-3 py-2">{item.quantity} kg</td>
+                              <td className="px-3 py-2">2025/01/09</td>
                               <td className="px-3 py-2 flex justify-start gap-1">
                                  <button
                                     onClick={() => {
@@ -237,6 +282,11 @@ function ManageInventory(props) {
                addInventoryItem={addInventoryItem}
                handelChange={handelChange}
                inventoryFormData={inventoryFormData}
+               alreadyIn={alreadyIn}
+               isEmpty={isEmpty}
+               setIsEmpty={setIsEmpty}
+               setInventoryFormData={setInventoryFormData}
+               sid={sid}
             />
          )}
 
