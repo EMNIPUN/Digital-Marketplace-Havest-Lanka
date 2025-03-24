@@ -48,10 +48,10 @@ const updateBid = async (req, res) => {
    const bidId = req.params.bidId;
    const updateBidData = req.body;
 
-   await Bid.findByIdAndUpdate(bidId, updateBidData)
+   await Bid.findByIdAndUpdate(bidId, updateBidData);
 
    res.status(200).json({ message: "Bid updated successfully" });
    return;
 };
 
-export default { getBids, addBids, updateBid };
+export default { getBids, addBids, updateBid, getAllBids };
