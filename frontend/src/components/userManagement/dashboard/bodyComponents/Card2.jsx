@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ThreeDots from "../../../../assets/userManagement/threeDots.svg";
 import PieChartX from "./PieChartX";
 import LineChartX from "./LineChartX"; // Import Line Chart Component
 import { ArrowDownToLine } from "lucide-react";
+import axios from "axios";
+import { BASE_URL } from "../../BaseUrl";
 
 function Card2({ cardName, chartType }) {
+
+    const [farmerPercentage, setFarmerPercentage] = useState({})
+    const [shopPercentage, setShopPercentage] = useState({})
+    const [driverPercentage, setDriverPercentage] = useState({})
+
+    useEffect(() => {
+        const fetchPercentages = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/api/admin/piechartdata`);
+                setFarmerPercentage(response.data.farmerPercentage || 0);
+                setShopPercentage(response.data.shopOwnerPercentage || 0);
+                setDriverPercentage(response.data.driverPercentage || 0);
+            } catch (e) {
+                console.log(`Error fetching pie chart data: ${e.message}`);
+            }
+        };
+
+        fetchPercentages();
+    }, []);
+
+
     return (
         <div className="col-span-6 p-5 bg-white rounded-lg shadow-md relative">
             {/* Header */}
@@ -16,10 +39,15 @@ function Card2({ cardName, chartType }) {
             {/* Charts */}
             <div className="mt-4">
                 {chartType === "pie" ? (
-                    <div className="flex justify-around">
-                        <PieChartX percentage={81} name="Farmer vs. Shop Owner Accounts" color1="#FF6B6B" color2="#FEECEC" />
-                        <PieChartX percentage={22} name="Active vs. Inactive Accounts" color1="#17C964" color2="#DFF5E9" />
-                        <PieChartX percentage={62} name="Enable vs. Suspended Accounts" color1="#2D9CDB" color2="#D6EBFA" />
+                    <div className="flex flex-col items-center justify-between">
+                        <div className="flex justify-around w-full">
+                            <PieChartX percentage={farmerPercentage} name="Farmer Accounts" color1="#FF6B6B" color2="#FEECEC" />
+                            <PieChartX percentage={shopPercentage} name="Shop Owner Accounts" color1="#17C964" color2="#DFF5E9" />
+                            <PieChartX percentage={driverPercentage} name="Driver Accounts" color1="#2D9CDB" color2="#D6EBFA" />
+                        </div>
+                        <div>
+                            <p className="mt-6 text-xs ">Compared with all accounts</p>
+                        </div>
                     </div>
                 ) : (
                     <div className="flex justify-around">

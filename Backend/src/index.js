@@ -4,6 +4,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 import userRoutes from "./routes/userManagement/userRoutes.js";
 import loginRoutes from "./routes/userManagement/loginRoutes.js"
@@ -37,6 +40,11 @@ app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);
 app.use("/check-auth", checkAuthRoutes);
 app.use("/api/admin", adminRoutes);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+app.use("/uploads", express.static(path.join(__dirname, "../uploads"))); //Access images
 
 mongoose
     .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

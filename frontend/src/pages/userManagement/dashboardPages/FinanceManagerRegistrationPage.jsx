@@ -4,7 +4,7 @@ import RegisterForm from '../../../components/userManagement/dashboard/bodyCompo
 function FinanceManagerRegistrationPage() {
     return (
         <div>
-            <RegisterForm formName="Finance Manager Registration Form" />
+            <RegisterForm formName="Finance Manager Registration Form" role="financemanager" />
         </div>
     )
 }

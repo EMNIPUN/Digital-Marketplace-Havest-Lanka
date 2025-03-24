@@ -2,10 +2,16 @@ import React from "react";
 import { PieChart, Pie, Cell } from "recharts";
 
 const PieChartX = ({ percentage, name, color1, color2 }) => {
+    if (percentage === undefined || percentage === null || isNaN(percentage)) {
+        return <p>Loading...</p>;
+    }
+
+    const validPercentage = Math.max(0, Math.min(100, Number(percentage) || 0));
     const data = [
-        { name: "Filled", value: percentage },
-        { name: "Remaining", value: 100 - percentage },
+        { name: "Filled", value: validPercentage },
+        { name: "Remaining", value: 100 - validPercentage },
     ];
+
 
     return (
         <div className="text-center">
@@ -35,7 +41,7 @@ const PieChartX = ({ percentage, name, color1, color2 }) => {
             </div>
 
             {/* Chart Name */}
-            <p className="mt-2 text-[12px] font-semibold text-gray-700">{name}</p>
+            <p className="mt-2 text-[13px] font-semibold text-gray-700">{name}</p>
         </div>
     );
 };

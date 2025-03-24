@@ -11,7 +11,7 @@ function Account() {
         <div className='flex items-center justify-center p-2 rounded-md h-full bg-gradient-to-r from-[#00b075] to-[#00b075a5]'>
             <p className='mr-2 text-[#fff] text-[15px]'>Hello, {displayName}</p>
             <div className='flex items-center justify-center rounded-[50px]'>
-                <img className='text-[#fff]' src="" alt='pp' />
+                <img className='text-[#fff]' src={`http://localhost:5000${tokenData.displayPicture}`} alt='pp' />
             </div>
         </div>
     );

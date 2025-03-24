@@ -1,27 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Filter } from 'lucide-react';
 import Danger from '../../../../assets/userManagement/danger.jpg';
 import CoverPhoto from '../../../../assets/userManagement/coverPhoto.jpg';
 
 function AccountsTable() {
-    const accounts = [
-        { id: 1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", nic: "987654321V", image: "https://via.placeholder.com/40", cover: "https://via.placeholder.com/400", status: "Active" },
-        { id: 2, name: "Jane Doe", email: "jane@example.com", phone: "987-654-3210", nic: "123456789V", image: "https://via.placeholder.com/40", cover: "https://via.placeholder.com/400", status: "Active" },
-        { id: 3, name: "Gary Barlow", email: "gary@example.com", phone: "111-222-3333", nic: "567891234V", image: "https://via.placeholder.com/40", cover: "https://via.placeholder.com/400", status: "Active" },
-    ];
-
+    const [accounts, setAccounts] = useState([]);
     const [selectedAccounts, setSelectedAccounts] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [accountStatuses, setAccountStatuses] = useState({});
+    const [loading, setLoading] = useState(true);
 
-    const initialStatuses = accounts.reduce((acc, account) => {
-        acc[account.id] = account.status;
-        return acc;
-    }, {});
-
-    const [accountStatuses, setAccountStatuses] = useState(initialStatuses);
+    // Fetch accounts from the backend
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/admin/getallaccounts")
+            .then(response => {
+                const fetchedAccounts = response.data.accounts.map(account => ({
+                    id: account._id,
+                    name: account.name,
+                    email: account.email,
+                    phone: account.number,
+                    nic: account.NIC || "N/A",
+                    image: `http://localhost:5000${account.displayPicture}` || "https://via.placeholder.com/40",
+                    cover: account.cover || "https://via.placeholder.com/400",
+                    status: (account.status === undefined || account.status === true) ? "Active" : "Deactivated"
+                }));
+                setAccounts(fetchedAccounts);
+                setAccountStatuses(
+                    fetchedAccounts.reduce((acc, account) => {
+                        acc[account.id] = account.status;
+                        return acc;
+                    }, {})
+                );
+            })
+            .catch(error => console.error("Error fetching accounts:", error))
+            .finally(() => setLoading(false));
+    }, []);
 
     // Check if all selected accounts are deactivated
     const areSelectedDeactivated = selectedAccounts.length > 0 && selectedAccounts.every(
@@ -39,27 +56,43 @@ function AccountsTable() {
         setShowPopup(true);
     };
 
-    const toggleUserStatus = (id) => {
-        setAccountStatuses(prev => ({
-            ...prev,
-            [id]: prev[id] === "Deactivated" ? "Active" : "Deactivated"
-        }));
-    };
-
+    // Updated deactivation/reactivation logic
     const confirmToggleStatus = () => {
+        let userIds = [];
+        let newStatus;
         if (selectedUser) {
-            toggleUserStatus(selectedUser.id);
+            userIds = [selectedUser.id];
+            // If current status is "Deactivated", then we want to activate (true); otherwise, deactivate (false)
+            newStatus = accountStatuses[selectedUser.id] === "Deactivated" ? true : false;
         } else {
-            selectedAccounts.forEach(id => toggleUserStatus(id));
+            userIds = selectedAccounts;
+            newStatus = areSelectedDeactivated ? true : false;
         }
-        // Clear selections and close popups
-        setSelectedAccounts([]);
-        setShowConfirmPopup(false);
-        setShowPopup(false);
+        // Choose the appropriate endpoint based on newStatus
+        const endpoint = newStatus
+            ? "http://localhost:5000/api/admin/reactivate"
+            : "http://localhost:5000/api/admin/deactivate";
+        axios.post(endpoint, { userIds, status: newStatus })
+            .then(response => {
+                // Update local state for updated users
+                setAccountStatuses(prev => {
+                    const updated = { ...prev };
+                    userIds.forEach(id => {
+                        updated[id] = newStatus ? "Active" : "Deactivated";
+                    });
+                    return updated;
+                });
+            })
+            .catch(error => console.error("Error updating user status:", error))
+            .finally(() => {
+                setSelectedAccounts([]);
+                setShowConfirmPopup(false);
+                setShowPopup(false);
+            });
     };
 
     return (
-        <div className="p-4 rounded-lg relative">
+        <div className="p-4  -mt-[30px] rounded-lg relative">
             <div>
                 <input className='rounded-md text-sm focus:ring-2 focus:ring-green-300 focus:outline-none p-2 w-[600px] absolute top-2 left-0' type='search' placeholder='Type Something...' />
 
@@ -81,48 +114,59 @@ function AccountsTable() {
                     {areSelectedDeactivated ? "Activate Selected" : "Deactivate Selected"}
                 </button>
             </div>
+
             <div className="overflow-x-auto mt-10 rounded-lg">
-                <table className="w-full border-collapse bg-white text-sm rounded-lg overflow-hidden">
-                    <thead className="bg-gray-200">
-                        <tr>
-                            <th className="px-4 py-2 text-left">Select</th>
-                            <th className="px-4 py-2 text-left">Display Picture</th>
-                            <th className="px-4 py-2 text-left">Name</th>
-                            <th className="px-4 py-2 text-left">Email</th>
-                            <th className="px-4 py-2 text-left">Status</th>
-                            <th className="px-4 py-2 text-left">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {accounts.map(account => (
-                            <tr key={account.id} className="border-b">
-                                <td className="px-4 py-2">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedAccounts.includes(account.id)}
-                                        onChange={() => handleSelect(account.id)}
-                                    />
-                                </td>
-                                <td className="px-4 py-2">
-                                    <img src={account.image} alt={account.name} className="w-10 h-10 rounded-full" />
-                                </td>
-                                <td className="px-4 py-2">{account.name}</td>
-                                <td className="px-4 py-2">{account.email}</td>
-                                <td className="px-4 py-2 font-semibold" style={{ color: accountStatuses[account.id] === "Deactivated" ? "red" : "green" }}>
-                                    {accountStatuses[account.id]}
-                                </td>
-                                <td className="px-4 py-2">
-                                    <button
-                                        onClick={() => handleSeeMore(account)}
-                                        className="p-2 w-[100px] bg-blue-500 text-white rounded hover:bg-blue-600"
-                                    >
-                                        See More
-                                    </button>
-                                </td>
+                {loading ? (
+                    <p className="text-center text-gray-600">Loading accounts...</p>
+                ) : (
+                    <table className="w-full border-collapse bg-white text-sm rounded-lg overflow-hidden">
+                        <thead className="bg-gray-200">
+                            <tr>
+                                <th className="px-4 py-2 text-left">Select</th>
+                                <th className="px-4 py-2 text-left">Display Picture</th>
+                                <th className="px-4 py-2 text-left">Name</th>
+                                <th className="px-4 py-2 text-left">Email</th>
+                                <th className="px-4 py-2 text-left">Status</th>
+                                <th className="px-4 py-2 text-left">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {accounts.map((account, index) => (
+                                <motion.tr
+                                    key={account.id}
+                                    className="border-b"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                                >
+                                    <td className="px-4 py-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedAccounts.includes(account.id)}
+                                            onChange={() => handleSelect(account.id)}
+                                        />
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <img src={account.image} alt={account.name} className="w-10 h-10 rounded-full" />
+                                    </td>
+                                    <td className="px-4 py-2">{account.name}</td>
+                                    <td className="px-4 py-2">{account.email}</td>
+                                    <td className="px-4 py-2 font-semibold" style={{ color: accountStatuses[account.id] === "Deactivated" ? "red" : "green" }}>
+                                        {accountStatuses[account.id]}
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <button
+                                            onClick={() => handleSeeMore(account)}
+                                            className="p-2 w-[100px] bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        >
+                                            See More
+                                        </button>
+                                    </td>
+                                </motion.tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
 
             {showPopup && selectedUser && (

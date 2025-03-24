@@ -9,6 +9,7 @@ import LoginRoutes from "./routes/LoginRoutes";
 import LogoutRoute from "./routes/LogoutRoutes";
 import CheckAuth from "./components/userManagement/logins/CheckAuth";
 import ProfilePage from "./pages/userManagement/ProfilePage";
+import FarmerRegistration from "./pages/userManagement/dashboardPages/FarmerRegistration";
 
 function App() {
    return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="admin/*" element={<AdminRoutes />} />
             <Route path="finance/*" element={<FinanceRoutes />} />
             <Route path="profile/*" element={<ProfilePage />} />
+            <Route path="farmer/register" element={<FarmerRegistration />} />
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />

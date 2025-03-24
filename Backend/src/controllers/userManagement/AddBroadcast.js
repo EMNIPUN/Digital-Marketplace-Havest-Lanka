@@ -1,14 +1,13 @@
 import express from 'express';
 import BroadcastSchema from '../../models/userManagement/BroadcastSchema.js';
 
-// Function to delete broadcasts older than 2 days
 const deleteOldBroadcasts = async () => {
     try {
         const twoDaysAgo = new Date();
-        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2); // 2 days ago
+        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
         await BroadcastSchema.deleteMany({
-            createdAt: { $lt: twoDaysAgo } // Deleting records older than 2 days
+            createdAt: { $lt: twoDaysAgo }
         });
 
         console.log('Old broadcasts deleted successfully.');
@@ -17,14 +16,14 @@ const deleteOldBroadcasts = async () => {
     }
 };
 
-// Add new broadcast
+
 const AddBroadcast = async (req, res) => {
     try {
         const { title, message } = req.body;
         const newBroadcast = new BroadcastSchema({
             title,
             message,
-            createdAt: new Date() // Add creation date
+            createdAt: new Date()
         });
 
         await newBroadcast.save();

@@ -4,7 +4,7 @@ import RegisterForm from '../../../components/userManagement/dashboard/bodyCompo
 function MarketManagerRegistrationPage() {
     return (
         <div>
-            <RegisterForm formName="Market Manager Registration Form" />
+            <RegisterForm formName="Market Manager Registration Form" role="marketmanager" />
         </div>
     )
 }

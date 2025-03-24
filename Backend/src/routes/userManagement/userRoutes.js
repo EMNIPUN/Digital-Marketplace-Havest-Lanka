@@ -1,9 +1,9 @@
 import express from 'express'
-import { registerUser } from "../../controllers/userManagement/UserRegistration.js"
+import { registerUser, uploadMiddleware } from "../../controllers/userManagement/UserRegistration.js"
 
 
 const router = express.Router()
 
-router.post("/register", registerUser)
+router.post("/register", uploadMiddleware, registerUser)
 
 export default router

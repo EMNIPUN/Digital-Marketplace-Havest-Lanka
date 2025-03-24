@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema({
     "status": {
         type: Boolean,
         required: true
+    },
+    "NIC": {
+        type: String,
+        required: true
     }
 }, { timestamps: true })
 

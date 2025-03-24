@@ -3,7 +3,7 @@ import RegisterForm from '../../../components/userManagement/dashboard/bodyCompo
 
 function DriverRegistrationPage() {
     return (
-        <div><RegisterForm formName="Driver Registration" /></div>
+        <div><RegisterForm formName="Driver Registration" role="driver" /></div>
     )
 }
 

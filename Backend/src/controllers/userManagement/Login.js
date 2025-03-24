@@ -9,6 +9,12 @@ export const Login = async (req, res) => {
         const { email, password, role } = req.body
         const user = await User.findOne({ email })
         if (!user) return res.status(400).json({ message: "Email not found" })
+
+        // Check if the account is deactivated
+        if (user.status === false) {
+            return res.status(403).json({ message: "Your account is deactivated. Please contact support." })
+        }
+
         const roleMatch = role === user.role
         if (!roleMatch) return res.status(400).json({ message: `Please use ${role} login` })
         const isMatch = await bcrypt.compare(password, user.password)
@@ -28,7 +34,7 @@ export const Login = async (req, res) => {
 
         IncreseActiveSessions()
 
-        res.status(200).json({ message: "Login successfull" })
+        res.status(200).json({ message: "Login successful" })
     } catch (e) {
         res.status(500).json({ message: e.message })
     }

@@ -3,8 +3,8 @@ import RegisterForm from '../../../components/userManagement/dashboard/bodyCompo
 
 function ShopOwnerRegistrationPage() {
     return (
-        <div>
-            <RegisterForm formName="Shop Owner Registration" />
+        <div className=''>
+            <RegisterForm formName="Shop Owner Registration" role="shopowner" />
         </div>
     )
 }

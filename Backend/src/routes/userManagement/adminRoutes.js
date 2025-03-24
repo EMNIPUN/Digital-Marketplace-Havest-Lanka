@@ -9,6 +9,8 @@ import AddBroadcast from '../../controllers/userManagement/AddBroadcast.js'
 import GetBroadcast from '../../controllers/userManagement/fetch/GetBroadcast.js'
 import GetAllAccounts from '../../controllers/userManagement/fetch/GetAllAccounts.js'
 import GetActiveSessions from '../../controllers/userManagement/fetch/GetActiveSessions.js'
+import DeactivateUser from '../../controllers/userManagement/DeactivateAccount.js'
+import ReactivateUsers from '../../controllers/userManagement/ReactivateAccounts.js'
 
 const router = express.Router()
 
@@ -21,6 +23,8 @@ router.post("/broadcast/add", AddBroadcast)
 router.get("/broadcast/get", GetBroadcast)
 router.get("/getallaccounts", GetAllAccounts)
 router.get("/getactivesessions", GetActiveSessions)
+router.post("/deactivate", DeactivateUser)
+router.post("/reactivate", ReactivateUsers)
 
 router.get("/test/manual-alerts", addMultipleAlertsByUrl)
 

@@ -1,13 +1,12 @@
 import SystemLoadSchema from '../../../models/userManagement/SystemLoadSchema.js';
 
-// Middleware function to track and save requests instantly
 export const trackRequest = async (req, res, next) => {
     try {
         const today = new Date().toISOString().split('T')[0];
 
         await SystemLoadSchema.findOneAndUpdate(
             { date: today },
-            { $inc: { requestCount: 1 } }, // Increment request count by 1
+            { $inc: { requestCount: 1 } },
             { upsert: true, new: true }
         );
     } catch (e) {
@@ -16,11 +15,10 @@ export const trackRequest = async (req, res, next) => {
     next();
 };
 
-// Function to get the last 7 days' system load
 export const getSystemLoad = async (req, res) => {
     try {
         const last7DaysLoad = await SystemLoadSchema.find()
-            .sort({ date: -1 }) // Get latest first
+            .sort({ date: -1 })
             .limit(7);
 
         res.status(200).json(last7DaysLoad);
@@ -29,7 +27,6 @@ export const getSystemLoad = async (req, res) => {
     }
 };
 
-// Function to ensure a new entry for the next day is created at midnight
 const setupNextDayEntry = async () => {
     try {
         const today = new Date().toISOString().split('T')[0];
@@ -47,10 +44,9 @@ const setupNextDayEntry = async () => {
     }
 };
 
-// Schedule to run just after midnight (00:01 UTC)
 setInterval(() => {
     const now = new Date();
     if (now.getUTCHours() === 0 && now.getUTCMinutes() === 1) {
         setupNextDayEntry();
     }
-}, 60000); // Check every 60 seconds
+}, 60000);
