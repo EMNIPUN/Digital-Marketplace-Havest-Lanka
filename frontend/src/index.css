@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Global styles */
+
+body {
+   font-family: "Poppins", sans-serif;
+}
+
 :root {
    --mainGreen: #108a01;
    --secondaryGreen: #4fab4a;
@@ -32,3 +38,4 @@
 .text-light-green {
    color: var(--lightGreen);
 }
+
