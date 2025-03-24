@@ -7,18 +7,32 @@ import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
 import axios from 'axios';
 import Token from '@/components/userManagement/logins/Token';
+import BidsTypeTab from '@/components/farmerManagement/BidsTypeTab/BidsTypeTab';
+import VegetablePriceMarqueeWithStyles from '@/components/farmerManagement/VegetablePriceMarquee/VegetablePriceMarquee';
 
 function Bids() {
 
 
   const token = Token();
 
+  const [selectedBidsType, setSelectedBidsType] = useState("All Bids");
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const BidsType = ["All Bids", "Active Bids", "Accepted Bids", "Expired Bids"];
 
   // console.log(token);
   const farmerId = token.userId;
   // console.log(farmerId);
+
+  const handleTypeClick = (BidsType) => {
+    setSelectedBidsType(BidsType);
+  }
+
+  // const filterBidsType = selectedBidsType === "All Bids" ?
+  // BidsLists : BidsLists.filter((BidsList) => {
+  //   return BidsList.status.toLowerCase().includes(selectedBidsType.toLowerCase());
+  // });
 
   useEffect(() => {
 
@@ -39,6 +53,8 @@ function Bids() {
   }, []);
 
 
+
+
   if (loading) {
     return (
       <>
@@ -56,6 +72,22 @@ function Bids() {
               </h1>
               <p className='text-gray-100'>Manage your posted bids here</p>
             </div>
+          </div>
+          <VegetablePriceMarqueeWithStyles/>
+
+          <div className=' flex flex-wrap justify-center items-center gap-8 font-light mt-10 '>
+            {
+              BidsType.map((bids, index) => {
+                return (
+                  <BidsTypeTab
+                    key={index}
+                    bids={bids}
+                    selectedBidsType={selectedBidsType}
+                    onClick={handleTypeClick}
+                  />
+                );
+              })
+            }
           </div>
 
         <div className="flex space-x-2 justify-center items-start mt-20 bg-white h-screen">
@@ -87,6 +119,22 @@ function Bids() {
               </h1>
               <p className='text-gray-100'>Manage your posted bids here</p>
             </div>
+          </div>
+          <VegetablePriceMarqueeWithStyles/>
+
+          <div className=' flex flex-wrap justify-center items-center gap-8 font-light mt-10 '>
+            {
+              BidsType.map((bids, index) => {
+                return (
+                  <BidsTypeTab
+                    key={index}
+                    bids={bids}
+                    selectedBidsType={selectedBidsType}
+                    onClick={handleTypeClick}
+                  />
+                );
+              })
+            }
           </div>
 
           <section className='mt-8 p-6'>

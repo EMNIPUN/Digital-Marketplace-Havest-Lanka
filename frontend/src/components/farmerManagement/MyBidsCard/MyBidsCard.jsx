@@ -28,7 +28,7 @@ const MyBidsCard = ({ bid }) => {
                 className='text-green-600 px-4 '
                 onClick={() => setShowDetails(!showDetails)}
               > 
-              Viwe Details
+              View Details
               </button>
             </Link>
           </div>
