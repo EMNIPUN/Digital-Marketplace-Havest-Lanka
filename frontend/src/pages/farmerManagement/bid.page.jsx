@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Pencil, Trash2,X } from 'lucide-react';
+import { Pencil, Trash2,X, CheckCircle } from 'lucide-react';
 
 import axios from 'axios'
 import TimeCountDown from '@/components/farmerManagement/TimeCountDown/TimeCountDown';
@@ -125,13 +125,32 @@ function Bid({}) {
         
 
         <div className="mt-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Current Bids</h3>
-            {
-              bidplacementDetails.map((bidplacementDetail, index)=>{
-                return (<BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} shopOwnerDetails={shopOwnerDetails} />)
-              })
-            }
+
+          { bidDetails.status === "Active" ? (
+            <>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Current Bids</h3>
+              {bidplacementDetails.map((bidplacementDetail, index) => (
+                <BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} shopOwnerDetails={shopOwnerDetails} />
+              ))}
+            </>
+          ) : (
+            <div className="flex justify-center items-center p-4">
+              <div className="bg-white shadow-2xl rounded-xl p-8 text-center w-full border border-gray-200">
+                <div className="flex justify-center items-center mb-6">
+                  <CheckCircle className="text-green-600 w-12 h-12 mr-4" strokeWidth={2} />
+                  <h2 className="text-2xl font-bold text-gray-900">Bid Accepted Successfully</h2>
+                </div>
+                <p className="text-gray-600 mb-8 text-base leading-relaxed">
+                  Congratulations! Your bid has been successfully accepted. You can now proceed with the next steps of the process.
+                </p>
+                <button className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-base font-semibold rounded-lg shadow-md transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                  Continue to Next Step
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+        
       </div>
     </div>
   )

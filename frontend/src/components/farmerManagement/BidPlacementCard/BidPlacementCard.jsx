@@ -5,22 +5,20 @@ import axios from 'axios';
 function BidPlacementCard({ bidplacementDetails }) {
 
   const [status, setStatus] = useState({});
-  const [accepted, setAccepted] = useState("");
 
-  useEffect(() => {
+  const getBidDetails = async () => {
     axios
-      .get(`http://localhost:8005/api/BidPost/${bidplacementDetails.postId}`)
-      .then((response) => {
-        setStatus(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching bid status:", error);
-      });
-  }, []);
-
+    .get(`http://localhost:8005/api/BidPost/${bidplacementDetails.postId}`)
+    .then((response) => {
+      setStatus(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching bid status:", error);
+    });
+  }
   useEffect(() => {
-    setAccepted(status.status || "");
-  }, [status]);
+    getBidDetails();
+  }, []);
 
   const handleAcceptBid = async (e) => {
     e.preventDefault();
@@ -30,8 +28,16 @@ function BidPlacementCard({ bidplacementDetails }) {
         `http://localhost:8005/api/bid/updateBid/${bidplacementDetails._id}`,
         { status: "Accepted" }
       );
+      
+      await axios.put(
+        `http://localhost:8005/api/BidPost/${bidplacementDetails.postId}`,
+        { status: "Payment Pending" }
+      ).then(response => console.log("Update response:", response.data))
+      .catch(error => console.error("Update error:", error));
+
+      getBidDetails();
+      
       console.log("Bid Accepted Successfully");
-      setAccepted("Accepted");
     } catch (error) {
       console.error("Error updating bid status:", error);
     }
@@ -81,7 +87,7 @@ function BidPlacementCard({ bidplacementDetails }) {
 
         <div className="w-[1px] h-[100px] bg-gray-300 mt-4"></div>
 
-        {accepted !== "Accepted" ? (
+        {status.status === "Active" && (
           <div className="flex items-center justify-center gap-2 mr-20">
             <button
               className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-md "
@@ -95,8 +101,9 @@ function BidPlacementCard({ bidplacementDetails }) {
             </button>
 
           </div>
-        ) : (
-          <div className="flex items-center justify-center  bg-gray-100">
+        ) } 
+
+        { status.status == "Payment Pending" && (<div className="flex items-center justify-center  bg-gray-100">
             <div className="bg-white p-3 text-center max-w-md w-full">
               <div className='flex justify-center items-center gap-3'>
                 <div className="flex justify-center mb-4">
