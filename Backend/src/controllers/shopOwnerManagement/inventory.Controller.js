@@ -5,10 +5,10 @@ import Inventory from "../../models/shopOwnerManagement/inventory.js";
 const getInventoryDetails = async (req, res) => {
    await Inventory.find()
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -18,10 +18,10 @@ const getInventoryDetailsById = async (req, res) => {
 
    await Inventory.find({ shopOwnerId })
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -37,10 +37,10 @@ const addItem = async (req, res) => {
    await inventory
       .save()
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -49,7 +49,7 @@ const updateItem = async (req, res) => {
    const { id } = req.params;
    const { shopOwnerId, itemName, itemCategory, quantity } = req.body;
 
-  await Inventory.findByIdAndUpdate(
+   await Inventory.findByIdAndUpdate(
       id,
       {
          shopOwnerId,
@@ -60,10 +60,10 @@ const updateItem = async (req, res) => {
       { new: true }
    )
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -73,10 +73,10 @@ const deleteItem = async (req, res) => {
 
    await Inventory.findByIdAndDelete(id)
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -86,10 +86,10 @@ const getInventoryDetailsByCategory = async (req, res) => {
 
    await Inventory.find({ category })
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
