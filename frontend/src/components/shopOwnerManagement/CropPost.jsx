@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import User from "../../assets/shopOwnerManagement/profile.png";
 import axios from "axios";
 import CropDetails from "./CropDetails";
@@ -18,6 +18,23 @@ function CropPost(props) {
    // set crop dtails showing
    const [isClickViewCropDetails, setIsClickViewCropDetails] = useState(false);
 
+   // get farmer details
+   const [farmer, setFarmer] = useState([]);
+   const getFarmerDetails = async () => {
+      await axios
+         .get(`http://localhost:8005/user/find/${farmerId}`)
+         .then((response) => {
+            setFarmer(response.data.user);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   useEffect(() => {
+      getFarmerDetails();
+   }, []);
+
    return (
       <div className="w-full p-5 rounded-sm bg-white flex flex-col gap-5 text-gray-600 border border-gray-200 shadow-sm">
          <div className="w-full flex items-center justify-between">
@@ -28,7 +45,7 @@ function CropPost(props) {
                <div className="farmer-name flex gap-2 items-center text-sm">
                   <img src={User} width="25px" alt="" />
                   <p className="text-sm tracking-wide">{}</p>
-                  <p>{farmerId} | 4.9</p>
+                  <p>{farmer && farmer.name} | 4.9</p>
                   <div className="font-medium text-sm">{}</div>
                </div>
             </div>

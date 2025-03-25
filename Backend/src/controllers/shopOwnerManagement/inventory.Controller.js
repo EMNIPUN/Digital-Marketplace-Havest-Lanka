@@ -2,8 +2,8 @@ import { response } from "express";
 import Inventory from "../../models/shopOwnerManagement/inventory.js";
 
 // get details
-const getInventoryDetails = (req, res) => {
-   Inventory.find()
+const getInventoryDetails = async (req, res) => {
+   await Inventory.find()
       .then((response) => {
          res.json(response);
       })
@@ -16,7 +16,7 @@ const getInventoryDetails = (req, res) => {
 const getInventoryDetailsById = async (req, res) => {
    const shopOwnerId = req.params.shopOwnerId;
 
-   Inventory.find({ shopOwnerId })
+   await Inventory.find({ shopOwnerId })
       .then((response) => {
          res.json(response);
       })
@@ -26,7 +26,7 @@ const getInventoryDetailsById = async (req, res) => {
 };
 
 // add details
-const addItem = (req, res) => {
+const addItem = async (req, res) => {
    const inventory = new Inventory({
       shopOwnerId: req.body.shopOwnerId,
       itemName: req.body.itemName,
@@ -34,7 +34,7 @@ const addItem = (req, res) => {
       quantity: req.body.quantity,
    });
 
-   inventory
+   await inventory
       .save()
       .then((response) => {
          res.json(response);
@@ -45,11 +45,11 @@ const addItem = (req, res) => {
 };
 
 // update details
-const updateItem = (req, res) => {
+const updateItem = async (req, res) => {
    const { id } = req.params;
    const { shopOwnerId, itemName, itemCategory, quantity } = req.body;
 
-   Inventory.findByIdAndUpdate(
+  await Inventory.findByIdAndUpdate(
       id,
       {
          shopOwnerId,
@@ -68,10 +68,10 @@ const updateItem = (req, res) => {
 };
 
 //delete details
-const deleteItem = (req, res) => {
+const deleteItem = async (req, res) => {
    const { id } = req.params;
 
-   Inventory.findByIdAndDelete(id)
+   await Inventory.findByIdAndDelete(id)
       .then((response) => {
          res.json(response);
       })
@@ -81,10 +81,10 @@ const deleteItem = (req, res) => {
 };
 
 // find items from category name
-const getInventoryDetailsByCategory = (req, res) => {
+const getInventoryDetailsByCategory = async (req, res) => {
    const category = req.params;
 
-   Inventory.find({ category })
+   await Inventory.find({ category })
       .then((response) => {
          res.json(response);
       })
