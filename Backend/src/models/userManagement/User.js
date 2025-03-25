@@ -21,6 +21,17 @@ const UserSchema = new mongoose.Schema({
     "role": {
         type: String,
         default: "farmer"
+    },
+    "displayPicture": {
+        type: String
+    },
+    "status": {
+        type: Boolean,
+        required: true
+    },
+    "NIC": {
+        type: String,
+        required: false
     }
 }, { timestamps: true })
 

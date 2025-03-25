@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "../components/userManagement/logins/login";
-import LoginPortal from "../components/userManagement/logins/loginPortal";
+import Login from "../components/userManagement/logins/Login";
+import LoginPortal from "../components/userManagement/logins/LoginPortal";
 import AdminImg from "../assets/userManagement/admin.jpg"
 import ShopImg from "../assets/userManagement/shop.jpg"
 import FarmerImg from "../assets/userManagement/farmer.jpg"

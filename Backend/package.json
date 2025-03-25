@@ -1,27 +1,28 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "digital-marketplace-farmers-and-sellers",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.3",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "js-cookie": "^3.0.5",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.12.1",
-    "nodeman": "^1.1.2",
-    "nodemon": "^3.1.9"
-  },
-  "keywords": []
+   "name": "backend",
+   "version": "1.0.0",
+   "description": "digital-marketplace-farmers-and-sellers",
+   "main": "index.js",
+   "type": "module",
+   "scripts": {
+      "dev": "nodemon src/index.js",
+      "start": "node src/index.js"
+   },
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "bcrypt": "^5.1.1",
+      "body-parser": "^1.20.3",
+      "cookie-parser": "^1.4.7",
+      "cors": "^2.8.5",
+      "dotenv": "^16.4.7",
+      "express": "^4.21.2",
+      "js-cookie": "^3.0.5",
+      "jsonwebtoken": "^9.0.2",
+      "mongoose": "^8.12.1",
+      "multer": "^1.4.5-lts.2",
+      "nodemon": "^3.1.9",
+      "systeminformation": "^5.25.11"
+   },
+   "keywords": []
 }
