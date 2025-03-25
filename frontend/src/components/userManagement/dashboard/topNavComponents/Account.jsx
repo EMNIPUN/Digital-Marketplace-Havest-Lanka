@@ -11,7 +11,7 @@ function Account() {
     return (
         <Link to={`/profile/${tokenData.userId}`}>
             <div className='flex items-center justify-center p-2 rounded-md h-full bg-gradient-to-r from-[#00b075] to-[#00b075a5]'>
-                <p className='mr-2 text-[#fff] text-[15px]'>Hello, {displayName}</p>
+                <p className='mr-2 text-[#fff] text-[14px]'>Hello, {displayName}</p>
                 <div className='flex items-center justify-center rounded-[50px]'>
                     <img className='text-[#fff]' src={`http://localhost:8005${tokenData.displayPicture}`} alt='pp' />
                 </div>

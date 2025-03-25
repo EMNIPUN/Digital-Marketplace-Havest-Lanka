@@ -17,6 +17,7 @@ function ShopOwnerSideBar() {
    // Shop owner details
    const token = Token();
    const shopOwnerName = token.name;
+   const sid = token.userId;
    const shopOwnerLevel = 2;
    const shopOwnerRating = 5.0;
 
@@ -109,9 +110,11 @@ function ShopOwnerSideBar() {
                   </span>
                </p>
             </div>
-            <button className="w-full py-2 bg-main-green hover:bg-green-700 transition-colors rounded-sm text-white text-sm font-medium cursor-pointer">
-               View Profile
-            </button>
+            <Link to={`/profile/${sid}`} className="w-full">
+               <button className="w-full py-2 bg-main-green hover:bg-green-700 transition-colors rounded-sm text-white text-sm font-medium cursor-pointer">
+                  View Profile
+               </button>
+            </Link>
          </div>
 
          <div className="px-6">

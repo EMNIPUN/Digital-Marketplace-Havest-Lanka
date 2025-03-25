@@ -1,28 +1,107 @@
 import { useState } from "react";
+import axios from "axios";
+import Token from "../logins/Token";
 
-const ChangePasswordForm = ({ onSubmit }) => {
+const ChangePasswordForm = () => {
     const [formData, setFormData] = useState({
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
     });
 
+    const [errors, setErrors] = useState({
+        newPassword: "",
+        confirmPassword: "",
+    });
+
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const tokenData = Token();
+    const userId = tokenData?.userId;
+    const authToken = tokenData?.token;
+
+    // Password Validation Function
+    const validatePassword = (password) => {
+        const minLength = password.length >= 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*]/.test(password);
+
+        return minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+
+        // Real-time Validation
+        if (name === "newPassword") {
+            if (!validatePassword(value)) {
+                setErrors((prev) => ({
+                    ...prev,
+                    newPassword: "Password must be 8+ chars, include uppercase, lowercase, number & special char.",
+                }));
+            } else {
+                setErrors((prev) => ({ ...prev, newPassword: "" }));
+            }
+        }
+
+        if (name === "confirmPassword") {
+            if (value !== formData.newPassword) {
+                setErrors((prev) => ({
+                    ...prev,
+                    confirmPassword: "Passwords do not match.",
+                }));
+            } else {
+                setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+            }
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.newPassword !== formData.confirmPassword) {
-            alert("New password and confirm password do not match");
+        setSuccessMessage(null);
+        setLoading(true);
+
+        if (errors.newPassword || errors.confirmPassword) {
+            setLoading(false);
             return;
         }
-        onSubmit(formData);
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8005/user/change-password",
+                {
+                    userId: userId,
+                    currentPassword: formData.currentPassword,
+                    password: formData.newPassword,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            setSuccessMessage(response.data.message || "Password changed successfully.");
+            setFormData({ currentPassword: "", newPassword: "", confirmPassword: "" }); // Reset form
+        } catch (error) {
+            setErrors((prev) => ({
+                ...prev,
+                newPassword: error.response?.data?.message || "Something went wrong.",
+            }));
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
+            {successMessage && <p className="text-green-500">{successMessage}</p>}
+
             <div>
                 <label className="block text-sm font-medium text-gray-700">Current Password</label>
                 <input
@@ -34,6 +113,7 @@ const ChangePasswordForm = ({ onSubmit }) => {
                     required
                 />
             </div>
+
             <div>
                 <label className="block text-sm font-medium text-gray-700">New Password</label>
                 <input
@@ -44,7 +124,9 @@ const ChangePasswordForm = ({ onSubmit }) => {
                     className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
                     required
                 />
+                {errors.newPassword && <p className="text-red-500 text-sm">{errors.newPassword}</p>}
             </div>
+
             <div>
                 <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
                 <input
@@ -55,12 +137,15 @@ const ChangePasswordForm = ({ onSubmit }) => {
                     className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
                     required
                 />
+                {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
             </div>
+
             <button
                 type="submit"
-                className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700"
+                className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                disabled={loading || errors.newPassword || errors.confirmPassword}
             >
-                Change Password
+                {loading ? "Changing..." : "Change Password"}
             </button>
         </form>
     );
