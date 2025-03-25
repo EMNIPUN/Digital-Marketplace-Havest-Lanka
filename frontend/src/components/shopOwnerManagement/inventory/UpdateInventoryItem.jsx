@@ -9,7 +9,10 @@ function UpdateInventoryItem(props) {
       selectedItem,
       setSelectedItemId,
       setInventoryFormData,
-      sid
+      sid,
+      isEmpty,
+      setIsEmpty,
+      alreadyIn,
    } = props;
 
    // close function for item update form
@@ -54,9 +57,19 @@ function UpdateInventoryItem(props) {
                   className="border border-gray-300 py-2 px-5 w-full rounded-sm font-light"
                   required
                   placeholder="Eg: Carrots"
+                  pattern="[A-Za-z\s]+"
+                  title="Only letters and spaces are allowed"
                   value={inventoryFormData.itemName}
                   onChange={handelChange}
                />
+
+               {/* Error for check length of input */}
+               {isEmpty.name && (
+                  <div className="text-xs w-full py-2 bg-red-100 text-center rounded-sm text-gray-600">
+                     <i className="bi bi-exclamation-circle text-red-700 pr-3"></i>
+                     Please enter a name with 2 to 25 characters.
+                  </div>
+               )}
             </div>
             <div className="flex flex-col gap-1 text-sm w-full">
                <label htmlFor="" className="font-medium text-black">
@@ -92,13 +105,30 @@ function UpdateInventoryItem(props) {
                   value={inventoryFormData.quantity}
                   onChange={handelChange}
                />
+               {/* Error for check length of input */}
+               {isEmpty.quantity && (
+                  <div className="text-xs w-full py-2 bg-red-100 text-center rounded-sm text-gray-600">
+                     <i className="bi bi-exclamation-circle text-red-700 pr-3"></i>
+                     The quantity must be between 1 and 999 999.
+                  </div>
+               )}
             </div>
-            <button
-               type="submit"
-               className="w-full bg-main-green text-white py-2 rounded-sm"
-            >
-               Update Item
-            </button>
+            {isEmpty.name || isEmpty.quantity ? (
+               <button
+                  type="submit"
+                  disabled
+                  className="w-full bg-gray-400 border border-gray-300 text-gray-100 py-2 rounded-sm"
+               >
+                  Update Item Details
+               </button>
+            ) : (
+               <button
+                  type="submit"
+                  className="w-full bg-main-green text-white py-2 rounded-sm"
+               >
+                  Update Item Details
+               </button>
+            )}
          </form>
       </div>
    );

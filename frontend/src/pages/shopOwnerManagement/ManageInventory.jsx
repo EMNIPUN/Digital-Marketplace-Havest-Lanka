@@ -4,8 +4,43 @@ import AddInventoryItem from "../../components/shopOwnerManagement/inventory/Add
 import UpdateInventoryItem from "../../components/shopOwnerManagement/inventory/UpdateInventoryItem";
 import DeleteInventoryItem from "../../components/shopOwnerManagement/inventory/DeleteInventoryItem";
 import Token from "@/components/userManagement/logins/Token";
+import { ToastContainer, toast } from "react-toastify";
 
 function ManageInventory(props) {
+   // Notification
+   const notifyAdd = () => {
+      toast("New Item Added", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };
+
+   const notifyUpdate = () => {
+      toast("Item Details Updated Successfull!", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };
+
+   const notifyDelete = () => {
+      toast("Item Deleted Successfull!", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };
+
    // set popups
    const [isClickAddItem, setIsClickAddItem] = useState(false);
    const [isClickUpdateItem, setIsClickUpdateItem] = useState(false);
@@ -70,6 +105,7 @@ function ManageInventory(props) {
             });
             getInventoryDataById();
             setIsClickAddItem(false);
+            notifyAdd();
          })
          .catch((error) => {
             console.log(error);
@@ -143,6 +179,7 @@ function ManageInventory(props) {
             getInventoryDataById();
             setIsClickUpdateItem(false);
             setSelectedItemId("");
+            notifyUpdate();
          })
          .catch((error) => {
             console.log(error);
@@ -157,11 +194,16 @@ function ManageInventory(props) {
             getInventoryDataById();
             setIsClickDeleteItem(false);
             setSelectedItemId("");
+            notifyDelete();
          })
          .catch((error) => {
             console.log(error);
          });
    };
+
+   // show alert when low stock
+
+   const findLowStockItem = inventoryData.filter((item) => item.quantity < 50);
 
    return (
       <div className="p-[20px]">
@@ -208,6 +250,61 @@ function ManageInventory(props) {
                </div>
             </div>
 
+            {/* Shop alert on low stock */}
+            {findLowStockItem.length > 0 && (
+               <div className="bg-red-50 border border-yellow-100 rounded-sm p-4 shadow-sm mb-5">
+                  <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-4">
+                     <div className="flex items-center space-x-4">
+                        <div className="bg-red-100 p-3 rounded-full">
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-6 w-6 text-red-600"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                           >
+                              <path
+                                 strokeLinecap="round"
+                                 strokeLinejoin="round"
+                                 strokeWidth={2}
+                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                              />
+                           </svg>
+                        </div>
+                        <div>
+                           <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                              Inventory Low Stock Alert
+                           </h3>
+                           <p className="text-sm text-gray-500">
+                              Critical stock levels detected in your inventory
+                           </p>
+                        </div>
+                     </div>
+                     <div className="bg-red-50 px-4 py-2 rounded-full">
+                        <span className="text-sm text-red-700 font-semibold">
+                           {findLowStockItem.length} Item
+                           {findLowStockItem.length > 1 ? "s" : ""} Low in Stock
+                        </span>
+                     </div>
+                  </div>
+                  <div className="space-y-2">
+                     {findLowStockItem.map((lowItem) => (
+                        <div
+                           key={lowItem._id}
+                           className="flex justify-between items-center bg-red-100 py-2 px-10 rounded-sm text-base"
+                        >
+                           <span className="text-red-800 font-semibold">
+                              {lowItem.itemName}
+                           </span>
+                           <span className="text-red-800 font-semibold bg-red-200 px-2 py-1 rounded-sm text-sm">
+                              {lowItem.quantity} Kg only
+                           </span>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+            )}
+
             <div className="overflow-x-auto min-h-56">
                <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left border border-gray-200">
                   <thead>
@@ -220,9 +317,6 @@ function ManageInventory(props) {
                         </th>
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
                            Quantity
-                        </th>
-                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                           Updated Date
                         </th>
 
                         <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider w-12">
@@ -243,7 +337,7 @@ function ManageInventory(props) {
                               <td className="px-3 py-2">{item.itemName}</td>
                               <td className="px-3 py-2">{item.itemCategory}</td>
                               <td className="px-3 py-2">{item.quantity} kg</td>
-                              <td className="px-3 py-2">2025/01/09</td>
+
                               <td className="px-3 py-2 flex justify-start gap-1">
                                  <button
                                     onClick={() => {
@@ -301,6 +395,9 @@ function ManageInventory(props) {
                sid={sid}
                selectedItem={selectedItem}
                setSelectedItemId={setSelectedItemId}
+               isEmpty={isEmpty}
+               setIsEmpty={setIsEmpty}
+               alreadyIn={alreadyIn}
             />
          )}
 
@@ -315,6 +412,8 @@ function ManageInventory(props) {
                sid={sid}
             />
          )}
+
+         <ToastContainer />
       </div>
    );
 }

@@ -57,6 +57,8 @@ function AddInventoryItem(props) {
                   placeholder="Eg: Carrots"
                   value={inventoryFormData.itemName}
                   onChange={handelChange}
+                  pattern="[A-Za-z\s]+"
+                  title="Only letters and spaces are allowed"
                />
                {/* error for check already in */}
                {alreadyIn && (
@@ -120,7 +122,7 @@ function AddInventoryItem(props) {
                <button
                   type="submit"
                   disabled
-                  className="w-full bg-gray-300 border border-gray-300 text-gray-100 py-2 rounded-sm"
+                  className="w-full bg-gray-400 border border-gray-300 text-gray-100 py-2 rounded-sm"
                >
                   Add Item
                </button>

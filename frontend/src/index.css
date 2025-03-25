@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Global styles */
 
 body {
@@ -38,4 +37,5 @@ body {
 .text-light-green {
    color: var(--lightGreen);
 }
+
 

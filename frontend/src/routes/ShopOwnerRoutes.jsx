@@ -26,7 +26,7 @@ function ShopOwnerRoutes() {
                <DailyPrice />
             </div>
 
-            <div className="mt-28">
+            <div className="mt-[105px]">
                {/* Routes for shopowner's pages */}
                <Routes>
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>

@@ -9,6 +9,9 @@ function DeleteInventoryItem(props) {
       if (e.target.id === "deleteInventoryForm") {
          setIsClickDeleteItem(false);
          setSelectedItemId("");
+      } else if (e.target.id === "closeBtn") {
+         setIsClickDeleteItem(false);
+         setSelectedItemId("");
       }
    };
 
@@ -18,9 +21,10 @@ function DeleteInventoryItem(props) {
          id="deleteInventoryForm"
          onClick={closeForm}
       >
-         <div className="flex flex-col gap-5 py-12 px-12 rounded shadow bg-white items-center justify-center">
+         <div className="flex flex-col gap-5 py-8 px-8 rounded shadow bg-white items-center justify-center ">
             <div className="text-base">
-               🤔 Are you sure want to delete this item?
+               <span className="text-xl">⚠️</span> Are you sure you want to
+               delete this item?
             </div>
             <div className="flex gap-3">
                <button
@@ -30,6 +34,7 @@ function DeleteInventoryItem(props) {
                   Yes
                </button>
                <button
+                  id="closeBtn"
                   className="bg-black/80 rounded-sm text-white w-40 h-10"
                   onClick={() => {
                      closeForm();
