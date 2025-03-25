@@ -36,7 +36,7 @@ const BidPostSchema = new mongoose.Schema({
     },
     status:{
       type: String,
-      default: 'active'
+      default: 'Active'
     }
     
 });
