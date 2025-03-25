@@ -14,15 +14,28 @@ function AccountsTable() {
     const [accountStatuses, setAccountStatuses] = useState({});
     const [loading, setLoading] = useState(true);
 
-    // Fetch accounts from the backend
-    useEffect(() => {
-        axios.get("http://localhost:5000/api/admin/getallaccounts")
+    // States for filtering
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('All');
+    const [selectedRole, setSelectedRole] = useState('all');
+
+    // Function to fetch filtered accounts
+    const fetchAccounts = () => {
+        setLoading(true);
+        axios.get("http://localhost:5000/user/q", {
+            params: {
+                search: searchTerm,
+                status: selectedStatus,
+                role: selectedRole
+            }
+        })
             .then(response => {
-                const fetchedAccounts = response.data.accounts.map(account => ({
+                const fetchedAccounts = response.data.users.map(account => ({
                     id: account._id,
                     name: account.name,
                     email: account.email,
                     phone: account.number,
+                    role: account.role,
                     nic: account.NIC || "N/A",
                     image: `http://localhost:5000${account.displayPicture}` || "https://via.placeholder.com/40",
                     cover: account.cover || "https://via.placeholder.com/400",
@@ -38,7 +51,12 @@ function AccountsTable() {
             })
             .catch(error => console.error("Error fetching accounts:", error))
             .finally(() => setLoading(false));
-    }, []);
+    };
+
+    // Call fetchAccounts when filters change
+    useEffect(() => {
+        fetchAccounts();
+    }, [searchTerm, selectedStatus, selectedRole]);
 
     // Check if all selected accounts are deactivated
     const areSelectedDeactivated = selectedAccounts.length > 0 && selectedAccounts.every(
@@ -56,25 +74,22 @@ function AccountsTable() {
         setShowPopup(true);
     };
 
-    // Updated deactivation/reactivation logic
+    // Updated deactivation/reactivation logic remains unchanged
     const confirmToggleStatus = () => {
         let userIds = [];
         let newStatus;
         if (selectedUser) {
             userIds = [selectedUser.id];
-            // If current status is "Deactivated", then we want to activate (true); otherwise, deactivate (false)
             newStatus = accountStatuses[selectedUser.id] === "Deactivated" ? true : false;
         } else {
             userIds = selectedAccounts;
             newStatus = areSelectedDeactivated ? true : false;
         }
-        // Choose the appropriate endpoint based on newStatus
         const endpoint = newStatus
             ? "http://localhost:5000/api/admin/reactivate"
             : "http://localhost:5000/api/admin/deactivate";
         axios.post(endpoint, { userIds, status: newStatus })
             .then(response => {
-                // Update local state for updated users
                 setAccountStatuses(prev => {
                     const updated = { ...prev };
                     userIds.forEach(id => {
@@ -92,27 +107,54 @@ function AccountsTable() {
     };
 
     return (
-        <div className="p-4  -mt-[30px] rounded-lg relative">
+        <div className="p-4 -mt-[30px] rounded-lg relative">
             <div>
-                <input className='rounded-md text-sm focus:ring-2 focus:ring-green-300 focus:outline-none p-2 w-[600px] absolute top-2 left-0' type='search' placeholder='Type Something...' />
-
-                <button
-                    className="flex items-center space-x-2 px-4 py-2  text-black rounded-md  focus:outline-none absolute top-[7px] left-[640px]"
-                >
-                    <Filter size={18} />
-                    <span>Filter</span>
-                </button>
-
+                <input
+                    className="rounded-md text-sm focus:ring-2 focus:ring-green-300 focus:outline-none p-2 w-[600px] absolute top-2 left-0"
+                    type="search"
+                    placeholder="Type Something..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <button
                     onClick={() => {
                         setSelectedUser(null);
                         setShowConfirmPopup(true);
                     }}
-                    className={`absolute top-2 right-2 px-4 py-2 rounded hover:opacity-80 ${areSelectedDeactivated ? "bg-green-500" : "bg-red-500"
-                        } text-white`}
+                    className={`absolute top-2 right-2 px-4 py-2 rounded hover:opacity-80 ${areSelectedDeactivated ? "bg-green-500" : "bg-red-500"} text-white`}
                 >
                     {areSelectedDeactivated ? "Activate Selected" : "Deactivate Selected"}
                 </button>
+            </div>
+
+            {/* Added Filter Options */}
+            <div className="flex space-x-4 mt-16 mb-4">
+                <div>
+                    <label className="block text-sm font-medium">Status</label>
+                    <select
+                        className="rounded-md p-2 border"
+                        value={selectedStatus}
+                        onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                        <option>All</option>
+                        <option>Active</option>
+                        <option>Deactivated</option>
+                    </select>
+                </div>
+                <div>
+                    <label className="block text-sm font-medium">Role</label>
+                    <select
+                        className="rounded-md p-2 border"
+                        value={selectedRole}
+                        onChange={(e) => setSelectedRole(e.target.value)}
+                    >
+                        <option value="all">All</option>
+                        <option value="marketmanager">Market Manager</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="shopowner">Shop Owner</option>
+                        <option value="financemanager">Finance Manager</option>
+                    </select>
+                </div>
             </div>
 
             <div className="overflow-x-auto mt-10 rounded-lg">
@@ -196,6 +238,10 @@ function AccountsTable() {
                                     <td className="text-gray-600 text-left p-1">{selectedUser.email}</td>
                                 </tr>
                                 <tr>
+                                    <td className="text-gray-600 text-left font-semibold p-1">Role</td>
+                                    <td className="text-gray-600 text-left p-1">{selectedUser.role}</td>
+                                </tr>
+                                <tr>
                                     <td className="text-gray-600 text-left font-semibold p-1">Phone</td>
                                     <td className="text-gray-600 text-left p-1">{selectedUser.phone}</td>
                                 </tr>
@@ -212,8 +258,7 @@ function AccountsTable() {
                         <div className="mt-4 flex gap-2 w-full items-center justify-evenly">
                             <button
                                 onClick={() => setShowConfirmPopup(true)}
-                                className={`px-4 py-2 w-[100px] rounded hover:opacity-80 text-white ${accountStatuses[selectedUser.id] === "Deactivated" ? "bg-green-500" : "bg-red-500"
-                                    }`}
+                                className={`px-4 py-2 w-[100px] rounded hover:opacity-80 text-white ${accountStatuses[selectedUser.id] === "Deactivated" ? "bg-green-500" : "bg-red-500"}`}
                             >
                                 {accountStatuses[selectedUser.id] === "Deactivated" ? "Activate" : "Deactivate"}
                             </button>

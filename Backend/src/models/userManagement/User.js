@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema({
     },
     "NIC": {
         type: String,
-        required: true
+        required: false
     }
 }, { timestamps: true })
 

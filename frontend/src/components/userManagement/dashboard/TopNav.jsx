@@ -119,7 +119,7 @@ function TopNav() {
                     <div className='bg-[#2d9bdb48] p-2 rounded-full flex items-center justify-center'><Message /></div>
                     <div className='bg-[#ff5b5b4d] p-2 rounded-full flex items-center justify-center'><Gear /></div>
                 </div>
-                <div className='flex items-center justify-center cursor-pointer' onClick={() => navigate('/profile')}>
+                <div className='flex items-center justify-center cursor-pointer'>
                     <Account />
                 </div>
             </div>

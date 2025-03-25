@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Token from '../../components/userManagement/logins/Token';
+import Popup from '../../components/userManagement/shared/Popup';
+import UpdateProfileForm from '../../components/userManagement/profile/UpdateProfileForm';
+import ChangePasswordForm from '../../components/userManagement/profile/CHangePasswordForm';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 // Import banner images
 import AdminProfileImg from '../../assets/userManagement/adminProfile.png';
@@ -9,22 +14,35 @@ import DeliveryProfileImg from '../../assets/userManagement/deliveryProfile.png'
 import ShopProfileImg from '../../assets/userManagement/shopProfile.png';
 import DefaultDP from '../../assets/userManagement/defaultDP.png';
 import { CopyNotFilled, CopyFilled, Facebook, Google } from '../../components/userManagement/icons/Icons';
-import Popup from '../../components/userManagement/shared/Popup';
-import UpdateProfileForm from '../../components/userManagement/profile/UpdateProfileForm';
-import ChangePasswordForm from '../../components/userManagement/profile/CHangePasswordForm';
 
 const ProfilePage = () => {
     const token = Token();
     const [isCopied, setIsCopied] = useState(false);
     const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+    const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false); // New state for delete account popup
+    const { id } = useParams();
+    const [userData, setUserData] = useState({});
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/user/find/${id}`);
+                setUserData(response.data.user);
+            } catch (e) {
+                console.log(`Error fetching user data: ${e.message}`);
+            }
+        };
 
-    // Function to handle copy to clipboard
+        fetchUser();
+        const interval = setInterval(fetchUser, 2000)
+        return () => clearInterval(interval);
+    }, [id]);
+
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(token.userId).then(() => {
+        navigator.clipboard.writeText(userData.userId).then(() => {
             setIsCopied(true);
-            setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
+            setTimeout(() => setIsCopied(false), 2000);
         });
     };
 
@@ -37,11 +55,42 @@ const ProfilePage = () => {
         "shopowner": ShopProfileImg
     };
 
+    const roleReturn = () => {
+        switch (userData.role) {
+            case "marketmanager":
+                return "Market Manager";
+            case "farmer":
+                return "Farmer";
+            case "shopowner":
+                return "Shop Owner";
+            case "driver":
+                return "Driver";
+            case "financemanager":
+                return "Finance Manager";
+            default:
+                return "Unknown Role";
+        }
+    };
+
     const bannerImage = roleBanners[token.role] || "https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png";
 
     // Function to handle logout (redirecting to /logout)
     const handleLogout = () => {
         window.location.href = "/logout";
+    };
+
+    // Function to handle account deletion confirmation
+    const confirmDeleteAccount = async () => {
+        try {
+            await axios.delete('http://localhost:5000/user/del', {
+                data: { userId: token.userId }
+            });
+            alert("Account deleted successfully");
+            setIsDeletePopupOpen(false);
+            window.location.href = "/logout"; // or redirect to a landing page after deletion
+        } catch (error) {
+            alert(`Error deleting account: ${error.response?.data?.message || error.message}`);
+        }
     };
 
     return (
@@ -52,6 +101,22 @@ const ProfilePage = () => {
 
             <Popup isOpen={isChangePasswordOpen} onClose={() => setIsChangePasswordOpen(false)}>
                 <ChangePasswordForm />
+            </Popup>
+
+            {/* Delete Account Confirmation Popup */}
+            <Popup isOpen={isDeletePopupOpen} onClose={() => setIsDeletePopupOpen(false)}>
+                <div className="p-6">
+                    <h2 className="text-xl font-bold mb-4">Confirm Account Deletion</h2>
+                    <p className="mb-4">Are you sure you want to delete your account? This action cannot be undone.</p>
+                    <div className="flex justify-end space-x-4">
+                        <button onClick={() => setIsDeletePopupOpen(false)} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg">
+                            Cancel
+                        </button>
+                        <button onClick={confirmDeleteAccount} className="px-4 py-2 bg-red-600 text-white rounded-lg">
+                            Delete
+                        </button>
+                    </div>
+                </div>
             </Popup>
 
             <div className="w-full max-w-4xl bg-[#ffffff] backdrop-blur-lg rounded-xl shadow-xl overflow-hidden">
@@ -74,26 +139,25 @@ const ProfilePage = () => {
                 <div className="pt-24 pb-8 px-8">
                     {/* User Name and Role */}
                     <div className="text-center mb-6">
-                        <h2 className="text-3xl font-bold text-gray-800">{token.name}</h2>
-                        <p className="text-lg text-gray-500 capitalize">{token.role}</p>
+                        <h2 className="text-3xl font-bold text-gray-800">{userData.name}</h2>
+                        <p className="text-lg text-gray-500 capitalize">{roleReturn()}</p>
                     </div>
 
                     {/* User Info */}
                     <div className="space-y-6">
                         <div className="flex justify-between items-center border-b pb-4">
                             <span className="text-gray-600 font-medium">Email:</span>
-                            <span className="text-gray-800">{token.email}</span>
+                            <span className="text-gray-800">{userData.email}</span>
                         </div>
                         <div className="flex justify-between items-center border-b pb-4">
                             <span className="text-gray-600 font-medium">Phone:</span>
-                            <span className="text-gray-800">{token.number}</span>
+                            <span className="text-gray-800">{userData.number}</span>
                         </div>
                         <div className="flex justify-between items-center border-b pb-4">
                             <span className="text-gray-600 font-medium">User ID:</span>
                             <div className="flex items-center space-x-2 cursor-pointer" onClick={copyToClipboard}>
-                                <span className="text-gray-800">{token.userId}</span>
+                                <span className="text-gray-800">{userData.userId}</span>
                                 <button
-
                                     className="text-gray-500 hover:text-gray-700"
                                     aria-label="Copy User ID"
                                 >
@@ -103,12 +167,11 @@ const ProfilePage = () => {
                                         <CopyNotFilled className="h-5 w-5 text-gray-500" />
                                     )}
                                 </button>
-
                             </div>
                         </div>
                         <div className="flex justify-between items-center border-b pb-4">
                             <span className="text-gray-600 font-medium">Account Status:</span>
-                            <span className={`text-gray-800 ${token.status === 'deactivated' ? 'text-red-500' : 'text-green-500'}`}>
+                            <span className={`text-gray-800 ${userData.status === 'deactivated' ? 'text-red-500' : 'text-green-500'}`}>
                                 {token.status || "Active"}
                             </span>
                         </div>
@@ -175,8 +238,8 @@ const ProfilePage = () => {
                         <div className="mt-8">
                             <h3 className="text-xl font-semibold text-gray-800">Account Deactivation</h3>
                             <div className="mt-2">
-                                <button className="w-full py-2 px-4 border rounded-lg bg-red-600 text-white hover:bg-red-700 transition duration-200">
-                                    Deactivate Account
+                                <button onClick={() => setIsDeletePopupOpen(true)} className="w-full py-2 px-4 border rounded-lg bg-red-600 text-white hover:bg-red-700 transition duration-200">
+                                    Delete Account
                                 </button>
                             </div>
                         </div>
