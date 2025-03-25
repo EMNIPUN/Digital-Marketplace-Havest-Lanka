@@ -6,8 +6,8 @@ function FindCrops() {
    // showing products listing
    const [cropsPostData, setCropPostData] = useState([]);
 
-   const getCropPostDetails = () => {
-      axios
+   const getCropPostDetails = async () => {
+      await axios
          .get("http://localhost:8005/api/BidPost")
          .then((response) => {
             setCropPostData(response.data);
@@ -20,6 +20,7 @@ function FindCrops() {
    useEffect(() => {
       getCropPostDetails();
    }, []);
+
 
    // tab changing and filtering
    const [activeTab, setActiveTab] = useState("all");

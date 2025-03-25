@@ -64,8 +64,8 @@ function ManageInventory(props) {
    // showing inventory items
    const [inventoryData, setInventoryData] = useState([]);
 
-   const getInventoryDataById = () => {
-      axios
+   const getInventoryDataById = async () => {
+      await axios
          .get(`http://localhost:8005/api/inventory/getInventoryById/${sid}`)
          .then((response) => {
             setInventoryData(response.data);
@@ -87,14 +87,14 @@ function ManageInventory(props) {
       quantity: "",
    });
 
-   const addInventoryItem = (data) => {
+   const addInventoryItem = async (data) => {
       const payload = {
          shopOwnerId: data.shopOwnerId,
          itemName: data.itemName,
          itemCategory: data.itemCategory,
          quantity: Number(data.quantity),
       };
-      axios
+      await axios
          .post("http://localhost:8005/api/inventory/addItem", payload)
          .then(() => {
             setInventoryFormData({
@@ -160,14 +160,14 @@ function ManageInventory(props) {
    const checkItem = () => {};
 
    // Inventory update function
-   const updateItem = (data, id) => {
+   const updateItem = async (data, id) => {
       const payload = {
          shopOwnerId: data.shopOwnerId,
          itemName: data.itemName,
          itemCategory: data.itemCategory,
          quantity: Number(data.quantity),
       };
-      axios
+      await axios
          .post(`http://localhost:8005/api/inventory/updateItem/${id}`, payload)
          .then(() => {
             setInventoryFormData({
@@ -187,8 +187,8 @@ function ManageInventory(props) {
    };
 
    // Inventory item delete function
-   const deleteItem = (id) => {
-      axios
+   const deleteItem = async (id) => {
+      await axios
          .post(`http://localhost:8005/api/inventory/deleteItem/${id}`)
          .then(() => {
             getInventoryDataById();

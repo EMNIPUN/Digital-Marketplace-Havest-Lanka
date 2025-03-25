@@ -11,8 +11,8 @@ function ShopOwnerOrders() {
    const [allBids, setAllBids] = useState([]);
 
    // get order details
-   const getAllBids = () => {
-      axios
+   const getAllBids = async () => {
+      await axios
          .get(`http://localhost:8005/api/bid/getAllbids/${sid}`)
          .then((response) => {
             setAllBids(response.data);

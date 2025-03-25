@@ -31,8 +31,8 @@ function CropDetails(props) {
    // display bids
    const [bidsData, setBidsData] = useState([]);
 
-   const getBids = () => {
-      axios
+   const getBids = async () => {
+      await axios
          .get(`http://localhost:8005/api/bid/getbids/${postId}`)
          .then((response) => {
             setBidsData(response.data);
@@ -57,7 +57,7 @@ function CropDetails(props) {
       status: "pending",
    });
 
-   const addBids = (data) => {
+   const addBids = async (data) => {
       const payload = {
          farmerId: data.farmerId,
          shopOwnerId: data.shopOwnerId,
@@ -68,7 +68,7 @@ function CropDetails(props) {
          status: data.status,
       };
 
-      axios
+      await axios
          .post("http://localhost:8005/api/bid/addbids", payload)
          .then(() => {
             setBidFormData({

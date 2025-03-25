@@ -1,10 +1,10 @@
 import Bid from "../../models/shopOwnerManagement/bid.js";
 
 // get details
-const getBids = (req, res) => {
+const getBids = async (req, res) => {
    const postId = req.params.postId;
 
-   Bid.find({ postId })
+   await Bid.find({ postId })
       .then((response) => {
          res.json(response);
       })
@@ -14,10 +14,10 @@ const getBids = (req, res) => {
 };
 
 // get all bids
-const getAllBids = (req, res) => {
+const getAllBids = async (req, res) => {
    const shopOwnerId = req.params.shopOwnerId;
 
-   Bid.find({ shopOwnerId })
+   await Bid.find({ shopOwnerId })
       .then((response) => {
          res.json(response);
       })
