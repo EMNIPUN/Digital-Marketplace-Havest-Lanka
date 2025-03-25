@@ -27,7 +27,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/user/find/${id}`);
+                const response = await axios.get(`http://localhost:8005/user/find/${id}`);
                 setUserData(response.data.user);
             } catch (e) {
                 console.log(`Error fetching user data: ${e.message}`);
@@ -82,7 +82,7 @@ const ProfilePage = () => {
     // Function to handle account deletion confirmation
     const confirmDeleteAccount = async () => {
         try {
-            await axios.delete('http://localhost:5000/user/del', {
+            await axios.delete('http://localhost:8005/user/del', {
                 data: { userId: token.userId }
             });
             alert("Account deleted successfully");

@@ -10,7 +10,7 @@ function HomeHeader(props) {
     useEffect(() => {
         const fetchUptime = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/admin/server');
+                const response = await axios.get('http://localhost:8005/api/admin/server');
 
                 if (response.data && response.data.data) {
                     setUptime(response.data.data.upTime);

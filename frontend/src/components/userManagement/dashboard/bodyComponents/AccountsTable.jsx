@@ -22,7 +22,7 @@ function AccountsTable() {
     // Function to fetch filtered accounts
     const fetchAccounts = () => {
         setLoading(true);
-        axios.get("http://localhost:5000/user/q", {
+        axios.get("http://localhost:8005/user/q", {
             params: {
                 search: searchTerm,
                 status: selectedStatus,
@@ -37,7 +37,7 @@ function AccountsTable() {
                     phone: account.number,
                     role: account.role,
                     nic: account.NIC || "N/A",
-                    image: `http://localhost:5000${account.displayPicture}` || "https://via.placeholder.com/40",
+                    image: `http://localhost:8005${account.displayPicture}` || "https://via.placeholder.com/40",
                     cover: account.cover || "https://via.placeholder.com/400",
                     status: (account.status === undefined || account.status === true) ? "Active" : "Deactivated"
                 }));
@@ -86,8 +86,8 @@ function AccountsTable() {
             newStatus = areSelectedDeactivated ? true : false;
         }
         const endpoint = newStatus
-            ? "http://localhost:5000/api/admin/reactivate"
-            : "http://localhost:5000/api/admin/deactivate";
+            ? "http://localhost:8005/api/admin/reactivate"
+            : "http://localhost:8005/api/admin/deactivate";
         axios.post(endpoint, { userIds, status: newStatus })
             .then(response => {
                 setAccountStatuses(prev => {

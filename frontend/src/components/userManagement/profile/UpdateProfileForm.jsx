@@ -39,7 +39,7 @@ const UpdateProfileForm = ({ userId, token }) => {
 
         try {
             const response = await axios.put(
-                "http://localhost:5000/user/update",
+                "http://localhost:8005/user/update",
                 formDataToSend,
                 {
                     headers: {
