@@ -47,19 +47,19 @@ function ShopOwnerOrders() {
                   <thead>
                      <tr className=" border-b border-gray-200">
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Order ID
-                        </th>
-                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Farmer
                         </th>
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Product
                         </th>
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Price per kg
+                           Price
                         </th>
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Status
+                        </th>
+                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                           Operations
                         </th>
                      </tr>
                   </thead>
@@ -70,11 +70,6 @@ function ShopOwnerOrders() {
                            className="hover:bg-gray-50 transition duration-150"
                            key={bid._id}
                         >
-                           <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-sec-green">
-                                 {bid.postId}
-                              </div>
-                           </td>
                            <td className="px-6 py-4 ">
                               <div className="flex items-center">
                                  <div className="">
@@ -94,14 +89,35 @@ function ShopOwnerOrders() {
                            </td>
                            <td className="px-6 py-4">
                               <div className="text-sm font-semibold text-gray-900">
-                                 LKR {bid.price}
+                                 LKR {bid.price * bid.quantity}
                               </div>
                            </td>
                            <td className="px-6 py-4 ">
-                              <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
-                                 <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
-                                 {bid.status}
-                              </span>
+                              {bid.status === "Accepted" ? (
+                                 <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
+                                    <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
+                                    Waiting for Payment
+                                 </span>
+                              ) : (
+                                 <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-gray-100 text-gray-600">
+                                    <span className="h-2 w-2 rounded-full bg-gray-600 mr-1.5 mt-1"></span>
+                                    Pending Bid
+                                 </span>
+                              )}
+                           </td>
+                           <td className="px-6 py-4 ">
+                              {bid.status === "Accepted" ? (
+                                 <button className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm">
+                                    Pay Now
+                                 </button>
+                              ) : (
+                                 <button
+                                    disabled
+                                    className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
+                                 >
+                                    Pay Now
+                                 </button>
+                              )}
                            </td>
                         </tr>
                      ))}
