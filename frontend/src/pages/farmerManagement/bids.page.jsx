@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Loader, 
   AlertCircle, 
+  Search
 } from 'lucide-react';
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
@@ -19,7 +20,7 @@ function Bids() {
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BidsType = ["All Bids", "Active Bids", "Accepted Bids", "Expired Bids"];
+  const BidsType = ["All Bids", "Active", "Payment Pending"];
 
   // console.log(token);
   const farmerId = token.userId;
@@ -28,11 +29,6 @@ function Bids() {
   const handleTypeClick = (BidsType) => {
     setSelectedBidsType(BidsType);
   }
-
-  // const filterBidsType = selectedBidsType === "All Bids" ?
-  // BidsLists : BidsLists.filter((BidsList) => {
-  //   return BidsList.status.toLowerCase().includes(selectedBidsType.toLowerCase());
-  // });
 
   useEffect(() => {
 
@@ -51,6 +47,11 @@ function Bids() {
     }, 1000);
     
   }, []);
+
+  const filterBidsType = selectedBidsType === "All Bids" ?
+  bids : bids.filter((bid) => {
+    return bid.status.toLowerCase().includes(selectedBidsType.toLowerCase());
+  });
 
 
 
@@ -76,6 +77,7 @@ function Bids() {
           <VegetablePriceMarqueeWithStyles/>
 
           <div className=' flex flex-wrap justify-center items-center gap-8 font-light mt-10 '>
+          
             {
               BidsType.map((bids, index) => {
                 return (
@@ -88,6 +90,7 @@ function Bids() {
                 );
               })
             }
+
           </div>
 
         <div className="flex space-x-2 justify-center items-start mt-20 bg-white h-screen">
@@ -122,26 +125,37 @@ function Bids() {
           </div>
           <VegetablePriceMarqueeWithStyles/>
 
-          <div className=' flex flex-wrap justify-center items-center gap-8 font-light mt-10 '>
-            {
-              BidsType.map((bids, index) => {
-                return (
+          <div className="border-b border-gray-200 ">
+            <div className="flex items-center justify-between  px-4 mt-8">
+
+              <div className="flex flex-wrap justify-center items-center gap-8 font-light">
+                {BidsType.map((bids, index) => (
                   <BidsTypeTab
                     key={index}
                     bids={bids}
                     selectedBidsType={selectedBidsType}
                     onClick={handleTypeClick}
                   />
-                );
-              })
-            }
+                ))}
+              </div>
+              <div className='flex items-center justify-center mr-10'>
+                <input
+                  type="text"
+                  placeholder="Search bid types..."
+                  className="w-[400px] pl-3 pr-4 py-2 border-b border-gray-300  text-sm"
+                />
+                <div className=" pl-3 flex items-center pointer-events-none cursor-pointer">
+                  <button className='cursor-pointer'><Search className="text-gray-400 w-5 h-5 " /></button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <section className='mt-8 p-6'>
               {bids.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
                     {
-                      bids.map((bid, index) => {
+                      filterBidsType.map((bid, index) => {
                         return (<MyBidsCard key={index} bid={bid} />)
                       })
                     }
