@@ -2,8 +2,13 @@ import express from 'express'
 import mongoose from 'mongoose'
 import User from '../../models/userManagement/User.js'
 import multer from 'multer';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import bcrypt from 'bcryptjs'
 
-const upload = multer({ dest: "../../../uploads" });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const FindUserById = async (req, res) => {
     try {
@@ -34,7 +39,7 @@ export const FindUserById = async (req, res) => {
 
 export const UpdateUserById = async (req, res) => {
     try {
-        const { userId, name, number, displayPicture } = req.body;
+        const { userId, name, number } = req.body;
 
         if (!userId) {
             return res.status(400).json({ message: "User ID is required" });
@@ -46,9 +51,25 @@ export const UpdateUserById = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // Handle file upload
+        if (req.file) {
+            const newFilePath = `/uploads/${req.file.filename}`;
+
+            // Delete old profile picture if it exists and is not the default one
+            if (user.displayPicture && user.displayPicture !== "/uploads/default.png") {
+                const oldFilePath = path.join(__dirname, "../../..", user.displayPicture);
+                if (fs.existsSync(oldFilePath)) {
+                    fs.unlinkSync(oldFilePath);
+                }
+            }
+
+            // Update profile picture
+            user.displayPicture = newFilePath;
+        }
+
+        // Update other fields
         user.name = name || user.name;
         user.number = number || user.number;
-        user.displayPicture = displayPicture || user.displayPicture;
 
         await user.save();
 
@@ -111,5 +132,31 @@ export const filterUsers = async (req, res) => {
     } catch (error) {
         console.error('Error filtering users:', error);
         res.status(500).json({ error: 'Error filtering users' });
+    }
+};
+
+export const ChangePassword = async (req, res) => {
+    try {
+        const { userId, currentPassword, password } = req.body;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(401).json({ message: "User not found" });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(402).json({ message: "Current password is wrong" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+
+        await user.save();
+
+        res.status(200).json({ message: "Password changed successfully" });
+
+    } catch (e) {
+        res.status(500).json({ error: e.message });
     }
 };

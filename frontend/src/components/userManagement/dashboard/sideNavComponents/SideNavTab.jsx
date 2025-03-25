@@ -14,7 +14,7 @@ function SideNavTab({ url, active, icon, tabName, sendActiveTabUrl, children, al
                 onClick={() => sendActiveTabUrl(url)}
             >
                 <div className='flex items-center justify-center mt-[1px] mr-2'>{icon}</div>
-                <div className='flex items-center justify-center'>{tabName}</div>
+                <div className='flex items-center justify-center text-[15px]'>{tabName}</div>
             </Link>
             {isActive && children && <div className="ml-6">{children}</div>}
         </div>

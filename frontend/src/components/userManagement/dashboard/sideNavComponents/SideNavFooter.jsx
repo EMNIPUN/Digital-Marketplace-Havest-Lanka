@@ -13,19 +13,19 @@ function SideNavFooter() {
                 <div className='flex flex-col justify-center -ml-10'>
                     <div className='flex items-center gap-2 mb-[3px]'>
                         <div><Glob width="12px" height="12px" fill="#464255" /></div>
-                        <div className='font-light text-xs text-stone-50'>Version: 1.3.2</div>
+                        <div className='font-light text-[10px] text-stone-50'>Version: 1.3.2</div>
                     </div>
                     <div className='flex items-center gap-2 mb-[3px]'>
                         <div><ClockHistory width="12px" height="12px" fill="#464255" /></div>
-                        <div className='font-light text-xs text-stone-50'>Last Updated: February 2025</div>
+                        <div className='font-light text-[10px] text-stone-50'>Last Updated: February 2025</div>
                     </div>
                     <div className='flex items-center gap-2 mb-[3px]'>
                         <div><Telephone width="12px" height="12px" fill="#464255" /></div>
-                        <div className='font-light text-xs text-stone-50'>Helpline: +94 XX XXX XXXX</div>
+                        <div className='font-light text-[10px] text-stone-50'>Helpline: +94 XX XXX XXXX</div>
                     </div>
                     <div className='flex items-center gap-2 mb-[3px]'>
                         <div><Envelop width="12px" height="12px" fill="#464255" /></div>
-                        <div className='font-light text-xs' text-stone-50>Contact Support: support@team.lk</div>
+                        <div className='font-light text-[10px]' text-stone-50>Contact Support: support@team.lk</div>
                     </div>
                 </div>
                 <div><p className='text-[10px] text-stone-200'>© 2025 HarvestLanka. All rights Reserved.</p></div>

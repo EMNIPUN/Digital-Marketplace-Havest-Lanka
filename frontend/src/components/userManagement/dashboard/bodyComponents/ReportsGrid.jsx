@@ -38,8 +38,8 @@ function ReportsGrid() {
           className={`shadow-md rounded-2xl p-6 flex flex-col items-center justify-center text-center border-2 ${color} ${colSpan ? `col-span-${colSpan}` : ""} ${rowSpan ? `row-span-${rowSpan}` : ""}`}
         >
           {icon}
-          <h3 className="font-bold text-lg mt-3">{title}</h3>
-          <p className="text-sm text-gray-700">{description}</p>
+          <h3 className="font-bold text-md mt-3">{title}</h3>
+          <p className="text-[12px] text-gray-700">{description}</p>
           <button className={`mt-3 ${textColor} font-semibold hover:underline flex items-center gap-2`}>
             <Download className="w-6 h-6" /> Download
           </button>

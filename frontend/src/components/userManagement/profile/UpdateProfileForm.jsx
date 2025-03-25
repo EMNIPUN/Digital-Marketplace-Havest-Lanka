@@ -11,9 +11,23 @@ const UpdateProfileForm = ({ userId, token }) => {
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState({ name: "", number: "" });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        let errorMessage = "";
+
+        if (name === "name") {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                errorMessage = "Name cannot contain numbers or special characters.";
+            }
+        } else if (name === "number") {
+            if (!/^\d{9,10}$/.test(value)) {
+                errorMessage = "Number must be 9 or 10 digits long and contain only numbers.";
+            }
+        }
+
+        setErrors((prev) => ({ ...prev, [name]: errorMessage }));
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -25,6 +39,10 @@ const UpdateProfileForm = ({ userId, token }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Prevent submission if there are validation errors
+        if (errors.name || errors.number) return;
+
         setLoading(true);
         setMessage("");
 
@@ -32,9 +50,8 @@ const UpdateProfileForm = ({ userId, token }) => {
         formDataToSend.append("userId", tokenUserId);
         formDataToSend.append("name", formData.name);
         formDataToSend.append("number", formData.number);
-        formDataToSend.append("displayPicture", formData.profilePhoto);
         if (formData.profilePhoto) {
-            formDataToSend.append("profilePhoto", formData.profilePhoto);
+            formDataToSend.append("displayPicture", formData.profilePhoto);
         }
 
         try {
@@ -43,7 +60,7 @@ const UpdateProfileForm = ({ userId, token }) => {
                 formDataToSend,
                 {
                     headers: {
-                        "Content-Type": "multipart/form-data"
+                        "Content-Type": "multipart/form-data",
                     },
                 }
             );
@@ -66,8 +83,8 @@ const UpdateProfileForm = ({ userId, token }) => {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-
                 />
+                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Number</label>
@@ -77,8 +94,8 @@ const UpdateProfileForm = ({ userId, token }) => {
                     value={formData.number}
                     onChange={handleChange}
                     className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-
                 />
+                {errors.number && <p className="text-red-500 text-sm mt-1">{errors.number}</p>}
             </div>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
