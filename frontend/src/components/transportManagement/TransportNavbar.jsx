@@ -1,8 +1,11 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Token from "../userManagement/logins/Token";
 
 function TransportNavbar() {
+   const token = Token();
+   const tid = token.userId;
    return (
       <nav className="bg-white shadow-sm sticky top-0 z-50">
          <div className="max-w-7xl mx-auto px-4">
@@ -27,9 +30,11 @@ function TransportNavbar() {
                            Transport Manager
                         </p>
                      </div>
-                     <div className="h-9 w-9 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center transform hover:scale-105 transition-transform duration-200">
-                        <FaUser className="h-4 w-4 text-white" />
-                     </div>
+                     <Link to={`/profile/${tid}`}>
+                        <div className="h-9 w-9 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center transform hover:scale-105 transition-transform duration-200">
+                           <FaUser className="h-4 w-4 text-white" />
+                        </div>
+                     </Link>
                   </div>
                </div>
             </div>
