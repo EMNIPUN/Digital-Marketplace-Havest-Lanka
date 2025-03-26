@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Clock } from 'lucide-react';
+import { Clock, LoaderCircle  } from 'lucide-react';
 
 function TimeCountDown({ bidTime }) {  // Accept props correctly
+
+    const [isLoading, setIsLoading] = useState(false);
 
     function calculateTimeLeft() {
         const difference = new Date(bidTime) - new Date();
@@ -19,15 +21,24 @@ function TimeCountDown({ bidTime }) {  // Accept props correctly
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft());
+            setIsLoading(true);
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [bidTime]);  
+    }, [bidTime]); 
+    
+    if (!isLoading) {
+        return (
+            <div className='mt-10 ml-32'>
+                <LoaderCircle  className="h-4 w-4 text-gray-400 animate-spin" />
+            </div>
+        )
+    }
 
     return (
         <div className="bg-green-50 rounded-xl p-4 text w-[250px]">
             <div className="flex items-center mb-3">
-                <Clock size={18} className="text-green-600 mr-2" />
+                <Clock size={18} className="text-green-600 mr-2 " />
                 <span className="text-sm font-medium text-gray-700">Auction ends in</span>
             </div>
             <div className="flex space-x-3">

@@ -8,9 +8,22 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 
-const MyBidsCard = ({ bid }) => {
+const MyBidsCard = ({ bid, bidId }) => {
+
+  console.log(bidId)
 
   const [showDetails, setShowDetails] = useState(false);
+  const [bidPlacementDetails, setBidPlacementDetails] = useState([])
+
+  // const getBidPlacementDetails = async () => {
+  //   try {
+  //     const response = await axios.get('http://localhost:8005/api/bid/getBids/'+id);
+  //     console.log(response.data)
+  //     setBidPlacementDetails(response.data)
+  //   } catch (error) {
+  //     console.error("Error fetching bid placement details")
+  //   }
+  // }
 
   const generateInvoice = () => {
     const doc = new jsPDF();
@@ -50,13 +63,18 @@ const MyBidsCard = ({ bid }) => {
     <div className= "relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
       <div className="p-8">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3 justify-center rounded-full px-2 py-1  bg-green-100 text-green-700 text-sm 
-            font-medium  hover:bg-green-100 transition-colors duration-200 border  border-green-300 shadow-sm z-10">
+          <div className={`flex items-center gap-3 justify-center rounded-full px-2 py-1  bg-green-100 text-green-700 text-sm 
+            font-medium  hover:bg-green-100 transition-colors duration-200 border ${
+                 bid.status === "Active" ? "bg-green-600/20" :
+                 bid.status === "Payment Pending" ? "bg-yellow-400/20" :
+                 bid.status === "Payment Failed" ? "bg-red-600" :
+                 "bg-green-600"
+              } shadow-sm z-10`}>
             <div className="relative inline-flex ">
               <div className={`w-3 h-3 rounded-full ${
                  bid.status === "Active" ? "bg-green-600" :
                  bid.status === "Payment Pending" ? "bg-yellow-400" :
-                 bid.status === "Payment Failed" ? "bg-red-600" :
+                 bid.status === "payment Approved" ? "bg-red-600" :
                  "bg-green-600"
               }`}></div>
 
