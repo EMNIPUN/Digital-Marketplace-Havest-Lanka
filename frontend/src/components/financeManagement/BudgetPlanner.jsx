@@ -134,7 +134,7 @@ export default function BudgetPlanner() {
    const fetchTransactions = async () => {
       try {
          const response = await axios.get(
-            "http://localhost:5000/api/transactions"
+            "http://localhost:8005/api/transactions"
          );
 
          const userId = "user123"; // Set the user ID you want to filter by
@@ -282,7 +282,7 @@ export default function BudgetPlanner() {
       e.preventDefault();
       try {
          const response = await axios.post(
-            "http://localhost:5000/api/transactions",
+            "http://localhost:8005/api/transactions",
             newTransaction
          );
          setTransactions([...transactions, response.data]);
@@ -306,7 +306,7 @@ export default function BudgetPlanner() {
       e.preventDefault();
       try {
          const response = await axios.put(
-            `http://localhost:5000/api/transactions/${updateTransaction._id}`,
+            `http://localhost:8005/api/transactions/${updateTransaction._id}`,
             updateTransaction
          );
          setTransactions((prevTransactions) =>
@@ -343,7 +343,7 @@ export default function BudgetPlanner() {
    // Delete transaction
    const handleDelete = async (id) => {
       try {
-         await axios.delete(`http://localhost:5000/api/transactions/${id}`);
+         await axios.delete(`http://localhost:8005/api/transactions/${id}`);
          // Update the state by filtering out the deleted transaction
          setTransactions(transactions.filter((t) => t._id !== id));
          fetchTransactions();
