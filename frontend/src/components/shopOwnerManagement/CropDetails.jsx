@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Profile from "../../assets/shopOwnerManagement/profile.png";
 import axios from "axios";
 import Token from "../userManagement/logins/Token";
+import { ToastContainer, toast } from "react-toastify";
 
 function CropDetails(props) {
    const {
@@ -13,6 +14,7 @@ function CropDetails(props) {
       location,
       description,
       bids,
+      farmer,
       farmerId,
       postId,
    } = props;
@@ -44,11 +46,24 @@ function CropDetails(props) {
 
    useEffect(() => {
       getBids();
-   },[]);
+   }, []);
+
+   // Notification
+   const notifyAdd = () => {
+      toast("Bid Placed Successfull!", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };
 
    // set bid data
    const [bidFormData, setBidFormData] = useState({
       farmerId: farmerId,
+      farmer: farmer,
       postId: postId,
       shopOwnerId: shopOwnerId,
       product: product,
@@ -60,6 +75,7 @@ function CropDetails(props) {
    const addBids = async (data) => {
       const payload = {
          farmerId: data.farmerId,
+         farmer: data.farmer,
          shopOwnerId: data.shopOwnerId,
          postId: data.postId,
          product: data.product,
@@ -73,6 +89,7 @@ function CropDetails(props) {
          .then(() => {
             setBidFormData({
                farmerId: farmerId,
+               farmer: farmer,
                postId: postId,
                shopOwnerId: shopOwnerId,
                product: product,
@@ -80,7 +97,7 @@ function CropDetails(props) {
                price: "",
                status: "pending",
             });
-
+            notifyAdd();
             getBids();
          })
          .catch((error) => {
@@ -118,7 +135,7 @@ function CropDetails(props) {
                <div className="flex w-full items-center justify-between">
                   <div className="profile flex gap-2 items-center">
                      <img src={Profile} className="w-10 h-10" alt="" />
-                     <p>Akindu Nayanagith</p>
+                     <p>{farmer}</p>
                      <p>|</p>
                      <p>4.9</p>
                   </div>
@@ -236,6 +253,7 @@ function CropDetails(props) {
                <div className="line w-full h-px bg-gray-200"></div>
             </div>
          </div>
+         <ToastContainer />
       </div>
    );
 }

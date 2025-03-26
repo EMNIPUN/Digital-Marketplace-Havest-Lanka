@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Pencil, Trash2,X } from 'lucide-react';
+import { Pencil, Trash2,X, CheckCircle } from 'lucide-react';
 
 import axios from 'axios'
 import TimeCountDown from '@/components/farmerManagement/TimeCountDown/TimeCountDown';
 import EditBidPost from '@/components/farmerManagement/EditBidPost/EditBidPost';
 import BidPlacementCard from '@/components/farmerManagement/BidPlacementCard/BidPlacementCard';
+import DeleteBidForm from '@/components/farmerManagement/DeleteBidForm/DeleteBidForm';
 
 function Bid({}) {
 
   const [isVisibale, setIsVisible] = useState(false);
+  const [isVisibaleDelete, setIsVisibleDelete] = useState(false);
   const [bidplacementDetails, setBidPlacementDetails] = useState([]);
   const [shopOwnerDetails, setShopOwnerDetails] = useState([]);
 
@@ -38,16 +40,6 @@ function Bid({}) {
     }
   }
 
-  // const getShopOwnerDetails = async () => {
-  //   try{
-  //     const response = await axios.get('http://localhost:8005/api/shopOwner/getShopOwners/67d449c87529dbd1f613d6f4');
-  //     console.log(response.data)
-  //     setShopOwnerDetails(response.data)
-  //   }catch(error){
-  //     console.error("Error fetching shop owner details")
-  //   }
-  // }
-  
   useEffect(() => {
     getBidDetails();
     getBidPlacementDetails();
@@ -75,7 +67,7 @@ function Bid({}) {
                 </h2>
                 <div className='flex gap-3'>
                     <button onClick={()=>setIsVisible(!isVisibale)}><Pencil size={20} className="text-green-600" /></button>
-                    <button><Trash2 size={20} className="text-red-500" /></button>
+                    <button onClick={()=>setIsVisibleDelete(!isVisibaleDelete)}><Trash2 size={20} className="text-red-500" /></button>
                 </div>
               </div>
               <div className="mt-4 space-y-4">
@@ -122,16 +114,55 @@ function Bid({}) {
             </div>
           </div>
         )}
+
+        {isVisibaleDelete && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl overflow-hidden animate-fade-in">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h2 className="text-2xl font-semibold text-gray-800">Create New Post</h2>
+                <button 
+                  onClick={() => setIsVisibleDelete(!isVisibaleDelete)} 
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                <DeleteBidForm bidDetails={bidDetails}/>
+              </div>
+            </div>
+          </div>
+        )}
         
 
         <div className="mt-8">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Current Bids</h3>
-            {
-              bidplacementDetails.map((bidplacementDetail, index)=>{
-                return (<BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} shopOwnerDetails={shopOwnerDetails} />)
-              })
-            }
+
+          { bidDetails.status === "Active" ? (
+            <>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Current Bids</h3>
+              {bidplacementDetails.map((bidplacementDetail, index) => (
+                <BidPlacementCard key={index} bidplacementDetails={bidplacementDetail} shopOwnerDetails={shopOwnerDetails} />
+              ))}
+            </>
+          ) : (
+            <div className="flex justify-center items-center p-4">
+              <div className="bg-white shadow-2xl rounded-xl p-8 text-center w-full border border-gray-200">
+                <div className="flex justify-center items-center mb-6">
+                  <CheckCircle className="text-green-600 w-12 h-12 mr-4" strokeWidth={2} />
+                  <h2 className="text-2xl font-bold text-gray-900">Bid Accepted Successfully</h2>
+                </div>
+                <p className="text-gray-600 mb-8 text-base leading-relaxed">
+                  Congratulations! Your bid has been successfully accepted. You can now proceed with the next steps of the process.
+                </p>
+                <button className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-base font-semibold rounded-lg shadow-md transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                  Continue to Next Step
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+        
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Send, MapPin, Check, TrainTrack, Loader } from 'lucide-react';
 import axios from 'axios';
 
-function EditBidPost({bidDetails, onUpdate}) {
+function  EditBidPost({bidDetails, onUpdate}) {
 
   // console.log(bidDetails);
   // const id = bidDetails._id;

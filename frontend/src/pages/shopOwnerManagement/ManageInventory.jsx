@@ -5,6 +5,8 @@ import UpdateInventoryItem from "../../components/shopOwnerManagement/inventory/
 import DeleteInventoryItem from "../../components/shopOwnerManagement/inventory/DeleteInventoryItem";
 import Token from "@/components/userManagement/logins/Token";
 import { ToastContainer, toast } from "react-toastify";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function ManageInventory(props) {
    // Notification
@@ -156,9 +158,6 @@ function ManageInventory(props) {
       });
    };
 
-   // check if the item already in
-   const checkItem = () => {};
-
    // Inventory update function
    const updateItem = async (data, id) => {
       const payload = {
@@ -202,16 +201,55 @@ function ManageInventory(props) {
    };
 
    // show alert when low stock
-
    const findLowStockItem = inventoryData.filter((item) => item.quantity < 50);
+
+   // generate report
+   const generateReportBtn = () => {
+      const doc = new jsPDF();
+
+      // Set the title
+      doc.setFontSize(18);
+      doc.text("Inventory Report", 14, 15);
+
+      // Define the table column headers
+      const headers = [["Item Name", "Category", "Quantity"]];
+
+      // Map inventory data to table rows
+      const data = inventoryData.map((item) => [
+         item.itemName,
+         item.itemCategory,
+         item.quantity + " kg",
+      ]);
+
+      autoTable(doc, {
+         startY: 25,
+         head: headers,
+         body: data,
+         theme: "striped",
+      });
+
+      doc.save("Inventory_Report.pdf");
+   };
 
    return (
       <div className="p-[20px]">
          <div className=" bg-white p-5 shadow-sm rounded-sm border border-gray-200 ">
+            {/* header */}
             <div className="flex justify-between items-center mb-4 pb-2  border-gray-200">
-               <h2 className="text-xl font-semibold text-gray-800">
-                  Manage Inventory
-               </h2>
+               <div className="flex flex-col">
+                  <h2 className="text-xl font-semibold text-gray-800">
+                     Manage Inventory
+                  </h2>
+                  <small>
+                     Generate Report of your inventory{" "}
+                     <button
+                        onClick={generateReportBtn}
+                        className="text-sec-green text-sm font-medium underline"
+                     >
+                        Click Here
+                     </button>{" "}
+                  </small>
+               </div>
                <div className="flex gap-2">
                   <div className="flex gap-2 items-center ">
                      <div className="text-xs tracking-wide uppercase font-semibold text-gray-500">
@@ -305,6 +343,7 @@ function ManageInventory(props) {
                </div>
             )}
 
+            {/* Display inventory data */}
             <div className="overflow-x-auto min-h-56">
                <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left border border-gray-200">
                   <thead>

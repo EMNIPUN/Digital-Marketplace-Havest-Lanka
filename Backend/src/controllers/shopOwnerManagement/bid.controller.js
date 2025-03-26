@@ -6,10 +6,10 @@ const getBids = async (req, res) => {
 
    await Bid.find({ postId })
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -19,10 +19,10 @@ const getAllBids = async (req, res) => {
 
    await Bid.find({ shopOwnerId })
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -30,6 +30,7 @@ const getAllBids = async (req, res) => {
 const addBids = (req, res) => {
    const bid = new Bid({
       farmerId: req.body.farmerId,
+      farmer: req.body.farmer,
       shopOwnerId: req.body.shopOwnerId,
       postId: req.body.postId,
       product: req.body.product,
@@ -39,8 +40,8 @@ const addBids = (req, res) => {
    });
 
    bid.save()
-      .then((response) => res.json(response))
-      .catch((error) => res.json(error));
+      .then((response) => res.status(200).json(response))
+      .catch((error) => res.status(400).json(error));
 };
 
 // update details

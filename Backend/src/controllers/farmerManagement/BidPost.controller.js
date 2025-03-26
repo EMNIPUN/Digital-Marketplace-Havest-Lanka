@@ -40,6 +40,8 @@ export const createBidPost = async (req, res) => {
         });
     }
 
+    
+
     await BidPost.create({
         farmerId: bidPost.farmerId,
         cropsName: bidPost.cropsName,
@@ -59,18 +61,19 @@ export const updateBitPost = async (req, res) => {
     const bitpostId = req.params.bitpostId;
     const updatebidPost = req.body;
 
-    if (
-        !updatebidPost.cropsName ||
-        !updatebidPost.cropsCategory ||
-        !updatebidPost.description ||
-        !updatebidPost.price ||
-        !updatebidPost.quantity ||
-        !updatebidPost.location
-    ) {
-        return res.status(400).json({
-            message: "Missing required fields",
-        });
-    }
+    // if (
+    //     !updatebidPost.cropsName ||
+    //     !updatebidPost.cropsCategory ||
+    //     !updatebidPost.description ||
+    //     !updatebidPost.price ||
+    //     !updatebidPost.quantity ||
+    //     !updatebidPost.location ||
+    //     !updatebidPost.status
+    // ) {
+    //     return res.status(400).json({
+    //         message: "Missing required fields",
+    //     });
+    // }
 
     await BidPost.findByIdAndUpdate
     (bitpostId, updatebidPost)
