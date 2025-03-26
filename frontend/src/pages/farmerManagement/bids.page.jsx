@@ -80,8 +80,8 @@ function Bids() {
       <div>
         <VegetablePriceMarqueeWithStyles />
       </div>
-      <div>
-        <LoaderCircle  className="h-15 w-15 text-gray-400 animate-spin" />
+      <div className='flex justify-center mt-10'>
+        <LoaderCircle  className="h-15 w-15 text-gray-700 animate-spin" />
       </div>
 
       </>
