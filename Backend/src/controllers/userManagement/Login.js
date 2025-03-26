@@ -16,9 +16,9 @@ export const Login = async (req, res) => {
         }
 
         const roleMatch = role === user.role
-        if (!roleMatch) return res.status(400).json({ message: `Please use ${role} login` })
+        if (!roleMatch) return res.status(401).json({ message: `Please use ${user.role} login` })
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
+        if (!isMatch) return res.status(402).json({ message: "Invalid credentials" })
 
         const token = jwt.sign(
             { userId: user._id, email: user.email, name: user.name, role: user.role, number: user.number, displayPicture: user.displayPicture },

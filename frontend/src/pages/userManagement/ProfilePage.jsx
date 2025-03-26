@@ -17,11 +17,13 @@ import { CopyNotFilled, CopyFilled, Facebook, Google } from '../../components/us
 
 const ProfilePage = () => {
     const token = Token();
+    const { id } = useParams();
+    const isOwner = id === token.userId; // Determine if the logged-in user owns the profile
+
     const [isCopied, setIsCopied] = useState(false);
     const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
-    const { id } = useParams();
     const [userData, setUserData] = useState({});
 
     useEffect(() => {
@@ -35,7 +37,7 @@ const ProfilePage = () => {
         };
 
         fetchUser();
-        const interval = setInterval(fetchUser, 2000)
+        const interval = setInterval(fetchUser, 2000);
         return () => clearInterval(interval);
     }, [id]);
 
@@ -90,9 +92,6 @@ const ProfilePage = () => {
             alert(`Error deleting account: ${error.response?.data?.message || error.message}`);
         }
     };
-
-    console.log(userData);
-
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f4f4f4] to-[#e0e0e0] flex items-center justify-center p-6">
@@ -152,10 +151,76 @@ const ProfilePage = () => {
                         <p className="text-xl text-gray-500 capitalize">{roleReturn()}</p>
                     </div>
 
-                    {/* User Information Grid */}
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {/* Profile Details */}
-                        <div className="bg-gray-50 p-6 rounded-xl shadow-md">
+                    {isOwner ? (
+                        // Layout for owner: show profile details + settings & security options.
+                        <div className="grid md:grid-cols-2 gap-8">
+                            {/* Profile Details */}
+                            <div className="bg-gray-50 p-6 rounded-xl shadow-md">
+                                <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Profile Details</h3>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600 font-medium">Email</span>
+                                        <span className="text-gray-800 font-semibold">{userData.email}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600 font-medium">Phone</span>
+                                        <span className="text-gray-800 font-semibold">{userData.number}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600 font-medium">User ID</span>
+                                        <div className="flex items-center space-x-2 cursor-pointer" onClick={copyToClipboard}>
+                                            <span className="text-gray-800 font-semibold">{userData.userId}</span>
+                                            {isCopied ? (
+                                                <CopyFilled className="h-5 w-5 text-green-500" />
+                                            ) : (
+                                                <CopyNotFilled className="h-5 w-5 text-gray-500" />
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600 font-medium">Account Status</span>
+                                        <span className={`font-semibold ${userData.status ? 'text-green-500' : 'text-red-500'}`}>
+                                            {userData.status ? "Active" : "Deactivated"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Account Settings & Security for Owner */}
+                            <div className="space-y-6">
+                                <div className="bg-blue-50 p-6 rounded-xl shadow-md">
+                                    <h3 className="text-xl font-semibold text-blue-800 mb-4">Profile Settings</h3>
+                                    <div className="flex space-x-4">
+                                        <button
+                                            onClick={() => setIsUpdateProfileOpen(true)}
+                                            className="flex-1 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center space-x-2"
+                                        >
+                                            <span>Update Profile</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="bg-green-50 p-6 rounded-xl shadow-md">
+                                    <h3 className="text-xl font-semibold text-green-800 mb-4">Security</h3>
+                                    <div className="space-y-4">
+                                        <button
+                                            onClick={() => setIsChangePasswordOpen(true)}
+                                            className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
+                                        >
+                                            Change Password
+                                        </button>
+                                        <button
+                                            className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
+                                        >
+                                            Enable Two-Factor Authentication
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        // Layout for non-owner: only display the profile details (centered for a cleaner look)
+                        <div className="max-w-md mx-auto bg-gray-50 p-6 rounded-xl shadow-md">
                             <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Profile Details</h3>
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
@@ -179,96 +244,67 @@ const ProfilePage = () => {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-gray-600 font-medium">Account Status</span>
-                                    <span className={`font-semibold ${userData.status === 'deactivated' ? 'text-red-500' : 'text-green-500'}`}>
-                                        {userData.status || "Active"}
+                                    <span className={`font-semibold ${userData.status ? 'text-green-500' : 'text-red-500'}`}>
+                                        {userData.status ? "Active" : "Deactivated"}
                                     </span>
                                 </div>
                             </div>
                         </div>
+                    )}
 
-                        {/* Account Settings */}
-                        <div className="space-y-6">
-                            {/* Profile Settings */}
-                            <div className="bg-blue-50 p-6 rounded-xl shadow-md">
-                                <h3 className="text-xl font-semibold text-blue-800 mb-4">Profile Settings</h3>
-                                <div className="flex space-x-4">
-                                    <button
-                                        onClick={() => setIsUpdateProfileOpen(true)}
-                                        className="flex-1 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center space-x-2"
-                                    >
-                                        <span>Update Profile</span>
-                                    </button>
+                    {/* Only show connected accounts and account actions for the profile owner */}
+                    {isOwner && (
+                        <>
+                            {/* Connected Accounts */}
+                            <div className="mt-8 bg-gray-50 p-6 rounded-xl shadow-md">
+                                <h3 className="text-2xl font-semibold text-gray-800 mb-6">Connected Accounts</h3>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="flex items-center bg-white p-4 rounded-lg shadow-md">
+                                        <div className="bg-blue-100 p-3 rounded-full mr-4">
+                                            <Google className="w-8 h-8 text-blue-600" />
+                                        </div>
+                                        <div className="flex-grow">
+                                            <h4 className="font-semibold text-gray-800">Google Account</h4>
+                                            <p className="text-sm text-gray-500">Connect for easy login</p>
+                                        </div>
+                                        <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                            Connect
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center bg-white p-4 rounded-lg shadow-md">
+                                        <div className="bg-blue-100 p-3 rounded-full mr-4">
+                                            <Facebook className="w-8 h-8 text-blue-600" />
+                                        </div>
+                                        <div className="flex-grow">
+                                            <h4 className="font-semibold text-gray-800">Facebook Account</h4>
+                                            <p className="text-sm text-gray-500">Stay connected</p>
+                                        </div>
+                                        <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                            Connect
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Security Settings */}
-                            <div className="bg-green-50 p-6 rounded-xl shadow-md">
-                                <h3 className="text-xl font-semibold text-green-800 mb-4">Security</h3>
-                                <div className="space-y-4">
+                            {/* Account Actions */}
+                            <div className="mt-8 grid grid-cols-2 gap-6">
+                                {token.status !== 'deactivated' && (
                                     <button
-                                        onClick={() => setIsChangePasswordOpen(true)}
-                                        className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
+                                        onClick={() => setIsDeletePopupOpen(true)}
+                                        className="w-full py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300"
                                     >
-                                        Change Password
+                                        Delete Account
                                     </button>
-                                    <button
-                                        className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
-                                    >
-                                        Enable Two-Factor Authentication
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Connected Accounts */}
-                    <div className="mt-8 bg-gray-50 p-6 rounded-xl shadow-md">
-                        <h3 className="text-2xl font-semibold text-gray-800 mb-6">Connected Accounts</h3>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div className="flex items-center bg-white p-4 rounded-lg shadow-md">
-                                <div className="bg-blue-100 p-3 rounded-full mr-4">
-                                    <Google className="w-8 h-8 text-blue-600" />
-                                </div>
-                                <div className="flex-grow">
-                                    <h4 className="font-semibold text-gray-800">Google Account</h4>
-                                    <p className="text-sm text-gray-500">Connect for easy login</p>
-                                </div>
-                                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                    Connect
+                                )}
+                                <button
+                                    className="w-full py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition duration-300"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
                                 </button>
                             </div>
-                            <div className="flex items-center bg-white p-4 rounded-lg shadow-md">
-                                <div className="bg-blue-100 p-3 rounded-full mr-4">
-                                    <Facebook className="w-8 h-8 text-blue-600" />
-                                </div>
-                                <div className="flex-grow">
-                                    <h4 className="font-semibold text-gray-800">Facebook Account</h4>
-                                    <p className="text-sm text-gray-500">Stay connected</p>
-                                </div>
-                                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                    Connect
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Account Actions */}
-                    <div className="mt-8 grid grid-cols-2 gap-6">
-                        {token.status !== 'deactivated' && (
-                            <button
-                                onClick={() => setIsDeletePopupOpen(true)}
-                                className="w-full py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300"
-                            >
-                                Delete Account
-                            </button>
-                        )}
-                        <button
-                            className="w-full py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition duration-300"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
-                    </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

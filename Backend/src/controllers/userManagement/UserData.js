@@ -51,11 +51,9 @@ export const UpdateUserById = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Handle file upload
         if (req.file) {
             const newFilePath = `/uploads/${req.file.filename}`;
 
-            // Delete old profile picture if it exists and is not the default one
             if (user.displayPicture && user.displayPicture !== "/uploads/default.png") {
                 const oldFilePath = path.join(__dirname, "../../..", user.displayPicture);
                 if (fs.existsSync(oldFilePath)) {
@@ -63,11 +61,9 @@ export const UpdateUserById = async (req, res) => {
                 }
             }
 
-            // Update profile picture
             user.displayPicture = newFilePath;
         }
 
-        // Update other fields
         user.name = name || user.name;
         user.number = number || user.number;
 
