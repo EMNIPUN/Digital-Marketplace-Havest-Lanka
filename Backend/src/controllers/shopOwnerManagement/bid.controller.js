@@ -39,6 +39,19 @@ const addBids = (req, res) => {
       status: req.body.status,
    });
 
+   if (
+      !bid.farmerId ||
+      !bid.farmer ||
+      !bid.shopOwnerId ||
+      !bid.postId ||
+      !bid.product ||
+      !bid.quantity ||
+      !bid.price ||
+      !bid.status
+   ) {
+      return res.status(400).json({ message: "Missing required filed" });
+   }
+
    bid.save()
       .then((response) => res.status(200).json(response))
       .catch((error) => res.status(400).json(error));

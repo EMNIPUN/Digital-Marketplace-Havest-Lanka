@@ -145,15 +145,11 @@ const TransportManagement = () => {
 
             {/* Vehicles Table */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-               <div className="p-6 border-b border-gray-100">
-                  <h2 className="text-xl font-semibold text-gray-800">
-                     Vehicle Fleet
-                  </h2>
-               </div>
+               
                <div className="overflow-x-auto">
                   <table className="min-w-full">
                      <thead>
-                        <tr className="bg-gray-50">
+                        <tr className="bg-gray-200">
                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                               First Name
                            </th>
@@ -233,7 +229,7 @@ const TransportManagement = () => {
                         )}
                         {isOpenUpdateForm && (
                            <div
-                              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+                              className="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center"
                               id="update-form"
                            >
                               <EditBidPost
@@ -250,7 +246,7 @@ const TransportManagement = () => {
 
             {/* Driver and Vehicle Modal */}
             {isDriverVehicleModalOpen && (
-               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+               <div className="fixed  z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                   <div className="bg-white rounded-lg p-8 w-full max-w-2xl">
                      <h2 className="text-2xl font-bold mb-6 text-gray-800">
                         Add Driver and Vehicle Details
