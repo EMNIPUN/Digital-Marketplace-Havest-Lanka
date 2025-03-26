@@ -110,30 +110,31 @@ export const filterUsers = async (req, res) => {
         }
 
         if (status && status.toLowerCase() !== 'all') {
-            if (status.toLowerCase() === 'active') {
-                query.status = true;
-            } else if (status.toLowerCase() === 'deactivated') {
-                query.status = false;
-            }
+            query.status = status.toLowerCase() === 'active';
         }
 
-        if (search) {
+        if (search && search.trim() !== "") {
             const searchRegex = new RegExp(search, 'i');
-            query.$or = [
+            // Build an array for the $or conditions.
+            const orConditions = [
                 { name: { $regex: searchRegex } },
                 { NIC: { $regex: searchRegex } },
-                { _id: search },
                 { number: { $regex: searchRegex } }
             ];
+            // Only include _id if the search is a valid ObjectId.
+            if (mongoose.Types.ObjectId.isValid(search)) {
+                orConditions.push({ _id: search });
+            }
+            query.$or = orConditions;
         }
 
         const users = await User.find(query);
         res.status(200).json({ users });
     } catch (error) {
-        console.error('Error filtering users:', error);
         res.status(500).json({ error: 'Error filtering users' });
     }
 };
+
 
 export const ChangePassword = async (req, res) => {
     try {

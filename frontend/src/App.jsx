@@ -22,11 +22,11 @@ function App() {
             <Route path="admin/*" element={<AdminRoutes />} />
             <Route path="finance/*" element={<FinanceRoutes />} />
             <Route path="profile/:id" element={<ProfilePage />} />
-            <Route path="farmer/register" element={<FarmerRegistration />} />
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />
          <Route path="/logout/*" element={<LogoutRoute />} />
+         <Route path="/farmer/register" element={<FarmerRegistration />} />
       </Routes>
    );
 }

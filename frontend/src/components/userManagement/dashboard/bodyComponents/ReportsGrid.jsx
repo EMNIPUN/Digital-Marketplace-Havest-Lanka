@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Download, Users, Activity, BarChart, Truck, AlertCircle } from "lucide-react";
+import axios from "axios";
 
 const reports = [
   { id: 1, icon: <Users className="w-14 h-14 text-blue-600" />, title: "User Registration Report", description: "Tracks the number of new users joining the system.", color: "border-blue-300 bg-blue-400 bg-opacity-20", textColor: "text-blue-700" },
@@ -25,6 +26,25 @@ const cardVariants = {
 };
 
 function ReportsGrid() {
+
+  const userRegistrationReportDownload = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8005/api/admin/report/user-registration`, {
+        responseType: 'blob' // Ensures the response is treated as a file
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'user_registration_report.pdf'); // Set the file name
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (e) {
+      console.log("Error downloading user registration report: " + e.message);
+    }
+  };
+
   return (
     <motion.div initial="hidden" animate="visible" className="grid grid-cols-4 grid-rows-3 w-full h-full gap-6 p-6">
       {reports.map(({ id, icon, title, description, color, textColor, colSpan, rowSpan }, index) => (
@@ -40,7 +60,10 @@ function ReportsGrid() {
           {icon}
           <h3 className="font-bold text-md mt-3">{title}</h3>
           <p className="text-[12px] text-gray-700">{description}</p>
-          <button className={`mt-3 ${textColor} font-semibold hover:underline flex items-center gap-2`}>
+          <button
+            onClick={title === "User Registration Report" ? userRegistrationReportDownload : null}
+            className={`mt-3 ${textColor} font-semibold hover:underline flex items-center gap-2`}
+          >
             <Download className="w-6 h-6" /> Download
           </button>
         </motion.div>

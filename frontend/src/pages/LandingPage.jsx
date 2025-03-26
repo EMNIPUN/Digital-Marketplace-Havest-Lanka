@@ -30,16 +30,14 @@ function LandingPage() {
       <>
          {/* Navigation bar */}
          <header
-            className={` fixed z-[50] top-0 left-0 w-full ${
-               scrollNavbar ? "bg-sec-green shadow" : ""
-            }`}
+            className={` fixed z-[50] top-0 left-0 w-full ${scrollNavbar ? "bg-sec-green shadow" : ""
+               }`}
          >
             <nav className="w-full flex items-center justify-between px-[120px] py-3">
                <img src={logo} className="w-32" alt="" />
                <ul
-                  className={`flex gap-5 items-center text-base font-medium ${
-                     scrollNavbar ? "text-white" : "text-white"
-                  } `}
+                  className={`flex gap-5 items-center text-base font-medium ${scrollNavbar ? "text-white" : "text-white"
+                     } `}
                >
                   <li>
                      <Link to="">About Us</Link>
@@ -56,13 +54,12 @@ function LandingPage() {
                         </li>
                      </Link>
                      <li
-                        className={`${
-                           scrollNavbar
+                        className={`${scrollNavbar
                               ? "bg-white text-sec-green"
                               : "bg-sec-green  text-white"
-                        } py-2 w-24 flex items-center justify-center  rounded  font-medium`}
+                           } py-2 w-24 flex items-center justify-center  rounded  font-medium`}
                      >
-                        <Link to="">Join</Link>
+                        <Link to="/farmer/register">Join</Link>
                      </li>
                   </div>
                </ul>

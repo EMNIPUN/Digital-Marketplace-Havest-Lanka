@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ThreeDots from "../../../../assets/userManagement/threeDots.svg";
 import PieChartX from "./PieChartX";
-import LineChartX from "./LineChartX"; // Import Line Chart Component
+import LineChartX from "./LineChartX";
 import { ArrowDownToLine } from "lucide-react";
 import axios from "axios";
 import { BASE_URL } from "../../BaseUrl";
@@ -30,13 +30,13 @@ function Card2({ cardName, chartType }) {
 
     return (
         <div className="col-span-6 p-5 bg-white rounded-lg shadow-md relative">
-            {/* Header */}
+
             <div className="flex justify-between items-center mb-4">
                 <p className="text-md font-semibold text-gray-800">{cardName}</p>
                 <img src={ThreeDots} alt="Menu" className="cursor-pointer w-[30px] h-[30px]" />
             </div>
 
-            {/* Charts */}
+
             <div className="mt-4">
                 {chartType === "pie" ? (
                     <div className="flex flex-col items-center justify-between">
@@ -56,7 +56,6 @@ function Card2({ cardName, chartType }) {
                 )}
             </div>
 
-            {/* Save Report Button (Only for System Load Chart) */}
             {chartType === "line" && (
                 <div className="flex justify-end mt-4 absolute top-0 right-5">
                     <button className="flex items-center gap-2 bg-blue-100 text-blue-600 px-4 py-2 rounded-lg font-semibold">

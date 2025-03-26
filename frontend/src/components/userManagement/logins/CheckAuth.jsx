@@ -8,18 +8,19 @@ const CheckAuth = () => {
    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
    useEffect(() => {
-      setTimeout(() => {
-         axios
-            .get(`${BASE_URL}/check-auth`, { withCredentials: true })
-            .then((response) => {
-               setIsAuthenticated(response.data.loggedIn);
-               setLoading(false);
-            })
-            .catch(() => {
-               setIsAuthenticated(false);
-               setLoading(false);
-            });
-      }, 2000);
+      const checkAuth = async () => {
+         try {
+            const response = await axios.get(`${BASE_URL}/check-auth`, { withCredentials: true });
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            setIsAuthenticated(response.data.loggedIn);
+         } catch (error) {
+            setIsAuthenticated(false);
+         } finally {
+            setLoading(false);
+         }
+      };
+
+      checkAuth();
    }, []);
 
    if (loading) {

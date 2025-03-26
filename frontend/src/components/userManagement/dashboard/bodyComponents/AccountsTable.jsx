@@ -14,21 +14,20 @@ function AccountsTable() {
     const [accountStatuses, setAccountStatuses] = useState({});
     const [loading, setLoading] = useState(true);
 
-    // States for filtering
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('All');
     const [selectedRole, setSelectedRole] = useState('all');
 
-    // Function to fetch filtered accounts
     const fetchAccounts = () => {
         setLoading(true);
-        axios.get("http://localhost:8005/user/q", {
-            params: {
-                search: searchTerm,
-                status: selectedStatus,
-                role: selectedRole
-            }
-        })
+        axios
+            .get("http://localhost:8005/user/q", {
+                params: {
+                    search: searchTerm,
+                    status: selectedStatus,
+                    role: selectedRole
+                }
+            })
             .then(response => {
                 const fetchedAccounts = response.data.users.map(account => ({
                     id: account._id,
@@ -41,6 +40,8 @@ function AccountsTable() {
                     cover: account.cover || "https://via.placeholder.com/400",
                     status: (account.status === undefined || account.status === true) ? "Active" : "Deactivated"
                 }));
+                console.log(fetchedAccounts);
+
                 setAccounts(fetchedAccounts);
                 setAccountStatuses(
                     fetchedAccounts.reduce((acc, account) => {
@@ -53,12 +54,10 @@ function AccountsTable() {
             .finally(() => setLoading(false));
     };
 
-    // Call fetchAccounts when filters change
     useEffect(() => {
         fetchAccounts();
     }, [searchTerm, selectedStatus, selectedRole]);
 
-    // Check if all selected accounts are deactivated
     const areSelectedDeactivated = selectedAccounts.length > 0 && selectedAccounts.every(
         id => accountStatuses[id] === "Deactivated"
     );
@@ -74,7 +73,6 @@ function AccountsTable() {
         setShowPopup(true);
     };
 
-    // Updated deactivation/reactivation logic remains unchanged
     const confirmToggleStatus = () => {
         let userIds = [];
         let newStatus;
@@ -127,7 +125,6 @@ function AccountsTable() {
                 </button>
             </div>
 
-            {/* Added Filter Options */}
             <div className="flex space-x-4 mt-16 mb-4">
                 <div>
                     <label className="block text-sm font-medium">Status</label>
@@ -258,13 +255,13 @@ function AccountsTable() {
                         <div className="mt-4 flex gap-2 w-full items-center justify-evenly">
                             <button
                                 onClick={() => setShowConfirmPopup(true)}
-                                className={`px-4 py-2 w-[100px] rounded hover:opacity-80 text-white ${accountStatuses[selectedUser.id] === "Deactivated" ? "bg-green-500" : "bg-red-500"}`}
+                                className={`px-4 py-2 w-[100px] rounded hover:opacity-80 text-[14px] text-white ${accountStatuses[selectedUser.id] === "Deactivated" ? "bg-green-500" : "bg-red-500"}`}
                             >
                                 {accountStatuses[selectedUser.id] === "Deactivated" ? "Activate" : "Deactivate"}
                             </button>
                             <button
                                 onClick={() => setShowPopup(false)}
-                                className="px-4 py-2 w-[100px] bg-slate-500 text-white rounded hover:bg-slate-600"
+                                className="px-4 py-2 w-[100px] bg-slate-500 text-[14px] text-white rounded hover:bg-slate-600"
                             >
                                 Close
                             </button>

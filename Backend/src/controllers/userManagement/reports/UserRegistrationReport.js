@@ -62,7 +62,7 @@ const UserRegistrationReport = async (req, res) => {
         };
 
         const pdfDoc = printer.createPdfKitDocument(docDefinition);
-        const filePath = 'user_registration_report.pdf';
+        const filePath = 'reports/user_registration_report.pdf';
 
         pdfDoc.pipe(fs.createWriteStream(filePath));
         pdfDoc.pipe(res);
