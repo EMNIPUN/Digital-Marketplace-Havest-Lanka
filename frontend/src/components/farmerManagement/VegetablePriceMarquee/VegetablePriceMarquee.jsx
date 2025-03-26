@@ -217,7 +217,7 @@ const VegetablePriceMarquee = () => {
                         {item.name}:
                      </span>
                      <span className="text-gray-900 font-bold">
-                        ${item.price.toFixed(2)}
+                        Rs.{item.price.toFixed(2)}
                      </span>
                      <span className="text-xs text-gray-500 mx-1">
                         /{item.unit}
@@ -238,7 +238,7 @@ const VegetablePriceMarquee = () => {
                         {item.name}:
                      </span>
                      <span className="text-gray-900 font-bold">
-                        ${item.price.toFixed(2)}
+                        Rs.{item.price.toFixed(2)}
                      </span>
                      <span className="text-xs text-gray-500 mx-1">
                         /{item.unit}

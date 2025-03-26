@@ -91,7 +91,7 @@ function Bids() {
       <div>
         <VegetablePriceMarqueeWithStyles />
         <div className="border-b border-gray-200 px-4 mt-8 flex justify-between items-center">
-          <div className="flex flex-wrap gap-8">
+          <div className="flex flex-wrap gap-4">
             {BidsType.map((type, index) => (
               <BidsTypeTab key={index} bids={type} selectedBidsType={selectedBidsType} onClick={handleTypeClick} />
             ))}
