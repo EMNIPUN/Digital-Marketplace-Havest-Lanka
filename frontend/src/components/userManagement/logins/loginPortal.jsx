@@ -7,14 +7,8 @@ function LoginPortal() {
 
     const redirect = (role) => {
         switch (role) {
-            case "shopowner":
-                navigate("/login/shopowner-login");
-                break;
-            case "farmer":
-                navigate("/login/farmer-login");
-                break;
-            case "driver":
-                navigate("/login/driver-login");
+            case "transportmanager":
+                navigate("/login/transport-login");
                 break;
             case "financemanager":
                 navigate("/login/financemanager-login");
@@ -30,25 +24,13 @@ function LoginPortal() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-700">
             <div className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-xl p-8 w-full max-w-lg">
-                <h1 className="text-white text-3xl font-bold text-center mb-6">LOGIN PORTAL</h1>
+                <h1 className="text-white text-3xl font-bold text-center mb-6">ADMIN LOGIN PORTAL</h1>
 
                 <div className="grid grid-cols-2 gap-4">
                     <LoginCard
-                        title="Shop Owner"
-                        icon={<Store className="text-blue-500 w-8 h-8" />}
-                        onClick={() => redirect("shopowner")}
-                    />
-
-                    <LoginCard
-                        title="Farmer"
-                        icon={<Tractor className="text-green-500 w-8 h-8" />}
-                        onClick={() => redirect("farmer")}
-                    />
-
-                    <LoginCard
-                        title="Driver"
+                        title="Transport Manager"
                         icon={<Truck className="text-yellow-500 w-8 h-8" />}
-                        onClick={() => redirect("driver")}
+                        onClick={() => redirect("transportmanager")}
                     />
 
                     <LoginCard

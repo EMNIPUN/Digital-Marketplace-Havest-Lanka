@@ -11,6 +11,7 @@ import AccountManagementPage from "../pages/userManagement/dashboardPages/Accoun
 import ReportsPage from "../pages/userManagement/dashboardPages/ReportsPage";
 import ActivityMonitoringPage from "../pages/userManagement/dashboardPages/ActivityMonitoringPage";
 import SystemConfigurationsPage from "../pages/userManagement/dashboardPages/SystemConfigurationsPage";
+import TransportManagerRegistration from "../pages/userManagement/dashboardPages/TransportManagerRegistration";
 
 function AdminRoutes() {
    return (
@@ -25,6 +26,7 @@ function AdminRoutes() {
                <Route path="shop-owner" element={<ShopOwnerRegistrationPage />} />
                <Route path="driver" element={<DriverRegistrationPage />} />
                <Route path="finance-manager" element={<FinanceManagerRegistrationPage />} />
+               <Route path="transport-manager" element={<TransportManagerRegistration />} />
                <Route path="market-manager" element={<MarketManagerRegistrationPage />} />
             </Route>
 
