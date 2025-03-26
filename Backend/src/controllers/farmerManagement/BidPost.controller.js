@@ -40,6 +40,8 @@ export const createBidPost = async (req, res) => {
         });
     }
 
+    
+
     await BidPost.create({
         farmerId: bidPost.farmerId,
         cropsName: bidPost.cropsName,
