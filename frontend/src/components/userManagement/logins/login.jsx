@@ -18,6 +18,7 @@ function Login(props) {
       else if (props.role === "Shop Owner") return "shopowner";
       else if (props.role === "Driver") return "driver";
       else if (props.role === "Finance Manager") return "financemanager";
+      else if (props.role === "Transport Manager") return "transportmanager";
       return "unknown";
    };
 
@@ -55,6 +56,9 @@ function Login(props) {
             case "financemanager":
                navigate("/finance");
                break;
+            case "transportmanager":
+               navigate("/transport");
+               break;
             default:
                console.log("Unknown role");
          }
@@ -76,7 +80,7 @@ function Login(props) {
                <div className="bg-[#fff] w-2/3 h-3/4 rounded-2xl grid grid-rows-12 overflow-hidden">
                   <div className="w-full h-full row-span-4 flex flex-col items-center justify-evenly">
                      <BoxArrowIn />
-                     <h2 className="font-bold text-2xl text-[#1f2937]">
+                     <h2 className="font-bold text-xl text-[#1f2937]">
                         Welcome Back {props.role}!
                      </h2>
                      <p className="text-sm text-[#4b5563] -mt-3">
@@ -114,11 +118,10 @@ function Login(props) {
 
                         <div className="w-full flex flex-col items-center justify-center">
                            <button
-                              className={`w-full p-2 mt-4 rounded-md font-bold ${
-                                 loading
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
-                              }`}
+                              className={`w-full p-2 mt-4 rounded-md font-bold ${loading
+                                 ? "bg-gray-400 cursor-not-allowed"
+                                 : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
+                                 }`}
                               onClick={(e) => handleLogin(e)}
                               disabled={loading}
                            >

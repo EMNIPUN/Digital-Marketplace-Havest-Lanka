@@ -26,6 +26,7 @@ function SideNavTabs() {
                 <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Shop Owners" url="/admin/user-registration/shop-owner" />
                 <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Drivers" url="/admin/user-registration/driver" />
                 <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Finance Managers" url="/admin/user-registration/finance-manager" />
+                <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Transport Managers" url="/admin/user-registration/transport-manager" />
                 <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Market Managers" url="/admin/user-registration/market-manager" />
             </SideNavTab>
 

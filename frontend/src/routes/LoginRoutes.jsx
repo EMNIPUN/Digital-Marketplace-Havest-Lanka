@@ -7,6 +7,7 @@ import ShopImg from "../assets/userManagement/shop.jpg"
 import FarmerImg from "../assets/userManagement/farmer.jpg"
 import FinanceImg from "../assets/userManagement/finance.jpg"
 import DriverImg from "../assets/userManagement/driver.jpg"
+import TransportImg from "../assets/userManagement/transportLogin.jpg"
 
 function LoginRoutes() {
     return (
@@ -16,6 +17,7 @@ function LoginRoutes() {
             <Route path="/shopowner-login" element={<Login role="Shop Owner" img={ShopImg} />}></Route>
             <Route path="/driver-login" element={<Login role="Driver" img={DriverImg} />}></Route>
             <Route path="/financemanager-login" element={<Login role="Finance Manager" img={FinanceImg} />}></Route>
+            <Route path="/transport-login" element={<Login role="Transport Manager" img={TransportImg} />}></Route>
 
             <Route path="/portal" element={<LoginPortal />} ></Route>
         </Routes>
