@@ -14,13 +14,25 @@ function Bids() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [shopOwnerBidDetails, setShopOwnerBidDetails] = useState([]);
+  const [bidPlacementDetails, setBidPlacementDetails] = useState([]);
 
-  const BidsType = ["All Bids", "Active", "Payment Pending", "Completed"];
+  const BidsType = ["All Bids", "Active", "Payment Pending", "payment Approved", "Completed"];
   const farmerId = token.userId;
 
   const handleTypeClick = (BidsType) => {
     setSelectedBidsType(BidsType);
   };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8005/api/bid/getBids/${farmerId}`)
+      .then((response) => {
+        setShopOwnerBidDetails(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -42,7 +54,7 @@ function Bids() {
   const filteredBids = bids.filter((bid) => {
     return (
       (selectedBidsType === "All Bids" || bid.status.toLowerCase().includes(selectedBidsType.toLowerCase())) &&
-      (bid.cropsName.toLowerCase().includes(searchQuery.toLowerCase()) && bid.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      (bid.cropsName.toLowerCase().includes(searchQuery.toLowerCase()))
     );
   });
 
@@ -112,7 +124,7 @@ function Bids() {
           {filteredBids.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredBids.map((bid, index) => (
-                <MyBidsCard key={index} bid={bid} />
+                <MyBidsCard key={index} bid={bid} bidId={bid._id}/>
               ))}
             </div>
           ) : (
