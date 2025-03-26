@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MailPlus, PhoneOutgoing, Package, CheckCircle } from 'lucide-react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function BidPlacementCard({ bidplacementDetails }) {
 
@@ -116,7 +117,7 @@ function BidPlacementCard({ bidplacementDetails }) {
                 Congratulations! Your bid has been accepted. You can now proceed with the next steps.
               </p>
               <button className="px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-md">
-                Continue
+                <Link to="/farmer/mybids">Continue</Link>
               </button>
             </div>
           </div>

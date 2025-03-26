@@ -4,6 +4,7 @@ import Hero from '@/components/farmerManagement/Hero/Hero';
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import ProfileCard from '@/components/farmerManagement/ProfileCard/ProfileCard';
 import VegetablePriceMarqueeWithStyles from '@/components/farmerManagement/VegetablePriceMarquee/VegetablePriceMarquee';
+import FooterLandingPage from '@/components/other/FooterLandingPage';
 import React from 'react'
 
 function FarmerDashboardPage() {
@@ -39,7 +40,10 @@ function FarmerDashboardPage() {
             <ProfileCard />
           </div>
         </div>
+      </div>
 
+      <div>
+        <FooterLandingPage />
       </div>
     </>
   )
