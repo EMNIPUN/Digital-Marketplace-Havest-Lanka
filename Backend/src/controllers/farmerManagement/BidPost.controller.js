@@ -40,7 +40,11 @@ export const createBidPost = async (req, res) => {
         });
     }
 
-    
+    if (bidPost.price < 0 || bidPost.quantity < 0) {
+        return res.status(400).json({
+            message: "Price and quantity should be greater than 0",
+        });
+    }
 
     await BidPost.create({
         farmerId: bidPost.farmerId,
