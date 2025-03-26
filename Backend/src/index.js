@@ -8,8 +8,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
-
-
 import bidPostRouter from "./routes/farmerManagement/BidPost.routes.js";
 
 import userRoutes from "./routes/userManagement/userRoutes.js";
@@ -18,7 +16,7 @@ import logoutRoutes from "./routes/userManagement/logoutRoutes.js";
 import checkAuthRoutes from "./routes/userManagement/checkAuthRoutes.js";
 import adminRoutes from "./routes/userManagement/adminRoutes.js";
 import { trackRequest } from "./controllers/userManagement/fetch/SystemLoad.js";
-
+import vehicleRouter from "./routes/transportManagement/vehicle.routes.js";
 import inventoryRoutes from "./routes/shopOwnerManagement/inventory.routes.js";
 import bidRoutes from "./routes/shopOwnerManagement/bid.routes.js";
 import transactionRoutes from "./routes/financeManagement/transaction.routes.js";
@@ -44,6 +42,7 @@ connectDB();
 // Use Routes
 app.use(trackRequest);
 app.use("/api", transactionRoutes);
+app.use("/api/vehicle", vehicleRouter);
 app.use("/api", paymentRoutes);
 app.use("/user", userRoutes);
 app.use("/login", loginRoutes);
