@@ -77,7 +77,11 @@ const ProfilePage = () => {
     const bannerImage = roleBanners[token.role] || "https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png";
 
     const handleLogout = () => {
-        window.location.href = "/logout";
+        if (userData.role === "farmer" || userData.role === "shopowner" || userData.role === "driver") {
+            window.location.href = "/"
+        } else {
+            window.location.href = "/logout"
+        }
     };
 
     const confirmDeleteAccount = async () => {
