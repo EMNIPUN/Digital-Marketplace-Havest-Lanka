@@ -118,10 +118,11 @@ function Login(props) {
 
                         <div className="w-full flex flex-col items-center justify-center">
                            <button
-                              className={`w-full p-2 mt-4 rounded-md font-bold ${loading
-                                 ? "bg-gray-400 cursor-not-allowed"
-                                 : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
-                                 }`}
+                              className={`w-full p-2 mt-4 rounded-md font-bold ${
+                                 loading
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
+                              }`}
                               onClick={(e) => handleLogin(e)}
                               disabled={loading}
                            >
@@ -131,22 +132,56 @@ function Login(props) {
                               Forgot password?
                            </p>
                         </div>
-                        <div className="text-sm mt-5 text-gray-500">
-                           Login as a{" "}
+                        <div className="text-sm mt-5 text-gray-500 flex gap-2">
+                           <div>Login as a </div>
                            {props.role === "Shop Owner" ? (
-                              <Link
-                                 to="/login/farmer-login"
-                                 className="text-blue-500 font-semibold"
-                              >
-                                 Farmer
-                              </Link>
+                              <div className="flex gap-2">
+                                 <Link
+                                    to="/login/farmer-login"
+                                    className="text-blue-500 font-semibold"
+                                 >
+                                    Farmer
+                                 </Link>
+                                 <p>or</p>
+                                 <Link
+                                    to="/login/driver-login"
+                                    className="text-blue-500 font-semibold"
+                                 >
+                                    Driver
+                                 </Link>
+                              </div>
                            ) : props.role === "Farmer" ? (
-                              <Link
-                                 to="/login/shopowner-login"
-                                 className="text-blue-500 font-semibold"
-                              >
-                                 Shop Owner
-                              </Link>
+                              <div className="flex gap-2">
+                                 <Link
+                                    to="/login/shopowner-login"
+                                    className="text-blue-500 font-semibold"
+                                 >
+                                    Shop Owner
+                                 </Link>
+                                 <p>or</p>
+                                 <Link
+                                    to="/login/driver-login"
+                                    className="text-blue-500 font-semibold"
+                                 >
+                                    Driver
+                                 </Link>
+                              </div>
+                           ) : props.role === "Driver" ? (
+                              <div className="flex gap-2">
+                                 <Link
+                                    to="/login/shopowner-login"
+                                    className="text-blue-500 font-semibold"
+                                 >
+                                    Shop Owner
+                                 </Link>
+                                 <p>or</p>
+                                 <Link
+                                    to="/login/farmer-login"
+                                    className="text-blue-500 font-semibold"
+                                 >
+                                    Farmer
+                                 </Link>
+                              </div>
                            ) : (
                               ""
                            )}
