@@ -62,7 +62,7 @@ function FindCrops() {
                <input
                   type="text"
                   className="h-12 w-full border border-gray-300 px-[15px] tracking-wide text-sm font-light bg-white rounded-sm"
-                  placeholder="Search Crops or Farmers"
+                  placeholder="Search Crops Names"
                   value={searchValue}
                   onChange={(e) => {
                      setSearchValue(e.target.value);
@@ -151,25 +151,34 @@ function FindCrops() {
          {/* Crop Posts */}
          <div className="flex w-full items-center gap-5 flex-col">
             {!isSearch &&
-               cropsPostData
-                  .filter(
+               (() => {
+                  const filteredPosts = cropsPostData.filter(
                      (post) =>
                         activeTab === "all" || post.cropsCategory === activeTab
-                  )
-                  .map((post) => (
-                     <CropPost
-                        key={post._id}
-                        postId={post._id}
-                        farmerId={post.farmerId}
-                        product={post.cropsName}
-                        quantity={post.quantity}
-                        price={post.price}
-                        location={post.location}
-                        description={post.description}
-                        bids={post.bids}
-                        farmer={post.farmer}
-                     />
-                  ))}
+                  );
+
+                  return filteredPosts.length > 0 ? (
+                     filteredPosts.map((post) => (
+                        <CropPost
+                           key={post._id}
+                           postId={post._id}
+                           farmerId={post.farmerId}
+                           product={post.cropsName}
+                           quantity={post.quantity}
+                           price={post.price}
+                           location={post.location}
+                           description={post.description}
+                           bids={post.bids}
+                           farmer={post.farmer}
+                        />
+                     ))
+                  ) : (
+                     <div className="bg-white text-gray-500 w-full shadow-sm border h-[200px] border-gray-200 text-base flex items-center justify-center">
+                        <i class="bi bi-exclamation-circle pr-2"></i>
+                        No items found
+                     </div>
+                  );
+               })()}
          </div>
 
          {/* Searched crop post */}
