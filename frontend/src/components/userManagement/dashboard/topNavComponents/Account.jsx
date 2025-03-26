@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Token from '../../logins/Token';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Account() {
     const tokenData = Token();
@@ -10,10 +10,14 @@ function Account() {
 
     return (
         <Link to={`/profile/${tokenData.userId}`}>
-            <div className='flex items-center justify-center p-2 rounded-md h-full bg-gradient-to-r from-[#00b075] to-[#00b075a5]'>
-                <p className='mr-2 text-[#fff] text-[14px]'>Hello, {displayName}</p>
-                <div className='flex items-center justify-center rounded-[50px]'>
-                    <img className='text-[#fff]' src={`http://localhost:8005${tokenData.displayPicture}`} alt='pp' />
+            <div className='-ml-[20px] flex items-center justify-center p-1 rounded-md h-full bg-gradient-to-r from-[#00b075] to-[#00b075a5]'>
+                <p className='mr-2 text-white text-sm'>Hello, {displayName}</p>
+                <div className='w-10 h-10 overflow-hidden rounded-full border-2 border-white shadow-md'>
+                    <img
+                        className='w-full h-full object-cover'
+                        src={`http://localhost:8005${tokenData.displayPicture}`}
+                        alt='Profile'
+                    />
                 </div>
             </div>
         </Link>

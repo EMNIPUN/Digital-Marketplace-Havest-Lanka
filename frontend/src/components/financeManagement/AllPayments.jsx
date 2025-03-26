@@ -8,11 +8,11 @@ export default function () {
    const [transactions, setTransactions] = useState([]);
 
    useEffect(() => {
-      // Fetch payments from backend API
+      
       axios
          .get("http://localhost:8005/api/all-payments")
          .then((response) => {
-            // Assuming the API returns a filtered list of payments
+            
             setTransactions(response.data);
          })
          .catch((error) => {
@@ -27,7 +27,7 @@ export default function () {
                Payment Transactions
             </h2>
 
-            {/* Payment Filters */}
+            
 
             {/* Transaction Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">

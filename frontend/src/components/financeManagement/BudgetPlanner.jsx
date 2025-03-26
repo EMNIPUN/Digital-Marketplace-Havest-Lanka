@@ -48,11 +48,11 @@ export default function BudgetPlanner() {
    const generatePDF = () => {
       const doc = new jsPDF();
 
-      // Title for Income Transactions
+      
       doc.setFontSize(18);
       doc.text("Income Transactions", 14, 15);
 
-      // Table Data for Income
+      
       const incomeData = fil
          .filter((transaction) => transaction.type === "income")
          .map((transaction) => [
@@ -62,22 +62,22 @@ export default function BudgetPlanner() {
             transaction.description,
          ]);
 
-      // Generate Income Table
+      
       autoTable(doc, {
          head: [["Date", "Category", "Amount", "Description"]],
          body: incomeData,
-         startY: 25, // Position below the title
-         theme: "striped", // Optional theme
+         startY: 25, 
+         theme: "striped", 
       });
 
-      // Get the Y position after the first table
+      
       const incomeTableEndY = doc.lastAutoTable.finalY;
 
-      // Title for Expense Transactions
+      
       doc.setFontSize(18);
-      doc.text("Expense Transactions", 14, incomeTableEndY + 10); // Add some space after the first table
+      doc.text("Expense Transactions", 14, incomeTableEndY + 10); 
 
-      // Table Data for Expenses
+      
       const expenseData = fil
          .filter((transaction) => transaction.type === "expense")
          .map((transaction) => [
@@ -87,22 +87,22 @@ export default function BudgetPlanner() {
             transaction.description,
          ]);
 
-      // Generate Expense Table
+      
       autoTable(doc, {
          head: [["Date", "Category", "Amount", "Description"]],
          body: expenseData,
-         startY: incomeTableEndY + 20, // Position below the income table
-         theme: "striped", // Optional theme
+         startY: incomeTableEndY + 20, 
+         theme: "striped", 
       });
 
-      // Save the PDF
+      
       doc.save("transactions.pdf");
    };
 
    const handleInputChange = (e) => {
       const { name, value } = e.target;
       setNewTransaction((prev) => ({ ...prev, [name]: value }));
-      validateField(name, value); // Validate in real time
+      validateField(name, value); 
    };
 
    const validateField = (name, value) => {
@@ -125,7 +125,7 @@ export default function BudgetPlanner() {
       id: "",
    });
 
-   // Categories for income and expenses
+   
    const categories = {
       income: ["Crop Sales", "Export Sales", "Wholesale Supply", "Other"],
       expense: ["Seeds", "Fertilizers", "Transportation", "Rent", "Other"],
@@ -137,9 +137,9 @@ export default function BudgetPlanner() {
             "http://localhost:8005/api/transactions"
          );
 
-         const userId = "user123"; // Set the user ID you want to filter by
+         const userId = "user123"; 
 
-         // Filter transactions based on user ID
+         
          const filteredTransactions = response.data.filter(
             (txn) => txn.userid === userId
          );
@@ -147,18 +147,18 @@ export default function BudgetPlanner() {
          setOriginalTransactions(filteredTransactions);
          setTransactions(filteredTransactions);
          setFil(filteredTransactions);
-         // Store original data
+         
       } catch (error) {
          console.error("Error fetching transactions:", error);
       }
    };
 
-   // Fetch transactions from the backend
+   
    useEffect(() => {
       fetchTransactions();
    }, []);
 
-   // Handle search functionality
+   
    const handleSearch = (e) => {
       const value = e.target.value.toLowerCase();
       setSearchTerm(value);
@@ -175,7 +175,7 @@ export default function BudgetPlanner() {
       }
    };
 
-   // Handle filtering by type
+   
    const handleFilter = (e) => {
       const selectedType = e.target.value;
       if (selectedType === "all") {
@@ -220,7 +220,7 @@ export default function BudgetPlanner() {
       ],
    };
 
-   // Bar chart data for category breakdown
+   
    const categoryData = {
       labels: [...new Set(transactions.map((t) => t.category))],
       datasets: [
@@ -278,6 +278,7 @@ export default function BudgetPlanner() {
       ],
    };
 
+   //Adding Transactions
    const handleAddTransaction = async (e) => {
       e.preventDefault();
       try {
@@ -301,7 +302,7 @@ export default function BudgetPlanner() {
       }
    };
 
-   // Handle updating an existing transaction
+   // updating  transaction
    const handleUpdateTransaction = async (e) => {
       e.preventDefault();
       try {
@@ -322,17 +323,17 @@ export default function BudgetPlanner() {
             description: "",
             id: null,
          });
-         setUpdateForm(false); // Close the modal after successful update
+         setUpdateForm(false); 
       } catch (error) {
          console.error("Error updating transaction:", error);
       }
    };
 
-   // Handle modal visibility
+   // modal visible
    const handleUpdate = (id) => {
       const transaction = transactions.find((t) => t._id === id);
       setUpdateTransaction(transaction);
-      setUpdateForm(true); // Show modal
+      setUpdateForm(true); 
    };
 
    // Close modal
@@ -344,7 +345,7 @@ export default function BudgetPlanner() {
    const handleDelete = async (id) => {
       try {
          await axios.delete(`http://localhost:8005/api/transactions/${id}`);
-         // Update the state by filtering out the deleted transaction
+         
          setTransactions(transactions.filter((t) => t._id !== id));
          fetchTransactions();
       } catch (error) {
@@ -599,7 +600,7 @@ export default function BudgetPlanner() {
 
             {/* Transactions Table */}
             <div className="rounded-lg overflow-hidden bg-white shadow-lg">
-               {/* Modal for updating transaction */}
+               {/* Modal updating transaction */}
                {updateForm && (
                   <div className="fixed inset-0 backdrop-blur-xs bg-opacity-50 flex justify-center items-center z-50">
                      <div className="bg-white p-6 rounded-lg shadow-lg w-96">

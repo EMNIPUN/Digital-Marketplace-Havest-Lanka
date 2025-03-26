@@ -8,7 +8,6 @@ function SideNavTabs() {
     const location = useLocation();
     const [activeTabUrl, setActiveTabUrl] = useState(location.pathname);
 
-    // Update activeTabUrl whenever the route changes
     useEffect(() => {
         setActiveTabUrl(location.pathname);
     }, [location.pathname]);

@@ -40,13 +40,11 @@ function Card4() {
 
     return (
         <div className="col-span-4 bg-white rounded-lg shadow-md p-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold text-[#464255]">Broadcast</h2>
                 <img className="w-[30px] h-[30px]" src={ThreeDots} alt="Options" />
             </div>
 
-            {/* Heading Input */}
             <div className="mt-4">
                 <input
                     type="text"
@@ -59,7 +57,6 @@ function Card4() {
                 />
             </div>
 
-            {/* Message Textarea */}
             <div className="mt-4">
                 <textarea
                     rows="4"
@@ -72,7 +69,6 @@ function Card4() {
                 />
             </div>
 
-            {/* Send Button */}
             <div className="flex justify-end mt-4">
                 <button
                     type="button"

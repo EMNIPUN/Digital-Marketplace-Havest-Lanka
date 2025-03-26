@@ -123,7 +123,6 @@ const RegisterForm = (props) => {
         const file = e.target.files[0];
         if (file && file.type.startsWith("image/")) {
             setFormData({ ...formData, displayPicture: file });
-            // Create a preview URL for debugging purposes
             setPreviewUrl(URL.createObjectURL(file));
             setErrors({ ...errors, displayPicture: "" });
         } else {
@@ -154,22 +153,18 @@ const RegisterForm = (props) => {
             return;
         }
 
-        // Build FormData to handle file uploads
         const data = new FormData();
         data.append("email", formData.email);
         data.append("name", formData.name);
-        // Map NIC to "NIC" to match backend
         data.append("NIC", formData.nic);
         data.append("number", formData.number);
         data.append("password", formData.password);
         data.append("role", props.role || formData.role);
-        // status is a Boolean in the backend
         data.append("status", formData.status);
         if (formData.displayPicture) {
             data.append("displayPicture", formData.displayPicture);
         }
 
-        // Debug: log all form data key-value pairs
         console.log("Submitting form data:");
         for (let pair of data.entries()) {
             console.log(`${pair[0]}:`, pair[1]);
@@ -189,7 +184,6 @@ const RegisterForm = (props) => {
             toast.success("Registration successful!");
             setSubmitSuccess("Registration successful!");
             setSubmitError("");
-            // Reset form fields after successful submission
             setFormData(initialFormState);
             setPreviewUrl(null);
             setErrors({});
@@ -233,7 +227,6 @@ const RegisterForm = (props) => {
 
     return (
         <div className="flex items-center justify-center bg-gray-100 px-4 p-3">
-            {/* Toast notifications container */}
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -251,6 +244,7 @@ const RegisterForm = (props) => {
                             label: "Name",
                             icon: <User size={20} className="text-gray-500" />,
                             type: "text",
+                            placeholder: "Enter full name",
                         },
                         {
                             name: "nic",
@@ -264,6 +258,7 @@ const RegisterForm = (props) => {
                             label: "Email",
                             icon: <Mail size={20} className="text-gray-500" />,
                             type: "email",
+                            placeholder: "example@email.com",
                         },
                         {
                             name: "number",
@@ -271,7 +266,7 @@ const RegisterForm = (props) => {
                             icon: <Phone size={20} className="text-gray-500" />,
                             type: "tel",
                             prefix: "+94",
-                            placeholder: "Enter your phone number",
+                            placeholder: "07XXXXXXXX",
                         },
                     ].map((field, index) => (
                         <motion.div
@@ -308,7 +303,6 @@ const RegisterForm = (props) => {
                         </motion.div>
                     ))}
 
-                    {/* Conditional rendering for Password Field */}
                     {props.role !== "farmer" ? (
                         <motion.div
                             variants={inputVariants}

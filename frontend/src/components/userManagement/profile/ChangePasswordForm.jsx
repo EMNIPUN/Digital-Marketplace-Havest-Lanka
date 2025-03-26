@@ -37,7 +37,6 @@ const ChangePasswordForm = () => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
 
-        // Real-time Validation
         if (name === "newPassword") {
             if (!validatePassword(value)) {
                 setErrors((prev) => ({
@@ -86,10 +85,9 @@ const ChangePasswordForm = () => {
                 }
             );
 
-            // Show success toast on successful password change
             toast.success(response.data.message || "Password changed successfully.");
 
-            setFormData({ currentPassword: "", newPassword: "", confirmPassword: "" }); // Reset form
+            setFormData({ currentPassword: "", newPassword: "", confirmPassword: "" });
         } catch (error) {
             if (error.response?.status === 401) {
                 toast.error("User not found.");

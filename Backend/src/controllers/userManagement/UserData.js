@@ -37,9 +37,19 @@ export const FindUserById = async (req, res) => {
     }
 }
 
+const storage = multer.diskStorage({
+    destination: "./uploads/",
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
+
+const upload = multer({ storage });
+
 export const UpdateUserById = async (req, res) => {
     try {
         const { userId, name, number } = req.body;
+        const displayPicture = req.file ? `/uploads/${req.file.filename}` : null;
 
         if (!userId) {
             return res.status(400).json({ message: "User ID is required" });
@@ -51,21 +61,9 @@ export const UpdateUserById = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        if (req.file) {
-            const newFilePath = `/uploads/${req.file.filename}`;
-
-            if (user.displayPicture && user.displayPicture !== "/uploads/default.png") {
-                const oldFilePath = path.join(__dirname, "../../..", user.displayPicture);
-                if (fs.existsSync(oldFilePath)) {
-                    fs.unlinkSync(oldFilePath);
-                }
-            }
-
-            user.displayPicture = newFilePath;
-        }
-
         user.name = name || user.name;
         user.number = number || user.number;
+        user.displayPicture = displayPicture || user.displayPicture
 
         await user.save();
 
@@ -74,6 +72,8 @@ export const UpdateUserById = async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 };
+
+export const uploadUpdateMiddleware = upload.single("displayPicture");
 
 
 export const DeleteUserById = async (req, res) => {

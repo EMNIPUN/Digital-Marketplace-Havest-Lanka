@@ -33,35 +33,30 @@ function LoginPortal() {
                 <h1 className="text-white text-3xl font-bold text-center mb-6">LOGIN PORTAL</h1>
 
                 <div className="grid grid-cols-2 gap-4">
-                    {/* Shop Owner */}
                     <LoginCard
                         title="Shop Owner"
                         icon={<Store className="text-blue-500 w-8 h-8" />}
                         onClick={() => redirect("shopowner")}
                     />
 
-                    {/* Farmer */}
                     <LoginCard
                         title="Farmer"
                         icon={<Tractor className="text-green-500 w-8 h-8" />}
                         onClick={() => redirect("farmer")}
                     />
 
-                    {/* Driver */}
                     <LoginCard
                         title="Driver"
                         icon={<Truck className="text-yellow-500 w-8 h-8" />}
                         onClick={() => redirect("driver")}
                     />
 
-                    {/* Finance Manager */}
                     <LoginCard
                         title="Finance Manager"
                         icon={<DollarSign className="text-purple-500 w-8 h-8" />}
                         onClick={() => redirect("financemanager")}
                     />
 
-                    {/* Market Manager (Takes Twice the Width) */}
                     <LoginCard
                         title="Market Manager"
                         icon={<Briefcase className="text-red-500 w-8 h-8" />}

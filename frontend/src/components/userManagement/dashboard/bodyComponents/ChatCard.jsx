@@ -6,7 +6,6 @@ function ChatCard(props) {
 
     return (
         <div className="w-[350px] flex-shrink-0 bg-white rounded-md shadow-md p-4 mb-2">
-            {/* User Info */}
             <div className="flex items-center space-x-3">
                 <img
                     src={props.displayPicture}
@@ -19,12 +18,10 @@ function ChatCard(props) {
                 </div>
             </div>
 
-            {/* Message */}
             <p className="mt-3 text-sm text-gray-600 leading-relaxed w-[320px] h-[70px] overflow-hidden">
                 {props.message}
             </p>
 
-            {/* Buttons */}
             <div className="mt-4 flex space-x-2">
                 <button
                     className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-1.5 rounded-md"
@@ -37,7 +34,6 @@ function ChatCard(props) {
                 </button>
             </div>
 
-            {/* Popup Chat Box */}
             {isChatOpen && <PopupChatBox onClose={() => setIsChatOpen(false)} />}
         </div>
     );

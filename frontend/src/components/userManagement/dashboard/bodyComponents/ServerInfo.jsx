@@ -11,11 +11,11 @@ const ServerInfo = () => {
                     processor: serverData.processor || "Unknown Processor",
                     ram: `${serverData.ramUsage || 0}% Used`,
                     disk: `${serverData.diskUsage || 0}% Used`,
-                    ip: { public: "192.168.1.1", private: "10.0.0.1" }, // IP remains unchanged
-                    database: "MongoDB", // Updated to MongoDB
+                    ip: { public: "192.168.1.1", private: "10.0.0.1" },
+                    database: "MongoDB",
                     temperature: `${serverData.swapMemory || "N/A"} GB`,
                     powerStatus: serverData.powerStatus || "Unknown Power Status",
-                    hostname: "localhost", // Updated hostname
+                    hostname: "localhost",
                     cpuLoad: `${serverData.cpuUsage || 0}%`,
                     totalProcesses: serverData.totalProcessos || "N/A",
                     swapMemory: `${serverData.swapMemory || "N/A"} GB Used`,
