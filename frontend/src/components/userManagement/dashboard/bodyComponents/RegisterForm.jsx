@@ -251,6 +251,7 @@ const RegisterForm = (props) => {
                             label: "Name",
                             icon: <User size={20} className="text-gray-500" />,
                             type: "text",
+                            placeholder: "Enter full name",
                         },
                         {
                             name: "nic",
@@ -264,6 +265,7 @@ const RegisterForm = (props) => {
                             label: "Email",
                             icon: <Mail size={20} className="text-gray-500" />,
                             type: "email",
+                            placeholder: "example@email.com",
                         },
                         {
                             name: "number",
@@ -271,7 +273,7 @@ const RegisterForm = (props) => {
                             icon: <Phone size={20} className="text-gray-500" />,
                             type: "tel",
                             prefix: "+94",
-                            placeholder: "Enter your phone number",
+                            placeholder: "07XXXXXXXX",
                         },
                     ].map((field, index) => (
                         <motion.div

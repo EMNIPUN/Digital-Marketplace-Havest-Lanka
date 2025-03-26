@@ -92,6 +92,7 @@ const ProfilePage = () => {
             alert(`Error deleting account: ${error.response?.data?.message || error.message}`);
         }
     };
+    console.log(userData.displayPicture);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f4f4f4] to-[#e0e0e0] flex items-center justify-center p-6">
@@ -137,7 +138,7 @@ const ProfilePage = () => {
                         <div className="p-1 bg-white rounded-full">
                             <img
                                 className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg"
-                                src={`http://localhost:8005${userData.diplayPicture}` || DefaultDP}
+                                src={`http://localhost:8005${userData.displayPicture}` || DefaultDP}
                                 alt="Profile"
                             />
                         </div>
