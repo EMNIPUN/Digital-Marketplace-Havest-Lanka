@@ -7,6 +7,7 @@ import Token from '@/components/userManagement/logins/Token';
 import BidsTypeTab from '@/components/farmerManagement/BidsTypeTab/BidsTypeTab';
 import VegetablePriceMarqueeWithStyles from '@/components/farmerManagement/VegetablePriceMarquee/VegetablePriceMarquee';
 import FooterLandingPage from '@/components/other/FooterLandingPage';
+import { ToastContainer } from 'react-toastify';
 
 function Bids() {
   const token = Token();

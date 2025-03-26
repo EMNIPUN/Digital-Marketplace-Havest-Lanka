@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
 
 function DeleteBidForm({bidDetails}) {
 
@@ -8,13 +9,26 @@ function DeleteBidForm({bidDetails}) {
 
     console.log(bidDetails._id)
     console.log(bidDetails.cropsName)
+  
+    const notifyAdd = () => {
+      toast("Bid Post Updated Successfull!", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };   
 
   const handleDelete = async () => {
     try{
         await axios
             .delete("http://localhost:8005/api/BidPost/"+bidDetails._id);
             console.log("Delete Successfull");
+
             navigate('/farmer/mybids');
+            notifyAdd();
     }catch(error){
         console.error("Bid Not Deleted")
     }
@@ -24,6 +38,8 @@ function DeleteBidForm({bidDetails}) {
     // Add your cancel logic here
     console.log('Delete cancelled')
   }
+
+ 
 
   return (
     <div className="delete-bid-form p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
@@ -45,6 +61,7 @@ function DeleteBidForm({bidDetails}) {
           Cancel
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

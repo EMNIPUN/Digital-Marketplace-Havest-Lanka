@@ -70,6 +70,17 @@ function BidForm() {
     return isValid;
   };
 
+  const notifyAdd = () => {
+    toast("Bid Placed Successfull!", {
+       hideProgressBar: true,
+       autoClose: 3000,
+       style: {
+          background: " #108a01",
+          color: "#fff",
+       },
+    });
+ };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     
@@ -222,6 +233,7 @@ function BidForm() {
         </div>
     </div>
   );
+  
 }
 
 export default BidForm;
