@@ -11,6 +11,7 @@ import GetAllAccounts from '../../controllers/userManagement/fetch/GetAllAccount
 import GetActiveSessions from '../../controllers/userManagement/fetch/GetActiveSessions.js'
 import DeactivateUser from '../../controllers/userManagement/DeactivateAccount.js'
 import ReactivateUsers from '../../controllers/userManagement/ReactivateAccounts.js'
+import UserRegistrationReport from '../../controllers/userManagement/reports/UserRegistrationReport.js'
 
 const router = express.Router()
 
@@ -25,6 +26,7 @@ router.get("/getallaccounts", GetAllAccounts)
 router.get("/getactivesessions", GetActiveSessions)
 router.post("/deactivate", DeactivateUser)
 router.post("/reactivate", ReactivateUsers)
+router.get("/report/user-registration", UserRegistrationReport)
 
 router.get("/test/manual-alerts", addMultipleAlertsByUrl)
 
