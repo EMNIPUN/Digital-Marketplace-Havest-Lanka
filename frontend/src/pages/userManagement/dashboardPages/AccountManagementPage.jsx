@@ -3,7 +3,7 @@ import AccountsTable from '../../../components/userManagement/dashboard/bodyComp
 
 function AccountManagementPage() {
     return (
-        <div className=' ml-3 mr-6'>
+        <div className='ml-3 mr-6'>
             <AccountsTable />
         </div>
     )

@@ -11,7 +11,6 @@ import AccountManagementPage from "../pages/userManagement/dashboardPages/Accoun
 import ReportsPage from "../pages/userManagement/dashboardPages/ReportsPage";
 import ActivityMonitoringPage from "../pages/userManagement/dashboardPages/ActivityMonitoringPage";
 import SystemConfigurationsPage from "../pages/userManagement/dashboardPages/SystemConfigurationsPage";
-import TransportManagementPage from "../pages/userManagement/dashboardPages/TransportManagementPage";
 
 function AdminRoutes() {
    return (
@@ -28,8 +27,6 @@ function AdminRoutes() {
                <Route path="finance-manager" element={<FinanceManagerRegistrationPage />} />
                <Route path="market-manager" element={<MarketManagerRegistrationPage />} />
             </Route>
-
-            <Route path="transport" element={<TransportManagementPage />} />
 
             <Route path="reports" element={<ReportsPage />} />
 

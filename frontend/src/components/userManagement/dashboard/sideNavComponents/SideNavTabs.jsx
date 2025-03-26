@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SideNavTab from './SideNavTab';
-import { CheckedGrid, Configs, FileIcon, Folder, Glob2, PensilSquare, People, PersonLinesFill, TruckIcon } from '../../icons/Icons';
+import { CheckedGrid, Configs, FileIcon, Folder, Glob2, PensilSquare, People, PersonLinesFill } from '../../icons/Icons';
 import SideNavSubTab from './SideNavSubTab';
 import { useLocation } from 'react-router-dom';
 
@@ -28,8 +28,6 @@ function SideNavTabs() {
                 <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Finance Managers" url="/admin/user-registration/finance-manager" />
                 <SideNavSubTab sendActiveTabUrl={recieveActiveTabUrl} activeTabUrl={activeTabUrl} tabName="Market Managers" url="/admin/user-registration/market-manager" />
             </SideNavTab>
-
-            <SideNavTab sendActiveTabUrl={recieveActiveTabUrl} icon={<TruckIcon />} active={activeTabUrl} tabName="Transport" url="/admin/transport" />
 
             <SideNavTab sendActiveTabUrl={recieveActiveTabUrl} icon={<FileIcon />} active={activeTabUrl} tabName="Reports" url="/admin/reports" />
 
