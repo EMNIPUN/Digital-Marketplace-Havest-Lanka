@@ -41,7 +41,7 @@ function Login(props) {
                navigate("/driver");
                break;
             case "financemanager":
-               navigate("/financemanager");
+               navigate("/finance");
                break;
             default:
                console.log("Unknown role");

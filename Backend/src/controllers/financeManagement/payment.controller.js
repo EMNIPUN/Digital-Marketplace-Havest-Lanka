@@ -15,4 +15,15 @@ const notifyPayment = async (req, res) => {
    }
 };
 
-export default { notifyPayment };
+
+const getAllPayments = async (req, res) => {
+   try {
+      const all_payments = await Payment.find();
+
+      res.status(200).json(all_payments);
+   } catch (error) {
+      res.status(500).json({ message: "Error fetching transactions", error });
+   }
+};
+
+export default { notifyPayment, getAllPayments };
