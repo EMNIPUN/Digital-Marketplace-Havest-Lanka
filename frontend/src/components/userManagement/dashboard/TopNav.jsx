@@ -17,17 +17,16 @@ function TopNav() {
         setShowNotifications(!showNotifications);
     };
 
-    // Format timestamp to a human-readable date/time
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         return date.toLocaleString('en-US', {
-            weekday: 'short', // e.g., 'Mon'
-            year: 'numeric', // e.g., '2025'
-            month: 'short', // e.g., 'Mar'
-            day: 'numeric', // e.g., '22'
-            hour: '2-digit', // e.g., '04 PM'
-            minute: '2-digit', // e.g., '18'
-            hour12: true, // AM/PM
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
         });
     };
 
@@ -39,16 +38,16 @@ function TopNav() {
 
                 const data = await response.json();
                 const broadcasts = data.broadcasts || [];
-                setNotifications(broadcasts.reverse()); // Show latest notifications first
+                setNotifications(broadcasts.reverse());
             } catch (error) {
                 console.error("Error fetching notifications:", error);
             }
         }
 
-        fetchBroadcasts(); // Fetch immediately
-        const interval = setInterval(fetchBroadcasts, 2000); // Fetch every 2 seconds
+        fetchBroadcasts();
+        const interval = setInterval(fetchBroadcasts, 2000);
 
-        return () => clearInterval(interval); // Cleanup interval on unmount
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -101,7 +100,6 @@ function TopNav() {
                                                 <div className='flex-1'>
                                                     <p className='font-bold'>{notification.title}</p>
                                                     <p className='text-sm text-gray-600'>{notification.message}</p>
-                                                    {/* Displaying the formatted timestamp */}
                                                     <p className='text-xs text-gray-400 mt-1'>
                                                         {formatDate(notification.timestamp)}
                                                     </p>

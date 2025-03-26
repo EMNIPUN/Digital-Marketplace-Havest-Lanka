@@ -8,7 +8,7 @@ function Login(props) {
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [error, setError] = useState("");
-   const [loading, setLoading] = useState(false); // ✅ Add loading state
+   const [loading, setLoading] = useState(false);
 
    const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ function Login(props) {
    const handleLogin = async (e) => {
       e.preventDefault();
       setLoading(true);
-      setError(""); // Reset error on new submission
+      setError("");
 
       try {
          const response = await axios.post(
@@ -118,9 +118,9 @@ function Login(props) {
                                  : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
                                  }`}
                               onClick={(e) => handleLogin(e)}
-                              disabled={loading} // ✅ Disable button when loading
+                              disabled={loading}
                            >
-                              {loading ? "Wait..." : "Sign In"} {/* ✅ Change text */}
+                              {loading ? "Wait..." : "Sign In"}
                            </button>
                            <p className="text-xs text-[#374151] font-md mt-1 cursor-pointer hover:text-[#00B074]">
                               Forgot password?

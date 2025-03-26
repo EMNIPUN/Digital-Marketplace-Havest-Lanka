@@ -15,7 +15,6 @@ const PieChartX = ({ percentage, name, color1, color2 }) => {
 
     return (
         <div className="text-center">
-            {/* Pie Chart */}
             <div className="relative inline-block">
                 <PieChart width={100} height={100}>
                     <Pie
@@ -34,13 +33,11 @@ const PieChartX = ({ percentage, name, color1, color2 }) => {
                     </Pie>
                 </PieChart>
 
-                {/* Center Percentage */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-bold text-gray-900">
                     {percentage}%
                 </div>
             </div>
 
-            {/* Chart Name */}
             <p className="mt-2 text-[13px] font-semibold text-gray-700">{name}</p>
         </div>
     );

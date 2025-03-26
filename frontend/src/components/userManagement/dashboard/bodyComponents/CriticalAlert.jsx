@@ -7,7 +7,6 @@ function CriticalAlert({ alertData }) {
 
     return (
         <>
-            {/* Alert Item */}
             <div className="bg-[#00b0753d] p-2 rounded-md flex items-center justify-between w-full mb-2 shadow-sm hover:bg-[#00b0755b] transition">
                 <div className="flex items-center text-[#000000cc]">
                     <AlertCircle className="text-red-500" size={18} />
@@ -21,7 +20,6 @@ function CriticalAlert({ alertData }) {
                 </button>
             </div>
 
-            {/* Popup Modal */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -37,7 +35,7 @@ function CriticalAlert({ alertData }) {
                             exit={{ scale: 0.8, opacity: 0 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
                         >
-                            {/* Close Button */}
+
                             <button
                                 className="absolute top-3 right-3 bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-gray-600"
                                 onClick={() => setIsOpen(false)}
@@ -45,7 +43,6 @@ function CriticalAlert({ alertData }) {
                                 <X size={16} />
                             </button>
 
-                            {/* Popup Content */}
                             <h2 className="text-lg font-bold text-red-600 mb-2">{alertData.title}</h2>
                             <p className="text-sm text-gray-700 mb-2"><strong>Type:</strong> {alertData.type}</p>
                             <p className="text-sm text-gray-700 mb-2"><strong>Date:</strong> {new Date(alertData.date).toLocaleString()}</p>

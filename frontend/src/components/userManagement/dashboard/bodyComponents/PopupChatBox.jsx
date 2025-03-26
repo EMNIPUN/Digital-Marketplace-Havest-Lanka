@@ -10,15 +10,14 @@ function PopupChatBox({ onClose }) {
     ]);
     const [input, setInput] = useState("");
     const messagesEndRef = useRef(null);
-    const chatBoxRef = useRef(null); // Ref for detecting outside clicks
+    const chatBoxRef = useRef(null);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
-        // Click outside to close
         function handleClickOutside(event) {
             if (chatBoxRef.current && !chatBoxRef.current.contains(event.target)) {
-                onClose(); // Close the chat
+                onClose();
             }
         }
 
@@ -44,24 +43,20 @@ function PopupChatBox({ onClose }) {
             <AnimatePresence>
                 <motion.div
                     ref={chatBoxRef}
-                    initial={{ opacity: 0, scale: 0.5 }} // Start small
-                    animate={{ opacity: 1, scale: 1 }} // Expand to full size
-                    exit={{ opacity: 0, scale: 1.2 }} // Pops out on exit
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.2 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="bg-white w-full max-w-md rounded-2xl shadow-lg flex flex-col h-[600px]" // Added rounded-2xl for smooth edges
+                    className="bg-white w-full max-w-md rounded-2xl shadow-lg flex flex-col h-[600px]"
                 >
-                    {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b bg-green-600 text-white rounded-t-2xl">
-                        {/* Rounded top corners */}
                         <h3 className="text-lg font-semibold">John Snow</h3>
                         <button onClick={onClose} className="hover:text-gray-300">
                             <X className="h-6 w-6" />
                         </button>
                     </div>
 
-                    {/* Messages List */}
                     <div className="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-100 rounded-b-2xl scrollbar-thin scrollbar-thumb-[#0895663f] scrollbar-track-[#f3f2f7]">
-                        {/* Rounded bottom corners */}
                         {messages.map((msg) => (
                             <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
@@ -77,9 +72,7 @@ function PopupChatBox({ onClose }) {
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Input and Send Button */}
                     <div className="p-4 border-t bg-white flex items-center justify-between space-x-2 rounded-b-2xl">
-                        {/* Rounded bottom corners */}
                         <input
                             type="text"
                             className="flex-1 border rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-green-400"

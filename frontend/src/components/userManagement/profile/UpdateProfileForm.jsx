@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Token from "../logins/Token";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';  // Import CSS for toast notifications
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateProfileForm = ({ userId, token }) => {
     const [formData, setFormData] = useState({
@@ -42,7 +42,6 @@ const UpdateProfileForm = ({ userId, token }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Prevent submission if there are validation errors
         if (errors.name || errors.number) return;
 
         setLoading(true);
@@ -67,10 +66,8 @@ const UpdateProfileForm = ({ userId, token }) => {
                 }
             );
 
-            // Show success toast message
             toast.success(response.data.message || "Profile updated successfully!");
         } catch (error) {
-            // Show error toast message based on error response
             toast.error(error.response?.data?.error || error.message);
         } finally {
             setLoading(false);
@@ -120,7 +117,6 @@ const UpdateProfileForm = ({ userId, token }) => {
                 </button>
             </form>
 
-            {/* ToastContainer is where the notifications will appear */}
             <ToastContainer />
         </>
     );

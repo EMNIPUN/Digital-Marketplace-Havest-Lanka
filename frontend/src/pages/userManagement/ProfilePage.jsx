@@ -18,7 +18,7 @@ import { CopyNotFilled, CopyFilled, Facebook, Google } from '../../components/us
 const ProfilePage = () => {
     const token = Token();
     const { id } = useParams();
-    const isOwner = id === token.userId; // Determine if the logged-in user owns the profile
+    const isOwner = id === token.userId;
 
     const [isCopied, setIsCopied] = useState(false);
     const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
@@ -48,7 +48,7 @@ const ProfilePage = () => {
         });
     };
 
-    // Map roles to banners
+
     const roleBanners = {
         "marketmanager": AdminProfileImg,
         "farmer": FarmerProfileImg,
@@ -125,7 +125,6 @@ const ProfilePage = () => {
             </Popup>
 
             <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden">
-                {/* Profile Banner */}
                 <div className="relative">
                     <div className="h-64 bg-gradient-to-r from-blue-500 to-purple-600 relative">
                         <img
@@ -146,16 +145,13 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="pt-24 pb-10 px-10">
-                    {/* User Name and Role */}
                     <div className="text-center mb-8">
                         <h2 className="text-4xl font-bold text-gray-800 mb-2">{userData.name}</h2>
                         <p className="text-xl text-gray-500 capitalize">{roleReturn()}</p>
                     </div>
 
                     {isOwner ? (
-                        // Layout for owner: show profile details + settings & security options.
                         <div className="grid md:grid-cols-2 gap-8">
-                            {/* Profile Details */}
                             <div className="bg-gray-50 p-6 rounded-xl shadow-md">
                                 <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Profile Details</h3>
                                 <div className="space-y-4">
@@ -187,7 +183,6 @@ const ProfilePage = () => {
                                 </div>
                             </div>
 
-                            {/* Account Settings & Security for Owner */}
                             <div className="space-y-6">
                                 <div className="bg-blue-50 p-6 rounded-xl shadow-md">
                                     <h3 className="text-xl font-semibold text-blue-800 mb-4">Profile Settings</h3>
@@ -220,7 +215,6 @@ const ProfilePage = () => {
                             </div>
                         </div>
                     ) : (
-                        // Layout for non-owner: only display the profile details (centered for a cleaner look)
                         <div className="max-w-md mx-auto bg-gray-50 p-6 rounded-xl shadow-md">
                             <h3 className="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Profile Details</h3>
                             <div className="space-y-4">
@@ -253,10 +247,8 @@ const ProfilePage = () => {
                         </div>
                     )}
 
-                    {/* Only show connected accounts and account actions for the profile owner */}
                     {isOwner && (
                         <>
-                            {/* Connected Accounts */}
                             <div className="mt-8 bg-gray-50 p-6 rounded-xl shadow-md">
                                 <h3 className="text-2xl font-semibold text-gray-800 mb-6">Connected Accounts</h3>
                                 <div className="grid md:grid-cols-2 gap-6">
@@ -287,7 +279,6 @@ const ProfilePage = () => {
                                 </div>
                             </div>
 
-                            {/* Account Actions */}
                             <div className="mt-8 grid grid-cols-2 gap-6">
                                 {token.status !== 'deactivated' && (
                                     <button

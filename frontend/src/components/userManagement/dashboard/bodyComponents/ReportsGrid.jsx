@@ -18,7 +18,7 @@ const cardVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1, // Sequential appearance effect
+      delay: i * 0.1,
       duration: 0.3,
       ease: "easeOut",
     },
@@ -30,7 +30,7 @@ function ReportsGrid() {
   const userRegistrationReportDownload = async () => {
     try {
       const response = await axios.get(`http://localhost:8005/api/admin/report/user-registration`, {
-        responseType: 'blob' // Ensures the response is treated as a file
+        responseType: 'blob'
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
