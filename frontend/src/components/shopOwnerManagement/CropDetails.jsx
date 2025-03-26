@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Profile from "../../assets/shopOwnerManagement/profile.png";
 import axios from "axios";
 import Token from "../userManagement/logins/Token";
+import { ToastContainer, toast } from "react-toastify";
 
 function CropDetails(props) {
    const {
@@ -44,7 +45,19 @@ function CropDetails(props) {
 
    useEffect(() => {
       getBids();
-   },[]);
+   }, []);
+
+   // Notification
+   const notifyAdd = () => {
+      toast("Bid Placed Successfull!", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };
 
    // set bid data
    const [bidFormData, setBidFormData] = useState({
@@ -80,7 +93,7 @@ function CropDetails(props) {
                price: "",
                status: "pending",
             });
-
+            notifyAdd();
             getBids();
          })
          .catch((error) => {
@@ -236,6 +249,7 @@ function CropDetails(props) {
                <div className="line w-full h-px bg-gray-200"></div>
             </div>
          </div>
+         <ToastContainer />
       </div>
    );
 }

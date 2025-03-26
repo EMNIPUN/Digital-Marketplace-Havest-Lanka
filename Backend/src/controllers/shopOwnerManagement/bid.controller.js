@@ -6,10 +6,10 @@ const getBids = async (req, res) => {
 
    await Bid.find({ postId })
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
@@ -19,10 +19,10 @@ const getAllBids = async (req, res) => {
 
    await Bid.find({ shopOwnerId })
       .then((response) => {
-         res.json(response);
+         res.status(200).json(response);
       })
       .catch((error) => {
-         res.json(error);
+         res.status(400).json(error);
       });
 };
 
