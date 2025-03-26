@@ -4,10 +4,45 @@ import HandleBitPlacement from '../HandleBitPlacement/HandleBitPlacement';
 import EditBidPost from '../EditBidPost/EditBidPost';
 import { Link } from 'react-router-dom';
 import TimeCountDown from '../TimeCountDown/TimeCountDown';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 const MyBidsCard = ({ bid }) => {
 
   const [showDetails, setShowDetails] = useState(false);
+
+  const generateInvoice = () => {
+    const doc = new jsPDF();
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text("Bid Invoice - Harvest Lanaka", 70, 20);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text("This document serves as the official bid invoice for the crops placed by the seller in the bidding platform.,", 20, 40);
+    doc.text("It contains the details of the crops being offered the quantity, pricing, and total cost of the bid.", 20, 45);
+  
+    doc.setFont('helvetica', 'bold');
+    doc.text("Seller: John Doe (Seller Company)", 20, 56);
+    doc.text("Seller Address: 123 Market Street, Colombo, Sri Lanka", 20, 61); 
+
+    doc.setFontSize
+  
+    autoTable(doc,{
+      startY: 74,
+      head: [['Field', 'Details']],
+      body: [
+        ['Crops Name', bid.cropsName],
+        ['Quantity', `${bid.quantity} kg`],
+        ['Price per kg', `Rs. ${bid.price}.00`],
+      ],
+    });
+  
+    doc.save(`Invoice_${bid._id}.pdf`);
+  };
+  
 
 
   return (
@@ -39,6 +74,7 @@ const MyBidsCard = ({ bid }) => {
                  bid.status === "Payment Failed" ? "bg-red-600" :
                  "bg-green-600"
               }`}></div>
+              
             </div>   
             <h2 className="text-xs font-semibold  text-gray-800">{bid.status}</h2>        
           </div>
@@ -124,8 +160,10 @@ const MyBidsCard = ({ bid }) => {
                     className="flex items-center justify-center px-4 py-2  bg-blue-100 text-blue-600 text-sm font-medium 
                       rounded-lg  opacity-90  hover:bg-blue-100 transition-colors duration-200 border border-blue-300 
                       shadow-sm"
+                    
+                    onClick={generateInvoice}
                   >
-                    <FileText className="mr-2" size={16} />
+                    <FileText  className="mr-2" size={16} />
                     Generate Invoice
                   </button>
                 </div>

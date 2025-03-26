@@ -2,8 +2,13 @@ import React from 'react'
 import { FaUser } from 'react-icons/fa'
 import logo from '@/assets/farmerManagement/Navigation/avest.png';
 import { Link } from 'react-router-dom';
+import Token from '@/components/userManagement/logins/Token';
+
 
 function Navigation() {
+  const token = Token();
+  const farmerId = token.userId;
+
   return (
     <>
       <nav className="bg-white shadow-md px-[120px]">
@@ -29,9 +34,12 @@ function Navigation() {
               <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">My Bids</li>
             </Link>
 
-            <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">
+            <Link to={`/profile/${farmerId}`}>
+
+              <li className="text-slate-400 hover:text-green-600 cursor-pointer font-normal">
               <FaUser className="w-5 h-5" />
-            </li>
+              </li>
+            </Link>
           </ul>
         </div>
       </nav>
