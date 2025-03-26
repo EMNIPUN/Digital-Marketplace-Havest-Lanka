@@ -15,6 +15,7 @@ import html2pdf from "html2pdf.js";
 
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import Token from "../userManagement/logins/Token";
 
 // Register ChartJS components
 ChartJS.register(
@@ -34,8 +35,11 @@ export default function BudgetPlanner() {
    const [searchTerm, setSearchTerm] = useState("");
    const [updateForm, setUpdateForm] = useState(false);
 
+   const token = Token();
+   const sid = token.userId;
+
    const [newTransaction, setNewTransaction] = useState({
-      userid: "user123",
+      userid: sid,
       type: "expense",
       category: "",
       amount: "",
@@ -48,11 +52,9 @@ export default function BudgetPlanner() {
    const generatePDF = () => {
       const doc = new jsPDF();
 
-      
       doc.setFontSize(18);
       doc.text("Income Transactions", 14, 15);
 
-      
       const incomeData = fil
          .filter((transaction) => transaction.type === "income")
          .map((transaction) => [
@@ -62,22 +64,18 @@ export default function BudgetPlanner() {
             transaction.description,
          ]);
 
-      
       autoTable(doc, {
          head: [["Date", "Category", "Amount", "Description"]],
          body: incomeData,
-         startY: 25, 
-         theme: "striped", 
+         startY: 25,
+         theme: "striped",
       });
 
-      
       const incomeTableEndY = doc.lastAutoTable.finalY;
 
-      
       doc.setFontSize(18);
-      doc.text("Expense Transactions", 14, incomeTableEndY + 10); 
+      doc.text("Expense Transactions", 14, incomeTableEndY + 10);
 
-      
       const expenseData = fil
          .filter((transaction) => transaction.type === "expense")
          .map((transaction) => [
@@ -87,22 +85,20 @@ export default function BudgetPlanner() {
             transaction.description,
          ]);
 
-      
       autoTable(doc, {
          head: [["Date", "Category", "Amount", "Description"]],
          body: expenseData,
-         startY: incomeTableEndY + 20, 
-         theme: "striped", 
+         startY: incomeTableEndY + 20,
+         theme: "striped",
       });
 
-      
       doc.save("transactions.pdf");
    };
 
    const handleInputChange = (e) => {
       const { name, value } = e.target;
       setNewTransaction((prev) => ({ ...prev, [name]: value }));
-      validateField(name, value); 
+      validateField(name, value);
    };
 
    const validateField = (name, value) => {
@@ -125,7 +121,6 @@ export default function BudgetPlanner() {
       id: "",
    });
 
-   
    const categories = {
       income: ["Crop Sales", "Export Sales", "Wholesale Supply", "Other"],
       expense: ["Seeds", "Fertilizers", "Transportation", "Rent", "Other"],
@@ -137,9 +132,8 @@ export default function BudgetPlanner() {
             "http://localhost:8005/api/transactions"
          );
 
-         const userId = "user123"; 
+         const userId = sid;
 
-         
          const filteredTransactions = response.data.filter(
             (txn) => txn.userid === userId
          );
@@ -147,18 +141,15 @@ export default function BudgetPlanner() {
          setOriginalTransactions(filteredTransactions);
          setTransactions(filteredTransactions);
          setFil(filteredTransactions);
-         
       } catch (error) {
          console.error("Error fetching transactions:", error);
       }
    };
 
-   
    useEffect(() => {
       fetchTransactions();
    }, []);
 
-   
    const handleSearch = (e) => {
       const value = e.target.value.toLowerCase();
       setSearchTerm(value);
@@ -175,7 +166,6 @@ export default function BudgetPlanner() {
       }
    };
 
-   
    const handleFilter = (e) => {
       const selectedType = e.target.value;
       if (selectedType === "all") {
@@ -220,7 +210,6 @@ export default function BudgetPlanner() {
       ],
    };
 
-   
    const categoryData = {
       labels: [...new Set(transactions.map((t) => t.category))],
       datasets: [
@@ -288,7 +277,7 @@ export default function BudgetPlanner() {
          );
          setTransactions([...transactions, response.data]);
          setNewTransaction({
-            userid: "user123",
+            userid: sid,
             type: "expense",
             category: "",
             amount: "",
@@ -323,7 +312,7 @@ export default function BudgetPlanner() {
             description: "",
             id: null,
          });
-         setUpdateForm(false); 
+         setUpdateForm(false);
       } catch (error) {
          console.error("Error updating transaction:", error);
       }
@@ -333,7 +322,7 @@ export default function BudgetPlanner() {
    const handleUpdate = (id) => {
       const transaction = transactions.find((t) => t._id === id);
       setUpdateTransaction(transaction);
-      setUpdateForm(true); 
+      setUpdateForm(true);
    };
 
    // Close modal
@@ -345,7 +334,7 @@ export default function BudgetPlanner() {
    const handleDelete = async (id) => {
       try {
          await axios.delete(`http://localhost:8005/api/transactions/${id}`);
-         
+
          setTransactions(transactions.filter((t) => t._id !== id));
          fetchTransactions();
       } catch (error) {

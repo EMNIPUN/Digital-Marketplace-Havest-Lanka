@@ -77,12 +77,12 @@ export default function Payform() {
             <input
                type="hidden"
                name="return_url"
-               value="http://localhost:5173/payment_details"
+               value="http://localhost:5173/shopowner"
             />
             <input
                type="hidden"
                name="cancel_url"
-               value="http://localhost:5173/payment_details"
+               value="http://localhost:5173/shopowner"
             />
             <input
                type="hidden"
