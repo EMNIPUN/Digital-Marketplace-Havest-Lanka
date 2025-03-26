@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
     },
     "status": {
         type: Boolean,
-        required: true
+        default: true
     },
     "NIC": {
         type: String,

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Filter } from 'lucide-react';
 import Danger from '../../../../assets/userManagement/danger.jpg';
 import CoverPhoto from '../../../../assets/userManagement/coverPhoto.jpg';
+import DefaultDP from '../../../../assets/userManagement/defaultDP.png';
 
 function AccountsTable() {
     const [accounts, setAccounts] = useState([]);
@@ -36,7 +37,7 @@ function AccountsTable() {
                     phone: account.number,
                     role: account.role,
                     nic: account.NIC || "N/A",
-                    image: `http://localhost:8005${account.displayPicture}` || "https://via.placeholder.com/40",
+                    image: account.displayPicture ? `http://localhost:8005${account.displayPicture}` : DefaultDP,
                     cover: account.cover || "https://via.placeholder.com/400",
                     status: (account.status === undefined || account.status === true) ? "Active" : "Deactivated"
                 }));
