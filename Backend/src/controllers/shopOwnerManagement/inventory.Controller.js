@@ -34,6 +34,15 @@ const addItem = async (req, res) => {
       quantity: req.body.quantity,
    });
 
+   if (
+      !inventory.shopOwnerId ||
+      !inventory.itemName ||
+      !inventory.itemCategory ||
+      !inventory.quantity
+   ) {
+      return res.status(400).json({ message: "Missing required filed" });
+   }
+
    await inventory
       .save()
       .then((response) => {

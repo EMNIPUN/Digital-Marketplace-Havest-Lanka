@@ -59,7 +59,8 @@ function Login(props) {
                console.log("Unknown role");
          }
       } catch (err) {
-         const errorMessage = err.response?.data?.message || "An unexpected error occurred.";
+         const errorMessage =
+            err.response?.data?.message || "An unexpected error occurred.";
          setError(errorMessage);
          toast.error(errorMessage);
       } finally {
@@ -113,14 +114,16 @@ function Login(props) {
 
                         <div className="w-full flex flex-col items-center justify-center">
                            <button
-                              className={`w-full p-2 mt-4 rounded-md font-bold ${loading
-                                 ? "bg-gray-400 cursor-not-allowed"
-                                 : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
-                                 }`}
+                              className={`w-full p-2 mt-4 rounded-md font-bold ${
+                                 loading
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
+                              }`}
                               onClick={(e) => handleLogin(e)}
                               disabled={loading} // ✅ Disable button when loading
                            >
-                              {loading ? "Wait..." : "Sign In"} {/* ✅ Change text */}
+                              {loading ? "Wait..." : "Sign In"}{" "}
+                              {/* ✅ Change text */}
                            </button>
                            <p className="text-xs text-[#374151] font-md mt-1 cursor-pointer hover:text-[#00B074]">
                               Forgot password?
