@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import Token from "../logins/Token";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ChangePasswordForm = () => {
     const [formData, setFormData] = useState({
@@ -14,7 +16,6 @@ const ChangePasswordForm = () => {
         confirmPassword: "",
     });
 
-    const [successMessage, setSuccessMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const tokenData = Token();
@@ -62,7 +63,6 @@ const ChangePasswordForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSuccessMessage(null);
         setLoading(true);
 
         if (errors.newPassword || errors.confirmPassword) {
@@ -86,68 +86,75 @@ const ChangePasswordForm = () => {
                 }
             );
 
-            setSuccessMessage(response.data.message || "Password changed successfully.");
+            // Show success toast on successful password change
+            toast.success(response.data.message || "Password changed successfully.");
+
             setFormData({ currentPassword: "", newPassword: "", confirmPassword: "" }); // Reset form
         } catch (error) {
-            setErrors((prev) => ({
-                ...prev,
-                newPassword: error.response?.data?.message || "Something went wrong.",
-            }));
+            if (error.response?.status === 401) {
+                toast.error("User not found.");
+            } else if (error.response?.status === 402) {
+                toast.error("Current password is wrong.");
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            {successMessage && <p className="text-green-500">{successMessage}</p>}
+        <>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Current Password</label>
+                    <input
+                        type="password"
+                        name="currentPassword"
+                        value={formData.currentPassword}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
+                        required
+                    />
+                </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Current Password</label>
-                <input
-                    type="password"
-                    name="currentPassword"
-                    value={formData.currentPassword}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-                    required
-                />
-            </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">New Password</label>
+                    <input
+                        type="password"
+                        name="newPassword"
+                        value={formData.newPassword}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
+                        required
+                    />
+                    {errors.newPassword && <p className="text-red-500 text-sm">{errors.newPassword}</p>}
+                </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700">New Password</label>
-                <input
-                    type="password"
-                    name="newPassword"
-                    value={formData.newPassword}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-                    required
-                />
-                {errors.newPassword && <p className="text-red-500 text-sm">{errors.newPassword}</p>}
-            </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
+                        required
+                    />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+                </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-                    required
-                />
-                {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-            </div>
+                <button
+                    type="submit"
+                    className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                    disabled={loading || errors.newPassword || errors.confirmPassword}
+                >
+                    {loading ? "Changing..." : "Change Password"}
+                </button>
+            </form>
 
-            <button
-                type="submit"
-                className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:opacity-50"
-                disabled={loading || errors.newPassword || errors.confirmPassword}
-            >
-                {loading ? "Changing..." : "Change Password"}
-            </button>
-        </form>
+            <ToastContainer />
+        </>
     );
 };
 

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Mail, User, Phone, Lock, Image, RefreshCcw, IdCard } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const generatePassword = () => {
     const chars =
@@ -147,7 +149,7 @@ const RegisterForm = (props) => {
         // Check for validation errors
         const hasErrors = Object.values(errors).some((err) => err !== "");
         if (hasErrors) {
-            setSubmitError("Please fix the errors before submitting.");
+            toast.error("Please fix the errors before submitting.");
             console.error("Validation errors:", errors);
             return;
         }
@@ -184,6 +186,7 @@ const RegisterForm = (props) => {
                 }
             );
             console.log("Response from server:", response.data);
+            toast.success("Registration successful!");
             setSubmitSuccess("Registration successful!");
             setSubmitError("");
             // Reset form fields after successful submission
@@ -194,8 +197,27 @@ const RegisterForm = (props) => {
             console.error("Registration error:", error);
             if (error.response) {
                 console.error("Error response data:", error.response.data);
+                switch (error.response.status) {
+                    case 400:
+                        toast.error("Email already exists.");
+                        setSubmitError("Email already exists.");
+                        break;
+                    case 401:
+                        toast.error("Number already exists.");
+                        setSubmitError("Number already exists.");
+                        break;
+                    case 402:
+                        toast.error("NIC already exists.");
+                        setSubmitError("NIC already exists.");
+                        break;
+                    default:
+                        toast.error("Registration failed. Please try again later.");
+                        setSubmitError("Registration failed. Please try again later.");
+                }
+            } else {
+                toast.error("Registration failed. Please try again later.");
+                setSubmitError("Registration failed. Please try again later.");
             }
-            setSubmitError("Registration failed. Please try again later.");
             setSubmitSuccess("");
         }
     };
@@ -211,6 +233,8 @@ const RegisterForm = (props) => {
 
     return (
         <div className="flex items-center justify-center bg-gray-100 px-4 p-3">
+            {/* Toast notifications container */}
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}

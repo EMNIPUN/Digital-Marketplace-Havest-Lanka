@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import Token from "../logins/Token";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';  // Import CSS for toast notifications
 
 const UpdateProfileForm = ({ userId, token }) => {
     const [formData, setFormData] = useState({
@@ -65,56 +67,62 @@ const UpdateProfileForm = ({ userId, token }) => {
                 }
             );
 
-            setMessage(response.data.message || "Profile updated successfully!");
+            // Show success toast message
+            toast.success(response.data.message || "Profile updated successfully!");
         } catch (error) {
-            setMessage(error.response?.data?.error || error.message);
+            // Show error toast message based on error response
+            toast.error(error.response?.data?.error || error.message);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-                />
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Number</label>
-                <input
-                    type="text"
-                    name="number"
-                    value={formData.number}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-                />
-                {errors.number && <p className="text-red-500 text-sm mt-1">{errors.number}</p>}
-            </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
-                />
-            </div>
-            <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
-            >
-                {loading ? "Updating..." : "Update Profile"}
-            </button>
-            {message && <p className="text-center text-sm mt-2">{message}</p>}
-        </form>
+        <>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Number</label>
+                    <input
+                        type="text"
+                        name="number"
+                        value={formData.number}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                    {errors.number && <p className="text-red-500 text-sm mt-1">{errors.number}</p>}
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="w-full rounded-lg border border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:bg-gray-400"
+                >
+                    {loading ? "Updating..." : "Update Profile"}
+                </button>
+            </form>
+
+            {/* ToastContainer is where the notifications will appear */}
+            <ToastContainer />
+        </>
     );
 };
 
