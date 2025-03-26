@@ -81,10 +81,10 @@ function ShopOwnerOrders() {
          </div>
 
          <div className="w-full mx-auto bg-white shadow-sm rounded-sm border border-gray-200">
-            <div className="overflow-x-auto min-h-36">
-               <table className="w-full text-left border-collapse ">
+            <div className="overflow-x-auto min-h-52">
+               <table className="w-full text-left border-collapse">
                   <thead>
-                     <tr className=" border-b border-gray-200">
+                     <tr className=" border-b border-gray-200 bg-gray-50">
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Farmer
                         </th>
