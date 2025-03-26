@@ -85,7 +85,7 @@ const MyBidsCard = ({ bid }) => {
 
         {bid.status === "Payment Pending" && (
           <div className="absolute top-[65px] left-[3px] right-[20px] w-full bg-gray-100 flex justify-center">
-            <div className="bg-white p-5 text-center w-[800px] h-[350px] ">
+            <div className="bg-white p-5 text-center w-[800px] h-[350px]">
               <div className="flex justify-center items-center gap-3">
                 <div className="flex justify-center">
                   <CheckCircle className="text-green-500 w-6 h-6" />
@@ -96,11 +96,18 @@ const MyBidsCard = ({ bid }) => {
               <p className="text-gray-600 mb-4 text-sm">
                 Congratulations! Your bid has been accepted. Here are the details:
               </p>
-
-              <div className="bg-gray-100 flex-col items-center justify-between gap-2 p-3 rounded-lg text-left mb-4">
-                <p className="text-sm text-gray-700"><strong>Quantity:</strong> {bid.quantity} kg</p>
-                <p className="text-sm text-gray-700"><strong>Price per kg:</strong> Rs.{bid.price}.00</p>
-                <p className="text-sm text-gray-700"><strong>Delivery Date:</strong> {bid.deliveryDate || "Not Specified"}</p>
+              <div className='flex justify-between gap-4'>
+                
+                <div className="bg-gray-100 flex items-center justify-between gap-2 p-3 rounded-lg text-left mb-4">
+                  <p className="text-sm text-gray-700"><strong>Crops Name:</strong> {bid.cropsName}</p>
+                  <p className="text-sm text-gray-700"><strong>Quantity:</strong> {bid.quantity} kg</p>
+                  <p className="text-sm text-gray-700"><strong>Price per kg:</strong> Rs.{bid.price}.00</p>
+                </div>
+                <div className="bg-gray-100 flex items-center justify-between gap-2 p-3 rounded-lg text-left mb-4">
+                  <p className="text-sm text-gray-700"><strong>Crops Name:</strong> {bid.cropsName}</p>
+                  <p className="text-sm text-gray-700"><strong>Quantity:</strong> {bid.quantity} kg</p>
+                  <p className="text-sm text-gray-700"><strong>Price per kg:</strong> Rs.{bid.price}.00</p>
+                </div>
               </div>
 
               <div className="flex justify-center gap-4">

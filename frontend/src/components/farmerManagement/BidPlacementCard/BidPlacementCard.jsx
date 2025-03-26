@@ -7,7 +7,7 @@ function BidPlacementCard({ bidplacementDetails }) {
   const [status, setStatus] = useState({});
 
   const getBidDetails = async () => {
-    axios
+    await axios
     .get(`http://localhost:8005/api/BidPost/${bidplacementDetails.postId}`)
     .then((response) => {
       setStatus(response.data);
@@ -16,6 +16,7 @@ function BidPlacementCard({ bidplacementDetails }) {
       console.error("Error fetching bid status:", error);
     });
   }
+  
   useEffect(() => {
     getBidDetails();
   }, []);

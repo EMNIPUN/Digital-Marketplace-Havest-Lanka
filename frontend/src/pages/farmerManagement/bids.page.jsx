@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Loader, 
-  AlertCircle, 
-  Search
-} from 'lucide-react';
+import { Loader, AlertCircle, Search } from 'lucide-react';
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
 import axios from 'axios';
@@ -12,163 +8,122 @@ import BidsTypeTab from '@/components/farmerManagement/BidsTypeTab/BidsTypeTab';
 import VegetablePriceMarqueeWithStyles from '@/components/farmerManagement/VegetablePriceMarquee/VegetablePriceMarquee';
 
 function Bids() {
-
-
   const token = Token();
-
   const [selectedBidsType, setSelectedBidsType] = useState("All Bids");
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [shopOwnerBidDetails, setShopOwnerBidDetails] = useState([]);
 
-  const BidsType = ["All Bids", "Active", "Payment Pending"];
-
-  // console.log(token);
+  const BidsType = ["All Bids", "Active", "Payment Pending", "Completed"];
   const farmerId = token.userId;
-  // console.log(farmerId);
 
   const handleTypeClick = (BidsType) => {
     setSelectedBidsType(BidsType);
-  }
+  };
 
   useEffect(() => {
-
     axios
-      .get("http://localhost:8005/api/BidPost/ownbids/"+farmerId)
+      .get(`http://localhost:8005/api/BidPost/ownbids/${farmerId}`)
       .then((response) => {
-        console.log(response.data);
         setBids(response.data);
+        getAllBidPlacemenDetails();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
 
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-    
   }, []);
 
-  const filterBidsType = selectedBidsType === "All Bids" ?
-  bids : bids.filter((bid) => {
-    return bid.status.toLowerCase().includes(selectedBidsType.toLowerCase());
+
+  const filteredBids = bids.filter((bid) => {
+    return (
+      (selectedBidsType === "All Bids" || bid.status.toLowerCase().includes(selectedBidsType.toLowerCase())) &&
+      (bid.cropsName.toLowerCase().includes(searchQuery.toLowerCase()) && bid.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
   });
-
-
-
 
   if (loading) {
     return (
       <>
-        <Navigation />
-        <div className='h-[300px] w-full relative'
+      <Navigation />
+      <div className='h-[300px] w-full relative'
             style={{
               backgroundImage: 'url("https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380")',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
           >
-            <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
-              <h1 className=" text-xl font-bold text-gray-100 text-center">
-                  My Posted Bids
-              </h1>
-              <p className='text-gray-100'>Manage your posted bids here</p>
-            </div>
+          <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
+            <h1 className=" text-xl font-bold text-gray-100 text-center">
+                My Posted Bids
+            </h1>
+            <p className='text-gray-100'>Manage your posted bids here</p>
           </div>
-          <VegetablePriceMarqueeWithStyles/>
-
-          <div className=' flex flex-wrap justify-center items-center gap-8 font-light mt-10 '>
-          
-            {
-              BidsType.map((bids, index) => {
-                return (
-                  <BidsTypeTab
-                    key={index}
-                    bids={bids}
-                    selectedBidsType={selectedBidsType}
-                    onClick={handleTypeClick}
-                  />
-                );
-              })
-            }
-
-          </div>
-
-        <div className="flex space-x-2 justify-center items-start mt-20 bg-white h-screen">
-          <span className="sr-only">Loading...</span>
-          <div className="h-3 w-3 bg-black/60 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-          <div className="h-3 w-3 bg-black/60 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-          <div className="h-3 w-3 bg-black/60 rounded-full animate-bounce"></div>
         </div>
-
+      <div>
+        <VegetablePriceMarqueeWithStyles />
+      </div>
       </>
     );
   }
 
   return (
     <>
-        <Navigation />
-        <div className="">
-
-          <div className='h-[300px] w-full relative'
+      <Navigation />
+      <div className='h-[300px] w-full relative'
             style={{
               backgroundImage: 'url("https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380")',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
           >
-            <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
-              <h1 className=" text-xl font-bold text-gray-100 text-center">
-                  My Posted Bids
-              </h1>
-              <p className='text-gray-100'>Manage your posted bids here</p>
-            </div>
+          <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
+            <h1 className=" text-xl font-bold text-gray-100 text-center">
+                My Posted Bids
+            </h1>
+            <p className='text-gray-100'>Manage your posted bids here</p>
           </div>
-          <VegetablePriceMarqueeWithStyles/>
-
-          <div className="border-b border-gray-200 ">
-            <div className="flex items-center justify-between  px-4 mt-8">
-
-              <div className="flex flex-wrap justify-center items-center gap-8 font-light">
-                {BidsType.map((bids, index) => (
-                  <BidsTypeTab
-                    key={index}
-                    bids={bids}
-                    selectedBidsType={selectedBidsType}
-                    onClick={handleTypeClick}
-                  />
-                ))}
-              </div>
-              <div className='flex items-center justify-center mr-10'>
-                <input
-                  type="text"
-                  placeholder="Search bid types..."
-                  className="w-[400px] pl-3 pr-4 py-2 border-b border-gray-300  text-sm"
-                />
-                <div className=" pl-3 flex items-center pointer-events-none cursor-pointer">
-                  <button className='cursor-pointer'><Search className="text-gray-400 w-5 h-5 " /></button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <section className='mt-8 p-6'>
-              {bids.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-                    {
-                      filterBidsType.map((bid, index) => {
-                        return (<MyBidsCard key={index} bid={bid} />)
-                      })
-                    }
-                  </div>
-              ) : (
-                  <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                  <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No Bids Found</h3>
-                  <p className="text-gray-500">Start posting your bids to see them here.</p>
-                  </div>
-              )}
-          </section>
         </div>
+      <div>
+        <VegetablePriceMarqueeWithStyles />
+        <div className="border-b border-gray-200 px-4 mt-8 flex justify-between items-center">
+          <div className="flex flex-wrap gap-8">
+            {BidsType.map((type, index) => (
+              <BidsTypeTab key={index} bids={type} selectedBidsType={selectedBidsType} onClick={handleTypeClick} />
+            ))}
+          </div>
+          <div className='flex items-center gap-2 border-b border-gray-300 py-2'>
+            <input
+              type="text"
+              placeholder="Search bids..."
+              className="w-[400px] pl-3 pr-4 text-sm"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <Search className="text-gray-400 w-5 h-5" />
+          </div>
+        </div>
+
+        <section className='mt-8 p-6'>
+          {filteredBids.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredBids.map((bid, index) => (
+                <MyBidsCard key={index} bid={bid} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+              <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No Bids Found</h3>
+              <p className="text-gray-500">Try a different search term.</p>
+            </div>
+          )}
+        </section>
+      </div>
     </>
   );
 }
