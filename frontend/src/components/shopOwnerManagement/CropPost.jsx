@@ -88,6 +88,7 @@ function CropPost(props) {
                location={location}
                quantity={quantity}
                description={description}
+               farmer={farmer.name}
                farmerId={farmerId}
                bids={bids}
                postId={postId}

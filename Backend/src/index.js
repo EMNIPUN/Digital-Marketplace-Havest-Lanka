@@ -8,6 +8,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
+
+
 import bidPostRouter from "./routes/farmerManagement/BidPost.routes.js";
 
 import userRoutes from "./routes/userManagement/userRoutes.js";
@@ -20,12 +22,14 @@ import { trackRequest } from "./controllers/userManagement/fetch/SystemLoad.js";
 import inventoryRoutes from "./routes/shopOwnerManagement/inventory.routes.js";
 import bidRoutes from "./routes/shopOwnerManagement/bid.routes.js";
 import transactionRoutes from "./routes/financeManagement/transaction.routes.js";
+import paymentRoutes from "./routes/financeManagement/payment.routes.js";
 
 const app = express();
 app.use(express.json());
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const corsOptions = {
    origin: "http://localhost:5173",
@@ -40,6 +44,7 @@ connectDB();
 // Use Routes
 app.use(trackRequest);
 app.use("/api", transactionRoutes);
+app.use("/api", paymentRoutes);
 app.use("/user", userRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);

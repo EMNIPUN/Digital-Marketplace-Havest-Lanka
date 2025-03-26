@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Token from "@/components/userManagement/logins/Token";
+import { Link, useNavigate } from "react-router-dom";
+import Payform from "@/components/financeManagement/Payform";
+import md5 from "crypto-js/md5";
 
 function ShopOwnerOrders() {
    // Shop owner details
@@ -28,7 +31,43 @@ function ShopOwnerOrders() {
 
    // set details
    const orderCount = allBids.length;
-   const orderAmount = allBids.reduce((x, y) => x + Number(y.price), 0);
+   const orderAmount = allBids.reduce(
+      (x, y) => x + Number(y.price * y.quantity),
+      0
+   );
+
+   // return to payment page
+   const navigate = useNavigate();
+   const goToPayment = (id, item, amount) => {
+      createHash(id, amount);
+      navigate("/finance/payform", {
+         state: {
+            orderid: id,
+            items: item,
+            amount: amount,
+            hash: createHash(id, amount),
+         },
+      });
+   };
+
+   // careate hash
+   const createHash = (id, total) => {
+      let merchantSecret =
+         "MTMxMjc1MzI4ODMyMTI2MjkzNDgzODAwNTc1MzM3Nzc4NDI1NTE4";
+      let merchantId = "1229892";
+      let orderId = id;
+      let amount = total;
+      let hashedSecret = md5(merchantSecret).toString().toUpperCase();
+      let amountFormated = parseFloat(amount)
+         .toLocaleString("en-us", { minimumFractionDigits: 2 })
+         .replaceAll(",", "");
+      let currency = "LKR";
+      let hash = md5(
+         merchantId + orderId + amountFormated + currency + hashedSecret
+      );
+
+      return hash.toString().toUpperCase();
+   };
 
    return (
       <div className="p-[20px] w-full text-gray-500 flex flex-col gap-5">
@@ -74,7 +113,7 @@ function ShopOwnerOrders() {
                               <div className="flex items-center">
                                  <div className="">
                                     <div className="text-sm font-medium text-gray-900">
-                                       Akindu Nayanajith
+                                       {bid.farmer}
                                     </div>
                                  </div>
                               </div>
@@ -107,7 +146,16 @@ function ShopOwnerOrders() {
                            </td>
                            <td className="px-6 py-4 ">
                               {bid.status === "Accepted" ? (
-                                 <button className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm">
+                                 <button
+                                    onClick={() =>
+                                       goToPayment(
+                                          bid._id,
+                                          bid.product,
+                                          bid.price * bid.quantity
+                                       )
+                                    }
+                                    className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
+                                 >
                                     Pay Now
                                  </button>
                               ) : (
