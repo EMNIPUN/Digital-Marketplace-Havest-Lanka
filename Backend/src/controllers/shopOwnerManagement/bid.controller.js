@@ -30,6 +30,7 @@ const getAllBids = async (req, res) => {
 const addBids = (req, res) => {
    const bid = new Bid({
       farmerId: req.body.farmerId,
+      farmer: req.body.farmer,
       shopOwnerId: req.body.shopOwnerId,
       postId: req.body.postId,
       product: req.body.product,

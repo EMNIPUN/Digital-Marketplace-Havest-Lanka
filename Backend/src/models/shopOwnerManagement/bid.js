@@ -5,6 +5,10 @@ const bidSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
+   farmer: {
+      type: String,
+      required: true,
+   },
    shopOwnerId: {
       type: String,
       required: true,

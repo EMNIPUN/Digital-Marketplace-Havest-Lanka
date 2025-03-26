@@ -174,7 +174,7 @@ function FindCrops() {
                      ))
                   ) : (
                      <div className="bg-white text-gray-500 w-full shadow-sm border h-[200px] border-gray-200 text-base flex items-center justify-center">
-                        <i class="bi bi-exclamation-circle pr-2"></i>
+                        <i className="bi bi-exclamation-circle pr-2"></i>
                         No items found
                      </div>
                   );
