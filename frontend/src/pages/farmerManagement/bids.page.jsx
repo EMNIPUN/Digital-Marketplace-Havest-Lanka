@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Loader, AlertCircle, Search } from 'lucide-react';
+import { Loader, AlertCircle, Search,LoaderCircle } from 'lucide-react';
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
 import axios from 'axios';
 import Token from '@/components/userManagement/logins/Token';
 import BidsTypeTab from '@/components/farmerManagement/BidsTypeTab/BidsTypeTab';
 import VegetablePriceMarqueeWithStyles from '@/components/farmerManagement/VegetablePriceMarquee/VegetablePriceMarquee';
+import FooterLandingPage from '@/components/other/FooterLandingPage';
 
 function Bids() {
   const token = Token();
@@ -79,6 +80,10 @@ function Bids() {
       <div>
         <VegetablePriceMarqueeWithStyles />
       </div>
+      <div>
+        <LoaderCircle  className="h-15 w-15 text-gray-400 animate-spin" />
+      </div>
+
       </>
     );
   }
@@ -135,6 +140,9 @@ function Bids() {
             </div>
           )}
         </section>
+      </div>
+      <div className='mt-32'>
+        <FooterLandingPage />
       </div>
     </>
   );
