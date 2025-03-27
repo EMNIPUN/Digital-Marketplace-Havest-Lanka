@@ -106,7 +106,7 @@ function AccountsTable() {
     };
 
     return (
-        <div className="p-4 -mt-[80px] rounded-lg relative">
+        <div className="p-4 rounded-lg relative">
             <div>
                 <input
                     className="rounded-md text-sm focus:ring-2 focus:ring-green-300 focus:outline-none p-2 w-[600px] absolute top-2 left-0"
