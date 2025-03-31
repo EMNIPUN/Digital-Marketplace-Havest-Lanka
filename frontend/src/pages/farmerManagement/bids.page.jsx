@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader, AlertCircle, Search,LoaderCircle } from 'lucide-react';
+import { Loader, AlertCircle, Search, LoaderCircle, Filter } from 'lucide-react';
 import Navigation from '@/components/farmerManagement/Navigation/Navigation';
 import MyBidsCard from '@/components/farmerManagement/MyBidsCard/MyBidsCard';
 import axios from 'axios';
@@ -63,28 +63,26 @@ function Bids() {
   if (loading) {
     return (
       <>
-      <Navigation />
-      <div className='h-[300px] w-full relative'
-            style={{
-              backgroundImage: 'url("https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380")',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-          <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
-            <h1 className=" text-xl font-bold text-gray-100 text-center">
-                My Posted Bids
-            </h1>
-            <p className='text-gray-100'>Manage your posted bids here</p>
+        <Navigation />
+        <div className="h-[300px] w-full relative bg-gradient-to-r from-green-900 to-green-700 overflow-hidden">
+          <img 
+            src="https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380" 
+            alt="Vegetables and fruits" 
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
+            <h1 className="text-3xl font-bold text-white mb-2">My Posted Bids</h1>
+            <p className="text-gray-100 text-lg">Manage your posted bids here</p>
           </div>
         </div>
-      <div>
-        <VegetablePriceMarqueeWithStyles />
-      </div>
-      <div className='flex justify-center mt-10'>
-        <LoaderCircle  className="h-15 w-15 text-gray-700 animate-spin" />
-      </div>
-
+        <div>
+          <VegetablePriceMarqueeWithStyles />
+        </div>
+        <div className="flex flex-col items-center justify-center h-64">
+          <LoaderCircle className="h-12 w-12 text-green-600 animate-spin mb-4" />
+          <p className="text-gray-600 font-medium">Loading your bids...</p>
+        </div>
       </>
     );
   }
@@ -92,59 +90,98 @@ function Bids() {
   return (
     <>
       <Navigation />
-      <div className='h-[300px] w-full relative'
-            style={{
-              backgroundImage: 'url("https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380")',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-          <div className='absolute top-[200px] left-[600px] bg-black/70 rounded-full px-8 py-1'>
-            <h1 className=" text-xl font-bold text-gray-100 text-center">
-                My Posted Bids
-            </h1>
-            <p className='text-gray-100'>Manage your posted bids here</p>
-          </div>
+      <div className="h-[300px] w-full relative bg-gradient-to-r from-green-900 to-green-700 overflow-hidden">
+        <img 
+          src="https://img.freepik.com/free-photo/fresh-vegetables-fruits-healthy-eating-organic-variety-generated-by-artificial-intelligence_25030-60646.jpg?t=st=1741985890~exp=1741989490~hmac=e8bd564f5c073ddf5a113825913066c64b78852c5289ca9659e3f055c961b502&w=1380" 
+          alt="Vegetables and fruits" 
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">My Posted Bids</h1>
+          <p className="text-gray-100 text-lg">Manage your posted bids here</p>
         </div>
+      </div>
+      
       <div>
         <VegetablePriceMarqueeWithStyles />
-        <div className="border-b border-gray-200 px-4 mt-8 flex justify-between items-center">
-          <div className="flex flex-wrap gap-4">
-            {BidsType.map((type, index) => (
-              <BidsTypeTab key={index} bids={type} selectedBidsType={selectedBidsType} onClick={handleTypeClick} />
-            ))}
+        
+        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="flex flex-col md:flex-row justify-between items-center p-4 border-b border-gray-200">
+            <div className="overflow-x-auto w-full md:w-auto mb-4 md:mb-0 scrollbar-hide">
+              <div className="flex gap-2">
+                {BidsType.map((type, index) => (
+                  <BidsTypeTab key={index} bids={type} selectedBidsType={selectedBidsType} onClick={handleTypeClick} />
+                ))}
+              </div>
+            </div>
+            
+            <div className="relative w-full md:w-auto">
+              <div className="flex items-center bg-gray-50 rounded-lg border border-gray-200 px-3 py-2 focus-within:ring-2 focus-within:ring-green-500 focus-within:border-green-500">
+                <Search className="text-gray-400 w-5 h-5 mr-2" />
+                <input
+                  type="text"
+                  placeholder="Search crop names..."
+                  className="w-full md:w-80 bg-transparent text-sm focus:outline-none"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery("")}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <span className="sr-only">Clear search</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-          <div className='flex items-center gap-2 border-b border-gray-300 py-2'>
-            <input
-              type="text"
-              placeholder="Search bids..."
-              className="w-[400px] pl-3 pr-4 text-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search className="text-gray-400 w-5 h-5" />
-          </div>
-        </div>
 
-        <section className='mt-8 p-6'>
-          {filteredBids.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-              {filteredBids.map((bid, index) => (
-                <MyBidsCard key={index} bid={bid} bidId={bid._id}/>
-              ))}
+          <section className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-semibold text-gray-800">
+                {selectedBidsType === "All Bids" 
+                  ? "All Your Bids" 
+                  : `${selectedBidsType} Bids`}
+              </h2>
+              <div className="text-sm text-gray-500">
+                {filteredBids.length} {filteredBids.length === 1 ? 'bid' : 'bids'} found
+              </div>
             </div>
-          ) : (
-            <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-              <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Bids Found</h3>
-              <p className="text-gray-500">Try a different search term.</p>
-            </div>
-          )}
-        </section>
+
+            {filteredBids.length > 0 ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredBids.map((bid, index) => (
+                  <MyBidsCard key={index} bid={bid} bidId={bid._id}/>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Bids Found</h3>
+                <p className="text-gray-500 mb-4">No bids match your current filter criteria.</p>
+                {selectedBidsType !== "All Bids" && (
+                  <button 
+                    onClick={() => setSelectedBidsType("All Bids")}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                  >
+                    View All Bids
+                  </button>
+                )}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
-      <div className='mt-32'>
+      
+      <div className="mt-20">
         <FooterLandingPage />
       </div>
+      <ToastContainer position="bottom-right" />
     </>
   );
 }
