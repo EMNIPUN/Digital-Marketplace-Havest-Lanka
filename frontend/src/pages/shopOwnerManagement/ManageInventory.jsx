@@ -145,7 +145,7 @@ function ManageInventory(props) {
 
       // check item quantity lenght
       if (e.target.name === "quantity") {
-         if (e.target.value > 999999) {
+         if (e.target.value > 999999 || e.target.value < 1) {
             setIsEmpty((prev) => ({ ...prev, quantity: true }));
          } else {
             setIsEmpty((prev) => ({ ...prev, quantity: false }));

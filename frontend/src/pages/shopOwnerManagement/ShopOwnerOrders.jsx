@@ -40,7 +40,7 @@ function ShopOwnerOrders() {
    const navigate = useNavigate();
    const goToPayment = (id, item, amount) => {
       createHash(id, amount);
-      navigate("/finance/payform", {
+      navigate("/payform", {
          state: {
             orderid: id,
             items: item,

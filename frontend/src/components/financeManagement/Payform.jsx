@@ -87,7 +87,7 @@ export default function Payform() {
             <input
                type="hidden"
                name="notify_url"
-               value="https://ab8b-2402-4000-2140-4108-74c8-1e11-9041-c04f.ngrok-free.app/api/payment"
+               value="https://ce13-124-43-209-181.ngrok-free.app/api/payment"
             />
             <input type="hidden" name="country" value="Sri Lanka" />
             <input type="hidden" name="hash" value={hash} />

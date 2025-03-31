@@ -646,6 +646,7 @@ export default function BudgetPlanner() {
                                  )}
                               </select>
                            </div>
+                           
                            <div className="mb-4">
                               <label
                                  htmlFor="amount"
@@ -697,7 +698,7 @@ export default function BudgetPlanner() {
                                        id: e.target.value,
                                     })
                                  }
-                                 className="mt-1 block w-full p-2 border border-gray-300 rounded"
+                                 className="mt-1  w-full p-2 border border-gray-300 rounded hidden"
                                  hidden
                               />
                            </div>

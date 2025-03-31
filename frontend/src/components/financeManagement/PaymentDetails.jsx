@@ -4,7 +4,7 @@ export default function PaymentDetails() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Sample transaction data - replace with actual data from your API
+  // Sample transaction data
   const transactions = [
     {
       _id: "67d41fe08d2b7276954c024f",

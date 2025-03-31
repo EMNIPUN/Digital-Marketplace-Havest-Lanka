@@ -11,6 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/userManagement/ProfilePage";
 import FarmerRegistration from "./pages/userManagement/dashboardPages/FarmerRegistration";
 import DriverDashboard from "./pages/transportManagement/DriverDashboard";
+import Payform from "./components/financeManagement/Payform";
 
 function App() {
    return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="finance/*" element={<FinanceRoutes />} />
             <Route path="profile/:id" element={<ProfilePage />} />
             <Route path="driver/" element={<DriverDashboard />} />
+            <Route path="payform" element={<Payform />}></Route>
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />

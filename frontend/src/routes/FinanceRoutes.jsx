@@ -5,17 +5,11 @@ import FinanceNavBar from "@/components/financeManagement/FinanceNavBar";
 import FinanceOverview from "@/components/financeManagement/FinanceOverview";
 import FinanceSidebar from "@/components/financeManagement/FinanceSidebar";
 import Payform from "@/components/financeManagement/Payform";
-import FinanceDashboard from "@/pages/financeManagement/FinanceDashboard";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 function FinanceRoutes() {
    return (
-      // <Routes>
-      //    <Route path="/" element={<FinanceDashboard />}></Route>
-      //    <Route path="/payform" element={<Payform />}></Route>
-      // </Routes>
-
       <div className="w-full flex bg-gray-100">
          <div className="max-w-64">
             {/* Side bar showing */}
