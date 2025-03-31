@@ -2,10 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { MailPlus, PhoneOutgoing, Package, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
 
 function BidPlacementCard({ bidplacementDetails }) {
 
   const [status, setStatus] = useState({});
+
+  const notifyAdd = () => {
+    toast("Bid Accepted Successfully!", {
+       hideProgressBar: true,
+       autoClose: 3000,
+       style: {
+          background: " #108a01",
+          color: "#fff",
+       },
+    });
+ };   
 
   const getBidDetails = async () => {
     await axios
@@ -30,13 +42,14 @@ function BidPlacementCard({ bidplacementDetails }) {
         `http://localhost:8005/api/bid/updateBid/${bidplacementDetails._id}`,
         { status: "Accepted" }
       );
+
       
       await axios.put(
         `http://localhost:8005/api/BidPost/${bidplacementDetails.postId}`,
         { status: "Payment Pending" }
       ).then(response => console.log("Update response:", response.data))
       .catch(error => console.error("Update error:", error));
-
+      notifyAdd();
       getBidDetails();
       
       console.log("Bid Accepted Successfully");
@@ -103,8 +116,9 @@ function BidPlacementCard({ bidplacementDetails }) {
             </button>
 
           </div>
-        ) } 
 
+        ) } 
+        <ToastContainer/>
         { status.status == "Payment Pending" && (<div className="flex items-center justify-center  bg-gray-100">
             <div className="bg-white p-3 text-center max-w-md w-full">
               <div className='flex justify-center items-center gap-3'>

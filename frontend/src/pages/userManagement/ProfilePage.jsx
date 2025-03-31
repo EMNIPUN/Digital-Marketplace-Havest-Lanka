@@ -141,11 +141,12 @@ const ProfilePage = () => {
                         <div className="p-1 bg-white rounded-full">
                             <img
                                 className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-lg"
-                                src={`http://localhost:8005${userData.displayPicture}` || DefaultDP}
+                                src={userData.displayPicture ? `http://localhost:8005${userData.displayPicture}` : DefaultDP}
                                 alt="Profile"
                             />
                         </div>
                     </div>
+
                 </div>
 
                 <div className="pt-24 pb-10 px-10">

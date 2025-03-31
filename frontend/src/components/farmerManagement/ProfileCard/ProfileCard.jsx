@@ -10,7 +10,7 @@ const ProfileCard = () => {
           <div className="absolute -bottom-12 left-6">
             <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-md">
               <img 
-                src="/api/placeholder/96/96" 
+                src="https://img.freepik.com/premium-photo/young-indian-farmer-standing-cotton-agriculture-field_75648-6961.jpg?ga=GA1.1.354948533.1732556959&semt=ais_hybrid" 
                 alt="Nipun Dhanajaya" 
                 className="w-full h-full object-cover"
               />

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Send, MapPin, Check, TrainTrack, Loader } from 'lucide-react';
 import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
 
 function  EditBidPost({bidDetails, onUpdate}) {
 
@@ -42,6 +43,7 @@ function  EditBidPost({bidDetails, onUpdate}) {
 
       await axios.put("http://localhost:8005/api/BidPost/" + bidDetails._id, updateBidPostData);
       console.log("Bid Post Updated Successfully");
+      notifyAdd();
       setShowForm(false);
       onUpdate(updateBidPostData);
 
@@ -51,6 +53,17 @@ function  EditBidPost({bidDetails, onUpdate}) {
 
     }
   }
+
+   const notifyAdd = () => {
+      toast("Bid Post Updated Successfull!", {
+         hideProgressBar: true,
+         autoClose: 3000,
+         style: {
+            background: " #108a01",
+            color: "#fff",
+         },
+      });
+   };  
 
   return showForm ? (  
       <form onSubmit={handleUpdateSubmit} className="space-y-6">
@@ -187,7 +200,7 @@ function  EditBidPost({bidDetails, onUpdate}) {
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                   <Check className="h-6 w-6 text-green-600" />
               </div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Post Published Successfully!</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Post Updated Successfully!</h2>
               <p className="text-gray-600 mb-6">Your bid post has been created and is now visible to buyers.</p>
           </div>
       </div>
