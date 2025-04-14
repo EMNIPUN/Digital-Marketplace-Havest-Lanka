@@ -2,7 +2,7 @@ import React from 'react'
 
 function CropsPredictionPage() {
   return (
-    <div>CropsPredictionPage</div>
+    <h1>Hello</h1>
   )
 }
 

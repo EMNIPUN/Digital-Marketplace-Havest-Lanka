@@ -28,7 +28,6 @@ export const registerUser = async (req, res) => {
             number = '+94' + number.slice(4);
         }
 
-        // Check if number exists
         const existingNumber = await User.findOne({ number });
         if (existingNumber) {
             return res.status(401).json({ message: "Number already exists" });
