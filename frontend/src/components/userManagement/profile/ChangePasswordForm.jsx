@@ -3,6 +3,7 @@ import axios from "axios";
 import Token from "../logins/Token";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
 
 const ChangePasswordForm = () => {
     const [formData, setFormData] = useState({
@@ -144,11 +145,14 @@ const ChangePasswordForm = () => {
 
                 <button
                     type="submit"
-                    className="w-full rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="w-full rounded-lg bg-[#21cc61] p-2 text-white hover:bg-[#22994e] disabled:opacity-50"
                     disabled={loading || errors.newPassword || errors.confirmPassword}
                 >
                     {loading ? "Changing..." : "Change Password"}
                 </button>
+                <Link to="/forgot-password" className="w-full flex items-center justify-center ">
+                    <p className="text-[12px] text-[#2427c2] hover:text-[#3032a0] -mt-[10px]">Forgot your password?</p>
+                </Link>
             </form>
 
             <ToastContainer />

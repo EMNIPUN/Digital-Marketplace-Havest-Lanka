@@ -12,6 +12,7 @@ import ProfilePage from "./pages/userManagement/ProfilePage";
 import FarmerRegistration from "./pages/userManagement/dashboardPages/FarmerRegistration";
 import DriverDashboard from "./pages/transportManagement/DriverDashboard";
 import Payform from "./components/financeManagement/Payform";
+import ForgotPasswordPage from "./pages/userManagement/dashboardPages/ForgotPasswordPage";
 
 function App() {
    return (
@@ -29,6 +30,7 @@ function App() {
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />
+         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
          <Route path="/logout/*" element={<LogoutRoute />} />
          <Route path="/farmer/register" element={<FarmerRegistration />} />
       </Routes>

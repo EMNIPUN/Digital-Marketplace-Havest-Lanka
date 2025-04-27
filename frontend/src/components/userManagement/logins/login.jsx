@@ -118,19 +118,20 @@ function Login(props) {
 
                         <div className="w-full flex flex-col items-center justify-center">
                            <button
-                              className={`w-full p-2 mt-4 rounded-md font-bold ${
-                                 loading
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
-                              }`}
+                              className={`w-full p-2 mt-4 rounded-md font-bold ${loading
+                                 ? "bg-gray-400 cursor-not-allowed"
+                                 : "bg-[#00b075d0] hover:bg-[#00B074] text-white"
+                                 }`}
                               onClick={(e) => handleLogin(e)}
                               disabled={loading}
                            >
                               {loading ? "Wait..." : "Sign In"}
                            </button>
-                           <p className="text-xs text-[#374151] font-md mt-1 cursor-pointer hover:text-[#00B074]">
-                              Forgot password?
-                           </p>
+                           <Link to="/forgot-password">
+                              <p className="text-xs text-[#374151] font-md mt-1 cursor-pointer hover:text-[#00B074]">
+                                 Forgot password?
+                              </p>
+                           </Link>
                         </div>
                         <div className="text-sm mt-5 text-gray-500 flex gap-2">
                            <div>Login as a </div>
