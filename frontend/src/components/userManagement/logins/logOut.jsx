@@ -2,14 +2,16 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../BaseUrl';
+import Token from './Token';
 
 const Logout = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const userId = Token().userId
 
     useEffect(() => {
         const logout = async () => {
             try {
-                await axios.post(`${BASE_URL}/logout`, { val: true }, { withCredentials: true });
+                await axios.post(`${BASE_URL}/logout`, { val: true, userId }, { withCredentials: true });
             } catch (error) {
                 console.error("Logout failed:", error);
             } finally {
@@ -18,7 +20,7 @@ const Logout = () => {
         };
 
         logout();
-    }, [navigate]);
+    }, [navigate, userId]); // also add userId here
 
     return null;
 };

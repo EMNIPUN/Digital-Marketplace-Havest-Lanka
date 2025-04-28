@@ -4,12 +4,14 @@ import { ArrowLeft, CheckCircle, XCircle, Mail, Lock, Eye, EyeOff } from 'lucide
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
+import { useNavigate } from 'react-router-dom'
 
 export default function ForgotPasswordPage() {
     const [step, setStep] = useState(1) // 1: Email, 2: OTP, 3: Reset Password
     const [email, setEmail] = useState('')
     const [otp, setOtp] = useState(['', '', '', '', '', ''])
     const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
     const handleEmailSubmit = async (submittedEmail) => {
         try {
@@ -48,7 +50,11 @@ export default function ForgotPasswordPage() {
                 password: newPassword
             })
             toast.success(response.data.message)
-            // Redirect logic would go here
+            const timer = setTimeout(() => {
+                navigate('/');
+            }, 2000);
+
+            return () => clearTimeout(timer);
         } catch (error) {
             toast.error(error.response?.data?.message || 'Failed to reset password')
         }

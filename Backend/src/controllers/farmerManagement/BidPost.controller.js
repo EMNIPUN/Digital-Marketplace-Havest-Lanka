@@ -13,9 +13,9 @@ export const getBidPostById = async (req, res) => {
 };
 
 export const getBidsByFarmerId = async (req, res) => {
-    
+
     const farmerId = req.params.farmerId;
-    const bidPosts = await BidPost.find({ farmerId});
+    const bidPosts = await BidPost.find({ farmerId });
     res.status(200).json(bidPosts);
     return;
 }
@@ -24,7 +24,7 @@ export const createBidPost = async (req, res) => {
     const bidPost = req.body;
 
     const bidEndTime = new Date();
-    bidEndTime.setHours(bidEndTime.getHours()+24);
+    bidEndTime.setHours(bidEndTime.getHours() + 24);
 
     if (
         !bidPost.farmerId ||
@@ -56,7 +56,7 @@ export const createBidPost = async (req, res) => {
         location: bidPost.location,
         bidEndTime: bidEndTime,
     })
-    
+
     res.status(201).send();
     return;
 }
@@ -80,14 +80,14 @@ export const updateBitPost = async (req, res) => {
     // }
 
     await BidPost.findByIdAndUpdate
-    (bitpostId, updatebidPost)
+        (bitpostId, updatebidPost)
 
     res.status(200).send();
     return;
 }
 
 export const deleteBitPost = async (req, res) => {
-    const {bitpostId} = req.params;
+    const { bitpostId } = req.params;
     await BidPost.findByIdAndDelete(bitpostId);
 
     if (!bitpostId) {
@@ -99,4 +99,3 @@ export const deleteBitPost = async (req, res) => {
     return;
 
 }
-    

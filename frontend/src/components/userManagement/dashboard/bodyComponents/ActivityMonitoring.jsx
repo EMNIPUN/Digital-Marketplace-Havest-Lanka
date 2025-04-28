@@ -1,36 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { LogIn, LogOut, Hammer, Truck, BarChart, ShieldAlert } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const activityTypes = {
-    login: { icon: <LogIn />, color: "bg-[#b9fff0] text-[#18a889]" },
+    login: { icon: <LogIn />, color: "bg-[#e0f7f4] text-[#18a889]" },
     logout: { icon: <LogOut />, color: "bg-gray-100 text-gray-600" },
-    bidding: { icon: <Hammer />, color: "bg-[#d5e3f8] text-[#0062ff]" },
+    bidding: { icon: <Hammer />, color: "bg-[#dbe9fd] text-[#0062ff]" },
     transport: { icon: <Truck />, color: "bg-green-100 text-green-600" },
     report: { icon: <BarChart />, color: "bg-purple-100 text-purple-600" },
     security: { icon: <ShieldAlert />, color: "bg-red-100 text-red-600" },
 };
 
-const activities = [
-    { id: 8, user: "Bob", action: "created a bid post", target: "Auction Item Z", time: "1:00 PM", date: "2025-03-22", type: "bidding" },
-    { id: 7, user: "Alice", action: "placed a bid", target: "Auction Item Y", time: "12:45 PM", date: "2025-03-22", type: "bidding" },
-    { id: 6, user: "Unknown", action: "failed login attempt", time: "12:30 PM", date: "2025-03-22", type: "security" },
-    { id: 5, user: "Market Analysis", action: "generated a report", time: "12:00 PM", date: "2025-03-22", type: "report" },
-    { id: 4, user: "Farmer B", action: "requested transport", time: "11:45 AM", date: "2025-03-22", type: "transport" },
-    { id: 3, user: "Shop A", action: "placed a bid", target: "Auction Item X", time: "11:15 AM", date: "2025-03-22", type: "bidding" },
-    { id: 2, user: "Jane Smith", action: "logged out", time: "11:00 AM", date: "2025-03-22", type: "logout" },
-    { id: 1, user: "John Doe", action: "logged in", time: "10:30 AM", date: "2025-03-22", type: "login" },
-];
-
 const filters = ["All", "Login", "Bidding", "Transport", "Reports", "Security"];
 
 const cardVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, y: 10 },
     visible: (i) => ({
         opacity: 1,
         y: 0,
         transition: {
-            delay: i * 0.1,
+            delay: i * 0.05,
             duration: 0.3,
             ease: "easeOut",
         },
@@ -38,9 +29,27 @@ const cardVariants = {
 };
 
 function ActivityMonitoring() {
+    const [activities, setActivities] = useState([]);
     const [filter, setFilter] = useState("All");
     const [search, setSearch] = useState("");
     const [visibleCount, setVisibleCount] = useState(10);
+    const [loading, setLoading] = useState(true); // <-- new loading state
+
+    useEffect(() => {
+        const fetchActivities = async () => {
+            try {
+                const res = await axios.get("http://localhost:8005/api/admin/activity");
+                setActivities(res.data);
+                console.log(res.data);
+
+            } catch (error) {
+                console.error("Failed to fetch activities:", error);
+            } finally {
+                setLoading(false); // <-- turn off loading after fetch
+            }
+        };
+        fetchActivities();
+    }, []);
 
     const filteredActivities = activities.filter((activity) => {
         const matchesFilter =
@@ -51,24 +60,25 @@ function ActivityMonitoring() {
             (filter === "Reports" && activity.type === "report") ||
             (filter === "Security" && activity.type === "security");
 
-        const matchesSearch = search === "" || activity.user.toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = search === "" || (activity.user?.name || "").toLowerCase().includes(search.toLowerCase());
+
         return matchesFilter && matchesSearch;
     });
 
     return (
-        <motion.div initial="hidden" animate="visible" className="p-6 bg-gray-50 min-h-screen">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">Activity Monitoring</h2>
-                <div className="flex space-x-2">
+        <motion.div initial="hidden" animate="visible" className="p-4 bg-gray-50 min-h-screen">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+                <h2 className="text-2xl font-semibold mb-4 sm:mb-0">Activity Monitoring</h2>
+                <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 w-full sm:w-auto">
                     <input
                         type="text"
                         placeholder="Search by user"
-                        className="px-4 py-2 border rounded-lg text-gray-700 focus:ring"
+                        className="px-3 py-2 border rounded-md text-gray-700 focus:ring w-full sm:w-auto"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
                     <select
-                        className="px-4 py-2 border rounded-lg text-gray-700 focus:ring"
+                        className="px-3 py-2 border rounded-md text-gray-700 focus:ring w-full sm:w-auto"
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
                     >
@@ -81,38 +91,60 @@ function ActivityMonitoring() {
                 </div>
             </div>
 
-            <div className="space-y-4">
-                {filteredActivities.slice(0, visibleCount).map(({ id, user, action, target, time, date, type }, index) => (
-                    <motion.div
-                        key={id}
-                        variants={cardVariants}
-                        custom={index}
-                        initial="hidden"
-                        animate="visible"
-                        whileHover={{ scale: 1.05 }}
-                        className={`flex items-center p-4 rounded-lg shadow-md ${activityTypes[type]?.color}`}
-                    >
-                        <div className="text-2xl mr-4">{activityTypes[type]?.icon}</div>
-                        <div>
-                            <p className="font-semibold">
-                                {user}: <span className="text-gray-700">{action}</span>{" "}
-                                {target && <span className="font-semibold text-gray-600">{target}</span>}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                                {date} at {time}
-                            </p>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+            {loading ? (
+                <div className="flex justify-center items-center h-60">
+                    <div className="text-blue-600 text-lg font-semibold animate-pulse">Loading activities...</div>
+                </div>
+            ) : filteredActivities.length === 0 ? (
+                <div className="flex justify-center items-center h-60">
+                    <div className="text-gray-500 text-lg font-medium">No activities found.</div>
+                </div>
+            ) : (
+                <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {filteredActivities.slice(0, visibleCount).map(({ _id, user, action, target, time, date, type }, index) => (
+                            <motion.div
+                                key={_id}
+                                variants={cardVariants}
+                                custom={index}
+                                initial="hidden"
+                                animate="visible"
+                                whileHover={{ scale: 1.02 }}
+                                className={`flex items-start p-3 rounded-md shadow ${activityTypes[type]?.color}`}
+                            >
+                                <div className="text-2xl mr-3 mt-1">{activityTypes[type]?.icon}</div>
+                                <div className="flex flex-col">
+                                    <p className="font-semibold text-sm mb-1">
+                                        {user ? (
+                                            <Link to={`/profile/${user._id}`} className="text-blue-600 hover:underline">
+                                                {user.name}
+                                            </Link>
+                                        ) : (
+                                            <span className="text-gray-400 italic">Deleted Account</span>
+                                        )}{" "}
+                                        <span className="text-gray-700">{action}</span>{" "}
+                                        {target && <span className="font-semibold text-gray-600">{target}</span>}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        {date} at {time}
+                                    </p>
 
-            {visibleCount < filteredActivities.length && (
-                <button
-                    className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                    onClick={() => setVisibleCount((prev) => prev + 10)}
-                >
-                    Load More
-                </button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {visibleCount < filteredActivities.length && (
+                        <div className="flex justify-center mt-6">
+                            <button
+                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                                onClick={() => setVisibleCount((prev) => prev + 10)}
+                            >
+                                Load More
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
         </motion.div>
     );
