@@ -30,3 +30,6 @@ const CropsSchema = new mongoose.Schema({
         required:true
     }
 })
+
+const Crops = mongoose.model('Crops', CropsSchema);
+export default Crops;
