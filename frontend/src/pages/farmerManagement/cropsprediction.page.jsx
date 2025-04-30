@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { LoaderCircle, AlertCircle, Search, Filter, X, ChevronDown, ChevronUp, Info, Star } from 'lucide-react';
 import FooterLandingPage from '@/components/other/FooterLandingPage';
+import VegetablePriceMarqueeWithStyles from '@/components/farmerManagement/VegetablePriceMarquee/VegetablePriceMarquee';
 
 function CropsPredictionPage() {
   const [crops, setCrops] = useState([]);
@@ -54,9 +55,12 @@ function CropsPredictionPage() {
       });
   }, []);
 
+  const categories = ['Vegetables', 'Fruits', 'Nuts', 'Spices', 'Grains', 'Legumes'];
+
   return (
     <>
       <Navigation />
+      <VegetablePriceMarqueeWithStyles/>
       <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-8">
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto mb-12 text-center">
@@ -93,7 +97,19 @@ function CropsPredictionPage() {
           </div>
 
           {/* View Mode Toggle */}
-          <div className="flex justify-end mt-4">
+          <div className="flex justify-between gap-14 mt-4">
+
+            <div className="flex flex-wrap gap-2 mt-3">
+              {categories.map((category, index) => (
+                <span 
+                  key={index}
+                  className="px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200"
+                >
+                  {category}
+                </span>
+              ))}
+            </div>
+
             <div className="flex bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setViewMode('grid')}
