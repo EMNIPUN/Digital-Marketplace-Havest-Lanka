@@ -1,41 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Profile from "../../assets/shopOwnerManagement/profile.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function ShopOwnerInbox() {
-   const inboxMessages = [
-      {
-         id: 1,
-         name: "Akindu Nayanajith",
-         message: "Hey, I'm interested in your services. Can we discuss more?",
-         time: "2h ago",
-         avatar: Profile,
-         unread: true,
-      },
-      {
-         id: 2,
-         name: "Kasun Perera",
-         message: "I have a project requirement. Let's talk.",
-         time: "30m ago",
-         avatar: Profile,
-         unread: true,
-      },
-      {
-         id: 3,
-         name: "Nuwan Bandara",
-         message: "Thank you for completing my order! Great work.",
-         time: "Yesterday",
-         avatar: Profile,
-         unread: false,
-      },
-      {
-         id: 4,
-         name: "Dilshan Silva",
-         message: "I would like to get an update on the progress.",
-         time: "2 days ago",
-         avatar: Profile,
-         unread: false,
-      },
-   ];
+   const navigate = useNavigate();
+
+   // get inbpx details
+   const [inboxData, setInboxData] = useState([]);
+
+   const getInboxData = async () => {
+      await axios
+         .get("http://localhost:8005/api/chat/getInboxDetails")
+         .then((response) => {
+            setInboxData(response.data);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   useEffect(() => {
+      getInboxData();
+   }, []);
 
    return (
       <div className="p-[20px]">
@@ -45,10 +32,17 @@ function ShopOwnerInbox() {
             </div>
 
             <div className="divide-y">
-               {inboxMessages.map((chat) => (
+               {inboxData.map((chat) => (
                   <div
                      className="flex items-center px-5 py-4 hover:bg-gray-50 cursor-pointer"
                      key={chat.id}
+                     onClick={() =>
+                        navigate("/shopOwner/inbox/chat", {
+                           state: {
+                              chatName: chat.chatName,
+                           },
+                        })
+                     }
                   >
                      <img
                         src={Profile}
@@ -58,7 +52,7 @@ function ShopOwnerInbox() {
                      <div className="ml-4 flex-1">
                         <div className="flex justify-between items-center">
                            <h3 className="font-semibold text-sm text-gray-800">
-                              {chat.name}
+                              {chat.chatName}
                            </h3>
                            <div className="flex items-center justify-center gap-2">
                               {chat.unread && (

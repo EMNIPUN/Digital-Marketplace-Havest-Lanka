@@ -11,6 +11,7 @@ import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
 import DailyPrice from "@/components/other/DailyPrice";
 import ShopOwnerFinance from "@/pages/shopOwnerManagement/ShopOwnerFinance";
+import ChatInterface from "@/components/shopOwnerManagement/ChatInterface";
 
 function ShopOwnerRoutes() {
    return (
@@ -39,6 +40,7 @@ function ShopOwnerRoutes() {
                      element={<ManageInventory />}
                   ></Route>
                   <Route path="/finance" element={<ShopOwnerFinance />}></Route>
+                  <Route path="/inbox/chat" element={<ChatInterface />}></Route>
                </Routes>
             </div>
             {/* Footer showing */}

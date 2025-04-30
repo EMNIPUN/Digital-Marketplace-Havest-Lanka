@@ -97,6 +97,9 @@ function ShopOwnerOrders() {
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Status
                         </th>
+                        <th className="pr-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                           Inbox
+                        </th>
                         <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                            Operations
                         </th>
@@ -143,6 +146,21 @@ function ShopOwnerOrders() {
                                     Pending Bid
                                  </span>
                               )}
+                           </td>
+                           <td
+                              className="py-6 px-4 cursor-pointer hover:text-gray-800"
+                              onClick={() =>
+                                 navigate("/shopOwner/inbox/chat", {
+                                    state: {
+                                       farmer: bid.farmer,
+                                       orderId: bid._id,
+                                       shopOwnerId:sid,
+                                       farmerId:bid.farmerId
+                                    },
+                                 })
+                              }
+                           >
+                              <i className="bi bi-envelope"></i>
                            </td>
                            <td className="px-6 py-4 ">
                               {bid.status === "Accepted" ? (

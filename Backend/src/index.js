@@ -21,6 +21,8 @@ import inventoryRoutes from "./routes/shopOwnerManagement/inventory.routes.js";
 import bidRoutes from "./routes/shopOwnerManagement/bid.routes.js";
 import transactionRoutes from "./routes/financeManagement/transaction.routes.js";
 import paymentRoutes from "./routes/financeManagement/payment.routes.js";
+import inboxRoutes from "./routes/shopOwnerManagement/inbox.routes.js";
+import messageRoutes from "./routes/shopOwnerManagement/message.route.js";
 
 const app = express();
 app.use(express.json());
@@ -52,6 +54,8 @@ app.use("/api/BidPost", bidPostRouter);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/bid", bidRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/chat", inboxRoutes);
+app.use("/api/message", messageRoutes);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

@@ -206,16 +206,17 @@ function ManageInventory(props) {
    // generate report
    const generateReportBtn = () => {
       const doc = new jsPDF();
-
-      // Set the title
       doc.setFontSize(18);
       doc.text("Inventory Report", 14, 15);
 
-      // Define the table column headers
       const headers = [["Item Name", "Category", "Quantity"]];
 
-      // Map inventory data to table rows
-      const data = inventoryData.map((item) => [
+      const filteredData = inventoryData.filter(
+         (item) =>
+            selectedCategory === "All" || item.itemCategory === selectedCategory
+      );
+
+      const data = filteredData.map((item) => [
          item.itemName,
          item.itemCategory,
          item.quantity + " kg",
@@ -228,7 +229,12 @@ function ManageInventory(props) {
          theme: "striped",
       });
 
-      doc.save("Inventory_Report.pdf");
+      const fileName =
+         selectedCategory === "All"
+            ? "Inventory_Report_All.pdf"
+            : `Inventory_Report_${selectedCategory}.pdf`;
+
+      doc.save(fileName);
    };
 
    return (
