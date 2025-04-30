@@ -13,7 +13,7 @@ function FarmerRoutes() {
          <Route path="/mybids" element={<Bids />} />
          <Route path="/dailyprice" element={<DailyPrice />} />
          <Route path="/mybids/:id" element={<Bid />} />
-         <Route path="/ai-prediction " element={<CropsPredictionPage/>} />
+         <Route path="/ai-prediction" element={<CropsPredictionPage/>} />
       </Routes>
    )
 }
