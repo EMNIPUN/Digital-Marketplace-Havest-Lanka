@@ -2,7 +2,7 @@ import Crops from "../../models/farmerManagement/crops.modle.js";
 
 export const getAllCrops = async (req, res) => {
     const crops =  await Crops.find();
-    res.status(200).json(Crops);
+    res.status(200).json(crops);
 };
 
 export const getCropsById = async (req, res) => {
@@ -12,25 +12,33 @@ export const getCropsById = async (req, res) => {
 };
 
 export const addCrops = async (req, res) => {
-    const cropsId = req.body;
+    const crops = req.body;
 
-    if (!cropsId) {
-        return res.status(400).json({
-            message: "Missing required fields",
-        });
+    if(
+        !crops.name ||
+        !crops.image ||
+        !crops.idealTemp ||
+        !crops.humidity ||
+        !crops.soilType ||
+        !crops.growthPeriod||
+        !crops.description
+    ){
+        res.status(400).json({ message: "Please add all the fields" });
+        return;
     }
 
     await Crops.create({
-        name: cropsId.name,
-        image: cropsId.image,
-        idealTemp: cropsId.idealTemp,
-        humidity: cropsId.humidity,
-        soilType: cropsId.soilType,
-        growthPeriod: cropsId.growthPeriod,
-        description: cropsId.description,
-    });
+        name: crops.name,
+        image: crops.image,
+        idealTemp: crops.idealTemp,
+        humidity: crops.humidity,
+        soilType: crops.soilType,
+        growthPeriod: crops.growthPeriod,
+        description: crops.description,
+    })
 
-    res.status(201).send();
+    res.status(201).json({ message: "Crops added successfully" });
+    return;
 };
 
 export const updateCrops = async (req, res) => {};
