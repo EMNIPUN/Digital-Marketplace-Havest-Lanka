@@ -7,6 +7,7 @@ import Token from "@/components/userManagement/logins/Token";
 import { ToastContainer, toast } from "react-toastify";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import SOLoading from "@/components/shopOwnerManagement/SOLoading";
 
 function ManageInventory(props) {
    // Notification
@@ -63,10 +64,14 @@ function ManageInventory(props) {
       setSelectedCategory(e.target.value);
    };
 
+   // loading
+   const [isLoading, setIsLoading] = useState(false);
+
    // showing inventory items
    const [inventoryData, setInventoryData] = useState([]);
 
    const getInventoryDataById = async () => {
+      setIsLoading(true);
       await axios
          .get(`http://localhost:8005/api/inventory/getInventoryById/${sid}`)
          .then((response) => {
@@ -74,6 +79,9 @@ function ManageInventory(props) {
          })
          .catch((error) => {
             console.log(error);
+         })
+         .finally(() => {
+            setIsLoading(false);
          });
    };
 
@@ -296,13 +304,13 @@ function ManageInventory(props) {
 
             {/* Shop alert on low stock */}
             {findLowStockItem.length > 0 && (
-               <div className="bg-red-50 border border-yellow-100 rounded-sm p-4 shadow-sm mb-5">
+               <div className="bg-yellow-50 border border-yellow-100 rounded-sm p-4 shadow-sm mb-5">
                   <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-4">
                      <div className="flex items-center space-x-4">
-                        <div className="bg-red-100 p-3 rounded-full">
+                        <div className="bg-yellow-100 p-3 rounded-full">
                            <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6 text-red-600"
+                              className="h-6 w-6 text-yellow-600"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -324,8 +332,8 @@ function ManageInventory(props) {
                            </p>
                         </div>
                      </div>
-                     <div className="bg-red-50 px-4 py-2 rounded-full">
-                        <span className="text-sm text-red-700 font-semibold">
+                     <div className="bg-yellow-50 px-4 py-2 rounded-full">
+                        <span className="text-sm text-yellow-700 font-semibold">
                            {findLowStockItem.length} Item
                            {findLowStockItem.length > 1 ? "s" : ""} Low in Stock
                         </span>
@@ -335,12 +343,12 @@ function ManageInventory(props) {
                      {findLowStockItem.map((lowItem) => (
                         <div
                            key={lowItem._id}
-                           className="flex justify-between items-center bg-red-100 py-2 px-10 rounded-sm text-base"
+                           className="flex justify-between items-center bg-yellow-100 py-2 px-10 rounded-sm text-base"
                         >
-                           <span className="text-red-800 font-semibold">
+                           <span className="text-yellow-800 font-semibold">
                               {lowItem.itemName}
                            </span>
-                           <span className="text-red-800 font-semibold bg-red-200 px-2 py-1 rounded-sm text-sm">
+                           <span className="text-yellow-800 font-semibold bg-yellow-200 px-2 py-1 rounded-sm text-sm">
                               {lowItem.quantity} Kg only
                            </span>
                         </div>
@@ -350,68 +358,78 @@ function ManageInventory(props) {
             )}
 
             {/* Display inventory data */}
-            <div className="overflow-x-auto min-h-56">
-               <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left border border-gray-200">
-                  <thead>
-                     <tr className=" text-gray-700 border-b border-gray-200 bg-gray-100">
-                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                           Item Name
-                        </th>
-                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                           Category
-                        </th>
-                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
-                           Quantity
-                        </th>
+            <div className="overflow-x-auto min-h-56 ">
+               {isLoading ? (
+                  <div className="w-full flex items-center justify-center h-56">
+                     <SOLoading />
+                  </div>
+               ) : (
+                  <table className="w-full border-collapse bg-white rounded-sm shadow-sm text-left border border-gray-200">
+                     <thead>
+                        <tr className=" text-gray-700 border-b border-gray-200 bg-gray-100">
+                           <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                              Item Name
+                           </th>
+                           <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                              Category
+                           </th>
+                           <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider">
+                              Quantity
+                           </th>
 
-                        <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider w-12">
-                           Actions
-                        </th>
-                     </tr>
-                  </thead>
-                  <tbody className="text-gray-500 text-sm divide-y">
-                     {/* Showing all inventory data */}
-                     {inventoryData
-                        .filter(
-                           (item) =>
-                              selectedCategory === "All" ||
-                              item.itemCategory === selectedCategory
-                        )
-                        .map((item) => (
-                           <tr className="border-b" key={item._id}>
-                              <td className="px-3 py-2">{item.itemName}</td>
-                              <td className="px-3 py-2">{item.itemCategory}</td>
-                              <td className="px-3 py-2">{item.quantity} kg</td>
+                           <th className="px-3 py-4 text-xs font-semibold text-gray-800 uppercase tracking-wider w-12">
+                              Actions
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody className="text-gray-500 text-sm divide-y">
+                        {/* Showing all inventory data */}
+                        {inventoryData
+                           .filter(
+                              (item) =>
+                                 selectedCategory === "All" ||
+                                 item.itemCategory === selectedCategory
+                           )
+                           .map((item) => (
+                              <tr className="border-b" key={item._id}>
+                                 <td className="px-3 py-2">{item.itemName}</td>
+                                 <td className="px-3 py-2">
+                                    {item.itemCategory}
+                                 </td>
+                                 <td className="px-3 py-2">
+                                    {item.quantity} kg
+                                 </td>
 
-                              <td className="px-3 py-2 flex justify-start gap-1">
-                                 <button
-                                    onClick={() => {
-                                       setIsClickUpdateItem(true);
-                                       setInventoryFormData({
-                                          itemName: item.itemName,
-                                          itemCategory: item.itemCategory,
-                                          quantity: item.quantity,
-                                       });
-                                       setSelectedItemId(item._id);
-                                    }}
-                                    className="bg-sec-green text-white px-3 py-2 rounded "
-                                 >
-                                    <i className="bi bi-pencil-fill"></i>
-                                 </button>
-                                 <button
-                                    onClick={() => {
-                                       setIsClickDeleteItem(true);
-                                       setSelectedItemId(item._id);
-                                    }}
-                                    className="bg-gray-500 text-white px-3 py-2 rounded "
-                                 >
-                                    <i className="bi bi-trash-fill"></i>
-                                 </button>
-                              </td>
-                           </tr>
-                        ))}
-                  </tbody>
-               </table>
+                                 <td className="px-3 py-2 flex justify-start gap-1">
+                                    <button
+                                       onClick={() => {
+                                          setIsClickUpdateItem(true);
+                                          setInventoryFormData({
+                                             itemName: item.itemName,
+                                             itemCategory: item.itemCategory,
+                                             quantity: item.quantity,
+                                          });
+                                          setSelectedItemId(item._id);
+                                       }}
+                                       className="bg-sec-green text-white px-3 py-2 rounded "
+                                    >
+                                       <i className="bi bi-pencil-fill"></i>
+                                    </button>
+                                    <button
+                                       onClick={() => {
+                                          setIsClickDeleteItem(true);
+                                          setSelectedItemId(item._id);
+                                       }}
+                                       className="bg-gray-500 text-white px-3 py-2 rounded "
+                                    >
+                                       <i className="bi bi-trash-fill"></i>
+                                    </button>
+                                 </td>
+                              </tr>
+                           ))}
+                     </tbody>
+                  </table>
+               )}
             </div>
          </div>
          {/* Invnetory adding form */}

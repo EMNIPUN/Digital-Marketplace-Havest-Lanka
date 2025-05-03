@@ -1,11 +1,20 @@
 import React from "react";
-import User from "../../assets/shopOwnerManagement/user-ico.ico";
+import { Link, useLocation } from "react-router-dom";
 import Token from "../userManagement/logins/Token";
 
 function ShopOwnerNavBar() {
    // shop owner details
    const token = Token();
    const shopOwnerName = token.name;
+   const sid = token.userId;
+   console.log(token);
+
+   // add profile picture
+   const baseURL = "http://localhost:8005";
+
+   const profileImage = token.displayPicture
+      ? `${baseURL}${token.displayPicture}`
+      : "https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png";
 
    return (
       <header className="w-full  bg-white fixed  z-40 right-0">
@@ -23,8 +32,15 @@ function ShopOwnerNavBar() {
                   <p className="text-gray-600 text-sm">
                      Welcome {shopOwnerName}!
                   </p>
-                  {/* <i className="bi bi-person text-xl bg-main-green text-white px-2 py-1 rounded-full"></i> */}
-                  <img src={User} width="33px" alt="" />
+
+                  <Link to={`/profile/${sid}`}>
+                     <img
+                        src={profileImage}
+                        width="33px"
+                        alt=""
+                        className="rounded-full"
+                     />
+                  </Link>
                </div>
             </div>
          </nav>

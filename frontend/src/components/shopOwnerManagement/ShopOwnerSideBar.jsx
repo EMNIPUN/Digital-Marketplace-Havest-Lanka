@@ -21,6 +21,13 @@ function ShopOwnerSideBar() {
    const shopOwnerLevel = 2;
    const shopOwnerRating = 5.0;
 
+   // add profile picture
+   const baseURL = "http://localhost:8005";
+
+   const profileImage = token.displayPicture
+      ? `${baseURL}${token.displayPicture}`
+      : "https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png";
+
    // Side bar section display
    const [expandedSections, setExpandedSections] = useState({
       orderManagement: true,
@@ -95,7 +102,7 @@ function ShopOwnerSideBar() {
          <div className="profile flex items-center flex-col gap-3 px-6 py-3">
             <div className="relative">
                <img
-                  src={user}
+                  src={profileImage}
                   alt="Profile"
                   className="w-20 h-20 rounded-full "
                />

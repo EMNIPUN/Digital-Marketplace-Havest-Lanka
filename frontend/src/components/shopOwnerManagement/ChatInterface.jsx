@@ -3,6 +3,7 @@ import { Send, MoreVertical, Smile } from "lucide-react";
 import User from "../../assets/shopOwnerManagement/profile.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import SOLoading from "./SOLoading";
 
 function ChatInterface() {
    const navigate = useNavigate();
@@ -14,8 +15,12 @@ function ChatInterface() {
    const [inputMessage, setInputMessage] = useState("");
    const [messages, setMessages] = useState([]);
 
+   //loading
+   const [loading, setLoading] = useState(false);
+
    // Fetch messages
    const getMessageData = async () => {
+      setLoading(true);
       try {
          const response = await axios.get(
             `http://localhost:8005/api/message/messages/${orderId}`
@@ -23,6 +28,8 @@ function ChatInterface() {
          setMessages(response.data);
       } catch (error) {
          console.log(error);
+      } finally {
+         setLoading(false);
       }
    };
 
@@ -104,45 +111,48 @@ function ChatInterface() {
                </div>
             </div>
 
-            {/* Chat Body */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-               {messages.map((msg) => (
-                  <div
-                     key={msg._id}
-                     className={`flex ${
-                        msg.sender === "me" ? "justify-end" : "justify-start"
-                     }`}
-                  >
-                     <div className="flex flex-col max-w-[70%]">
-                        <div
-                           className={`px-4 py-2 rounded-2xl ${
-                              msg.sender === "me"
-                                 ? "bg-gray-200 text-gray-700 rounded-br-none"
-                                 : "bg-white text-gray-800 shadow-sm rounded-bl-none"
-                           }`}
-                        >
-                           <p>{msg.content}</p>
-                        </div>
-                        <span
-                           className={`text-xs mt-1 ${
-                              msg.sender === "me"
-                                 ? "text-right text-gray-500"
-                                 : "text-gray-500"
-                           }`}
-                        >
-                           {msg.time || "Now"}
-                        </span>
-                     </div>
-                     {msg.sender === "me" && (
-                        <div className="w-8 h-8 rounded-full bg-sec-green ml-2 flex-shrink-0 flex items-center justify-center">
-                           <span className="text-white text-xs font-bold">
-                              ME
+            {loading ? (
+               <SOLoading />
+            ) : (
+               <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+                  {messages.map((msg) => (
+                     <div
+                        key={msg._id}
+                        className={`flex ${
+                           msg.sender === "me" ? "justify-end" : "justify-start"
+                        }`}
+                     >
+                        <div className="flex flex-col max-w-[70%]">
+                           <div
+                              className={`px-4 py-2 rounded-2xl ${
+                                 msg.sender === "me"
+                                    ? "bg-gray-100 text-gray-700 rounded-br-none"
+                                    : "bg-white text-gray-800 shadow-sm rounded-bl-none"
+                              }`}
+                           >
+                              <p>{msg.content}</p>
+                           </div>
+                           <span
+                              className={`text-xs mt-1 ${
+                                 msg.sender === "me"
+                                    ? "text-right text-gray-500"
+                                    : "text-gray-500"
+                              }`}
+                           >
+                              {msg.time || "Now"}
                            </span>
                         </div>
-                     )}
-                  </div>
-               ))}
-            </div>
+                        {msg.sender === "me" && (
+                           <div className="w-8 h-8 rounded-full bg-sec-green ml-2 flex-shrink-0 flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
+                                 ME
+                              </span>
+                           </div>
+                        )}
+                     </div>
+                  ))}
+               </div>
+            )}
 
             {/* Input */}
             <div className="bg-white px-4 py-3 flex items-center gap-2 border-t border-gray-200">

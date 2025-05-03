@@ -4,6 +4,7 @@ import Token from "@/components/userManagement/logins/Token";
 import { Link, useNavigate } from "react-router-dom";
 import Payform from "@/components/financeManagement/Payform";
 import md5 from "crypto-js/md5";
+import SOLoading from "@/components/shopOwnerManagement/SOLoading";
 
 function ShopOwnerOrders() {
    // Shop owner details
@@ -13,11 +14,12 @@ function ShopOwnerOrders() {
    // Get all bids
    const [allBids, setAllBids] = useState([]);
 
-   // test
-   function test() {}
+   // LOADING
+   const [isLoading, setIsLoading] = useState(false);
 
    // get order details
    const getAllBids = async () => {
+      setIsLoading(true);
       await axios
          .get(`http://localhost:8005/api/bid/getAllbids/${sid}`)
          .then((response) => {
@@ -25,7 +27,8 @@ function ShopOwnerOrders() {
          })
          .catch((error) => {
             console.log(error);
-         });
+         })
+         .finally(() => setIsLoading(false));
    };
 
    useEffect(() => {
@@ -84,114 +87,118 @@ function ShopOwnerOrders() {
          </div>
 
          <div className="w-full mx-auto bg-white shadow-sm rounded-sm border border-gray-200">
-            <div className="overflow-x-auto min-h-52">
-               <table className="w-full text-left border-collapse">
-                  <thead>
-                     <tr className=" border-b border-gray-200 bg-gray-50">
-                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Farmer
-                        </th>
-                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Product
-                        </th>
-                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Price
-                        </th>
-                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Status
-                        </th>
-                        <th className="pr-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Inbox
-                        </th>
-                        <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                           Operations
-                        </th>
-                     </tr>
-                  </thead>
+            <div className="overflow-x-auto min-h-52 flex items-center justify-center">
+               {isLoading ? (
+                  <SOLoading />
+               ) : (
+                  <table className="w-full text-left border-collapse">
+                     <thead>
+                        <tr className=" border-b border-gray-200 bg-gray-50">
+                           <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Farmer
+                           </th>
+                           <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Product
+                           </th>
+                           <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Price
+                           </th>
+                           <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Status
+                           </th>
+                           <th className="pr-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Inbox
+                           </th>
+                           <th className="px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Operations
+                           </th>
+                        </tr>
+                     </thead>
 
-                  <tbody className="divide-y divide-gray-200 ">
-                     {allBids.map((bid) => (
-                        <tr
-                           className="hover:bg-gray-50 transition duration-150"
-                           key={bid._id}
-                        >
-                           <td className="px-6 py-4 ">
-                              <div className="flex items-center">
-                                 <div className="">
-                                    <div className="text-sm font-medium text-gray-900">
-                                       {bid.farmer}
+                     <tbody className="divide-y divide-gray-200 ">
+                        {allBids.map((bid) => (
+                           <tr
+                              className="hover:bg-gray-50 transition duration-150"
+                              key={bid._id}
+                           >
+                              <td className="px-6 py-4 ">
+                                 <div className="flex items-center">
+                                    <div className="">
+                                       <div className="text-sm font-medium text-gray-900">
+                                          {bid.farmer}
+                                       </div>
                                     </div>
                                  </div>
-                              </div>
-                           </td>
-                           <td className="px-6 py-4">
-                              <div className="text-sm text-gray-900">
-                                 {bid.product}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                 {bid.quantity}kg package
-                              </div>
-                           </td>
-                           <td className="px-6 py-4">
-                              <div className="text-sm font-semibold text-gray-900">
-                                 LKR {bid.price * bid.quantity}
-                              </div>
-                           </td>
-                           <td className="px-6 py-4 ">
-                              {bid.status === "Accepted" ? (
-                                 <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
-                                    <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
-                                    Waiting for Payment
-                                 </span>
-                              ) : (
-                                 <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-gray-100 text-gray-600">
-                                    <span className="h-2 w-2 rounded-full bg-gray-600 mr-1.5 mt-1"></span>
-                                    Pending Bid
-                                 </span>
-                              )}
-                           </td>
-                           <td
-                              className="py-6 px-4 cursor-pointer hover:text-gray-800"
-                              onClick={() =>
-                                 navigate("/shopOwner/inbox/chat", {
-                                    state: {
-                                       farmer: bid.farmer,
-                                       orderId: bid._id,
-                                       shopOwnerId: sid,
-                                       farmerId: bid.farmerId,
-                                    },
-                                 })
-                              }
-                           >
-                              <i className="bi bi-envelope"></i>
-                           </td>
-                           <td className="px-6 py-4 ">
-                              {bid.status === "Accepted" ? (
-                                 <button
-                                    onClick={() =>
-                                       goToPayment(
-                                          bid._id,
-                                          bid.product,
-                                          bid.price * bid.quantity
-                                       )
-                                    }
-                                    className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
-                                 >
-                                    Pay Now
-                                 </button>
-                              ) : (
-                                 <button
-                                    disabled
-                                    className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
-                                 >
-                                    Pay Now
-                                 </button>
-                              )}
-                           </td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
+                              </td>
+                              <td className="px-6 py-4">
+                                 <div className="text-sm text-gray-900">
+                                    {bid.product}
+                                 </div>
+                                 <div className="text-xs text-gray-500">
+                                    {bid.quantity}kg package
+                                 </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                 <div className="text-sm font-semibold text-gray-900">
+                                    LKR {bid.price * bid.quantity}
+                                 </div>
+                              </td>
+                              <td className="px-6 py-4 ">
+                                 {bid.status === "Accepted" ? (
+                                    <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
+                                       <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
+                                       Waiting for Payment
+                                    </span>
+                                 ) : (
+                                    <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-gray-100 text-gray-600">
+                                       <span className="h-2 w-2 rounded-full bg-gray-600 mr-1.5 mt-1"></span>
+                                       Pending Bid
+                                    </span>
+                                 )}
+                              </td>
+                              <td
+                                 className="py-6 px-4 cursor-pointer hover:text-gray-800"
+                                 onClick={() =>
+                                    navigate("/shopOwner/inbox/chat", {
+                                       state: {
+                                          farmer: bid.farmer,
+                                          orderId: bid._id,
+                                          shopOwnerId: sid,
+                                          farmerId: bid.farmerId,
+                                       },
+                                    })
+                                 }
+                              >
+                                 <i className="bi bi-envelope"></i>
+                              </td>
+                              <td className="px-6 py-4 ">
+                                 {bid.status === "Accepted" ? (
+                                    <button
+                                       onClick={() =>
+                                          goToPayment(
+                                             bid._id,
+                                             bid.product,
+                                             bid.price * bid.quantity
+                                          )
+                                       }
+                                       className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
+                                    >
+                                       Pay Now
+                                    </button>
+                                 ) : (
+                                    <button
+                                       disabled
+                                       className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
+                                    >
+                                       Pay Now
+                                    </button>
+                                 )}
+                              </td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               )}
             </div>
          </div>
       </div>

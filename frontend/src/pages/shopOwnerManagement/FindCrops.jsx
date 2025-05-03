@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import CropPost from "../../components/shopOwnerManagement/CropPost";
 import axios from "axios";
+import SOLoading from "@/components/shopOwnerManagement/SOLoading";
 
 function FindCrops() {
+   //loading
+   const [isLoading, setIsLoading] = useState(false);
+
    // showing products listing
    const [cropsPostData, setCropPostData] = useState([]);
 
    const getCropPostDetails = async () => {
+      setIsLoading(true);
       await axios
          .get("http://localhost:8005/api/BidPost")
          .then((response) => {
@@ -14,6 +19,9 @@ function FindCrops() {
          })
          .catch((error) => {
             console.log(error);
+         })
+         .finally(() => {
+            setIsLoading(false);
          });
    };
 
@@ -149,37 +157,44 @@ function FindCrops() {
          )}
 
          {/* Crop Posts */}
-         <div className="flex w-full items-center gap-5 flex-col">
-            {!isSearch &&
-               (() => {
-                  const filteredPosts = cropsPostData.filter(
-                     (post) =>
-                        activeTab === "all" || post.cropsCategory === activeTab
-                  );
+         {isLoading ? (
+            <div className="w-full h-60 flex items-center justify-center">
+               <SOLoading />
+            </div>
+         ) : (
+            <div className="flex w-full items-center gap-5 flex-col">
+               {!isSearch &&
+                  (() => {
+                     const filteredPosts = cropsPostData.filter(
+                        (post) =>
+                           activeTab === "all" ||
+                           post.cropsCategory === activeTab
+                     );
 
-                  return filteredPosts.length > 0 ? (
-                     filteredPosts.map((post) => (
-                        <CropPost
-                           key={post._id}
-                           postId={post._id}
-                           farmerId={post.farmerId}
-                           product={post.cropsName}
-                           quantity={post.quantity}
-                           price={post.price}
-                           location={post.location}
-                           description={post.description}
-                           bids={post.bids}
-                           farmer={post.farmer}
-                        />
-                     ))
-                  ) : (
-                     <div className="bg-white text-gray-500 w-full shadow-sm border h-[200px] border-gray-200 text-base flex items-center justify-center">
-                        <i className="bi bi-exclamation-circle pr-2"></i>
-                        No items found
-                     </div>
-                  );
-               })()}
-         </div>
+                     return filteredPosts.length > 0 ? (
+                        filteredPosts.map((post) => (
+                           <CropPost
+                              key={post._id}
+                              postId={post._id}
+                              farmerId={post.farmerId}
+                              product={post.cropsName}
+                              quantity={post.quantity}
+                              price={post.price}
+                              location={post.location}
+                              description={post.description}
+                              bids={post.bids}
+                              farmer={post.farmer}
+                           />
+                        ))
+                     ) : (
+                        <div className="bg-white text-gray-500 w-full shadow-sm border h-[200px] border-gray-200 text-base flex items-center justify-center">
+                           <i className="bi bi-exclamation-circle pr-2"></i>
+                           No items found
+                        </div>
+                     );
+                  })()}
+            </div>
+         )}
 
          {/* Searched crop post */}
          {isSearch && (
