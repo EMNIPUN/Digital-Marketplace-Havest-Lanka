@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Token from '../../components/userManagement/logins/Token';
 import Popup from '../../components/userManagement/shared/Popup';
 import UpdateProfileForm from '../../components/userManagement/profile/UpdateProfileForm';
 import ChangePasswordForm from '../../components/userManagement/profile/CHangePasswordForm';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 // Import banner images
@@ -25,6 +25,30 @@ const ProfilePage = () => {
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
     const [userData, setUserData] = useState({});
+    const [isGoogleLinked, setIsGoogleLinked] = useState(false);
+
+    useEffect(() => {
+        const checkGoogleAuth = async () => {
+            try {
+                const response = await axios.get('http://localhost:8005/user/google-auth', {
+                    withCredentials: true
+                });
+
+                if (response.data.message === false) {
+                    setIsGoogleLinked(false);
+                } else if (response.data.message === true) {
+                    setIsGoogleLinked(true);
+                } else {
+                    console.error('Unexpected response status:', response.message);
+                }
+                console.log(isGoogleLinked);
+            } catch (error) {
+                console.error('Error checking Google authentication:', error);
+            }
+        }
+        checkGoogleAuth();
+    }, [])
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -265,9 +289,19 @@ const ProfilePage = () => {
                                             <h4 className="font-semibold text-gray-800">Google Account</h4>
                                             <p className="text-sm text-gray-500">Connect for easy login</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                            Connect
-                                        </button>
+                                        {isGoogleLinked ? (
+                                            <Link to="http://localhost:8005/user/disconnect-google">
+                                                <button className="px-4 py-2 bg-[#1cb554] text-white rounded-md w-[100px] cursor-pointer">
+                                                    Unlink
+                                                </button>
+                                            </Link>
+                                        ) : (
+                                            <Link to="http://localhost:8005/login/google">
+                                                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition w-[100px]">
+                                                    Connect
+                                                </button>
+                                            </Link>
+                                        )}
                                     </div>
                                     <div className="flex items-center bg-white p-4 rounded-lg shadow-md">
                                         <div className="bg-blue-100 p-3 rounded-full mr-4">

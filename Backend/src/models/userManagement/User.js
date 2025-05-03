@@ -32,6 +32,14 @@ const UserSchema = new mongoose.Schema({
     "NIC": {
         type: String,
         required: false
+    },
+    "googleId": {
+        type: String,
+        required: false
+    },
+    "googleEmail": {
+        type: String,
+        required: false
     }
 }, { timestamps: true })
 

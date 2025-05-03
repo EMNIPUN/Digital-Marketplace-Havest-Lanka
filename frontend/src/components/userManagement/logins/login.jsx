@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { BoxArrowIn } from "../icons/Icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -9,6 +9,13 @@ function Login(props) {
    const [password, setPassword] = useState("");
    const [error, setError] = useState("");
    const [loading, setLoading] = useState(false);
+
+   const location = useLocation();
+   const queryParams = new URLSearchParams(location.search);
+   const e = queryParams.get("e");
+   useEffect(() => {
+      toast.error(e)
+   }, [e]);
 
    const navigate = useNavigate();
 
@@ -77,7 +84,7 @@ function Login(props) {
          <ToastContainer />
          <div className="bg-[#f3f4f6] grid grid-cols-2 w-screen h-screen overflow-hidden">
             <div className="flex items-center justify-center">
-               <div className="bg-[#fff] w-2/3 h-3/4 rounded-2xl grid grid-rows-12 overflow-hidden">
+               <div className="bg-[#fff] w-2/3 h-4/5 rounded-2xl grid grid-rows-12 overflow-hidden">
                   <div className="w-full h-full row-span-4 flex flex-col items-center justify-evenly">
                      <BoxArrowIn />
                      <h2 className="font-bold text-xl text-[#1f2937]">
@@ -133,6 +140,24 @@ function Login(props) {
                               </p>
                            </Link>
                         </div>
+                        <div className="w-full mt-4 flex gap-3">
+                           <button
+                              type="button"
+                              onClick={() => window.location.href = `http://localhost:8005/login/google/login/${findRole()}`}
+                              className="w-full p-2 rounded-md border flex items-center justify-center gap-2 hover:bg-gray-100"
+                           >
+                              <img src="https://www.svgrepo.com/show/223041/google.svg" alt="Google" className="w-5 h-5" />
+                              <span className="text-sm font-medium text-gray-700"> Google</span>
+                           </button>
+                           <button
+                              type="button"
+                              className="w-full p-2 rounded-md border flex items-center justify-center gap-2 hover:bg-gray-100"
+                           >
+                              <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" className="w-5 h-5" />
+                              <span className="text-sm font-medium text-gray-700"> Facebook</span>
+                           </button>
+                        </div>
+
                         <div className="text-sm mt-5 text-gray-500 flex gap-2">
                            <div>Login as a </div>
                            {props.role === "Shop Owner" ? (

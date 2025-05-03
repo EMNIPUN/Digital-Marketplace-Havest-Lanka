@@ -25,6 +25,9 @@
       "node-cron": "^3.0.3",
       "nodemailer": "^6.10.1",
       "nodemon": "^3.1.9",
+      "openai": "^4.96.0",
+      "passport": "^0.7.0",
+      "passport-google-oauth20": "^2.0.0",
       "pdfkit": "^0.16.0",
       "pdfmake": "^0.2.18",
       "systeminformation": "^5.25.11"

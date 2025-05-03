@@ -55,8 +55,8 @@ function LandingPage() {
                      </Link>
                      <li
                         className={`${scrollNavbar
-                              ? "bg-white text-sec-green"
-                              : "bg-sec-green  text-white"
+                           ? "bg-white text-sec-green"
+                           : "bg-sec-green  text-white"
                            } py-2 w-24 flex items-center justify-center  rounded  font-medium`}
                      >
                         <Link to="/farmer/register">Join</Link>
