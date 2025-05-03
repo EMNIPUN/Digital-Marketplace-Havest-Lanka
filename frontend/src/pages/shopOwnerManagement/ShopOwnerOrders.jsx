@@ -13,6 +13,9 @@ function ShopOwnerOrders() {
    // Get all bids
    const [allBids, setAllBids] = useState([]);
 
+   // test
+   function test() {}
+
    // get order details
    const getAllBids = async () => {
       await axios
@@ -154,8 +157,8 @@ function ShopOwnerOrders() {
                                     state: {
                                        farmer: bid.farmer,
                                        orderId: bid._id,
-                                       shopOwnerId:sid,
-                                       farmerId:bid.farmerId
+                                       shopOwnerId: sid,
+                                       farmerId: bid.farmerId,
                                     },
                                  })
                               }
