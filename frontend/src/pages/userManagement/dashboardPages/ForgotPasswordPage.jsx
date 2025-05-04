@@ -328,7 +328,7 @@ function GetOTP({ onSubmit, email }) {
                     Verification Code
                 </h2>
                 <p className="text-sm text-gray-500 mb-4">
-                    We've sent a 6-digit code to {maskedEmail}
+                    We've sent a 6-digit code to {maskedEmail} <span>Check your spam folder also</span>
                 </p>
 
                 <div className="flex justify-between gap-2 mb-3">

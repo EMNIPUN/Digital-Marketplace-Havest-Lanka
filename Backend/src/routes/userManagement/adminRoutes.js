@@ -30,6 +30,6 @@ router.post("/reactivate", ReactivateUsers)
 router.get("/report/user-registration", UserRegistrationReport)
 router.get("/activity", getAllActivities)
 
-router.get("/test/manual-alerts", addMultipleAlertsByUrl)
+// router.get("/test/manual-alerts", addMultipleAlertsByUrl)
 
 export default router

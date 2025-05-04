@@ -85,7 +85,7 @@ const sendRegistrationEmail = async (email, name, password) => {
                     </table>
                     <p style="margin-top: 30px;">For your security, please change your password after your first login.</p>
                     <div style="text-align: center; margin-top: 30px;">
-                        <a href="https://yourwebsite.com/login" style="background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;">Login Now</a>
+                        <a href="http://localhost:5173/" style="background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;">Login Now</a>
                     </div>
                 </div>
                 <div style="background-color: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #777;">

@@ -5,12 +5,12 @@ const sendMail = (to, subject, htmlContent) => {
         host: 'smtp.gmail.com',
         auth: {
             user: 'harvestlanka904@gmail.com',
-            pass: 'xcbr yhvi bbdf uben'
+            pass: process.env.SMTP_PASS
         }
     });
 
     const mailOptions = {
-        from: 'harvestlanka904@gmail.com',
+        from: '"Harvest Lanka" <harvestlanka904@gmail.com>',
         to: to,
         subject: subject,
         html: htmlContent
