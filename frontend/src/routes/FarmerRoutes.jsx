@@ -5,6 +5,7 @@ import Bids from "@/pages/farmerManagement/bids.page";
 import React from "react";
 import {Routes, Route} from "react-router-dom";
 import CropsPredictionPage from "@/pages/farmerManagement/cropsprediction.page";
+import TranspotationPage from "@/pages/farmerManagement/transpotation.page";
 
 function FarmerRoutes() {
    return (
@@ -14,6 +15,7 @@ function FarmerRoutes() {
          <Route path="/dailyprice" element={<DailyPrice />} />
          <Route path="/mybids/:id" element={<Bid />} />
          <Route path="/ai-prediction" element={<CropsPredictionPage/>} />
+         <Route path="/tarnsposition" element={<TranspotationPage/>} />
       </Routes>
    )
 }
