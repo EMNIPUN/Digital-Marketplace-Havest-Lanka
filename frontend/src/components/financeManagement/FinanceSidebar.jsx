@@ -6,9 +6,12 @@ import {
    FcPieChart,
    FcHome,
    FcMoneyTransfer,
+   FcComboChart
+   
 } from "react-icons/fc";
 import user from "../../assets/shopOwnerManagement/profile.png";
 import Token from "../userManagement/logins/Token";
+import ruchith from '../../assets/financeManagement/CHE_5153.jpg'
 
 export default function FinanceSidebar() {
    const token = Token();
@@ -22,7 +25,7 @@ export default function FinanceSidebar() {
             <div className="profile flex items-center flex-col gap-3 px-6 py-3">
                <div className="relative">
                   <img
-                     src={user}
+                     src={ruchith}
                      alt="Profile"
                      className="w-20 h-20 rounded-full "
                   />
@@ -79,6 +82,34 @@ export default function FinanceSidebar() {
                            <div className="flex gap-2 items-center">
                               <FcMoneyTransfer className="text-xl" />
                               <p>All payments</p>
+                           </div>
+                        </Link>
+                     </li>
+                     <li
+                        className={`rounded-md 
+                               hover:bg-gray-50 `}
+                     >
+                        <Link
+                           to="/finance/payfarmers"
+                           className="flex items-center justify-between py-2 px-3"
+                        >
+                           <div className="flex gap-2 items-center">
+                              <FcMoneyTransfer className="text-xl" />
+                              <p>Pay Farmers</p>
+                           </div>
+                        </Link>
+                     </li>
+                     <li
+                        className={`rounded-md 
+                               hover:bg-gray-50 `}
+                     >
+                        <Link
+                           to="/finance/dailyprices"
+                           className="flex items-center justify-between py-2 px-3"
+                        >
+                           <div className="flex gap-2 items-center">
+                              <FcComboChart className="text-xl" />
+                              <p>Daily Prices</p>
                            </div>
                         </Link>
                      </li>
