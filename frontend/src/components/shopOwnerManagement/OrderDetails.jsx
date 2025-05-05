@@ -86,7 +86,7 @@ function OrderDetails(props) {
                   Bid Accepted
                </span>
             ) : status === "Payment Approved" ? (
-               <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-800 text-gray-100">
+               <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-800/90 text-gray-100">
                   <span className="h-2 w-2 rounded-full bg-gray-400 mr-1.5 mt-1"></span>
                   Payment done
                </span>
@@ -97,21 +97,28 @@ function OrderDetails(props) {
                </span>
             )}
          </td>
-         <td
-            className="py-6 px-4 cursor-pointer hover:text-gray-800"
-            onClick={() =>
-               navigate("/shopOwner/inbox/chat", {
-                  state: {
-                     farmer: farmer,
-                     orderId: orderId,
-                     shopOwnerId: sid,
-                     farmerId: farmerId,
-                  },
-               })
-            }
-         >
-            <i className="bi bi-envelope"></i>
-         </td>
+         {status === "pending" ? (
+            <td className="py-6 px-4 cursor-pointer text-gray-200">
+               <i className="bi bi-envelope"></i>
+            </td>
+         ) : (
+            <td
+               className="py-6 px-4 cursor-pointer hover:text-gray-800"
+               onClick={() =>
+                  navigate("/shopOwner/inbox/chat", {
+                     state: {
+                        farmer: farmer,
+                        orderId: orderId,
+                        shopOwnerId: sid,
+                        farmerId: farmerId,
+                     },
+                  })
+               }
+            >
+               <i className="bi bi-envelope"></i>
+            </td>
+         )}
+
          <td className="px-6 py-4 ">
             {status === "Accepted" ? (
                <button
