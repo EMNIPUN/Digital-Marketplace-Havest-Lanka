@@ -170,20 +170,7 @@ function ShopOwnerSideBar() {
                            ? activeItemClass
                            : "hover:bg-gray-50"
                      } `}
-                  >
-                     <Link
-                        to="/shopOwner/inbox"
-                        className="flex items-center justify-between py-2 px-3"
-                     >
-                        <div className="flex gap-2 items-center">
-                           <FcSms className="text-xl" />
-                           <p>Inbox</p>
-                        </div>
-                        <div className="text-xs bg-green-600 text-white w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
-                           1
-                        </div>
-                     </Link>
-                  </li>
+                  ></li>
                </ul>
             </div>
 

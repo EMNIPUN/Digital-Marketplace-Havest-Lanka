@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Send, MoreVertical, Smile } from "lucide-react";
 import User from "../../assets/shopOwnerManagement/profile.png";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,18 +7,15 @@ import SOLoading from "./SOLoading";
 
 function ChatInterface() {
    const navigate = useNavigate();
-
-   // Get navigation state
    const location = useLocation();
    const { farmer, farmerId, shopOwnerId, orderId } = location.state || {};
 
    const [inputMessage, setInputMessage] = useState("");
    const [messages, setMessages] = useState([]);
-
-   //loading
    const [loading, setLoading] = useState(false);
 
-   // Fetch messages
+   const scrollableRef = useRef(null);
+
    const getMessageData = async () => {
       setLoading(true);
       try {
@@ -33,7 +30,6 @@ function ChatInterface() {
       }
    };
 
-   // Send message
    const handleSendMessage = async () => {
       if (!inputMessage.trim()) return;
 
@@ -55,7 +51,6 @@ function ChatInterface() {
       }
    };
 
-   // Handle Enter key
    const handleKeyPress = (e) => {
       if (e.key === "Enter") {
          e.preventDefault();
@@ -67,14 +62,20 @@ function ChatInterface() {
       getMessageData();
    }, []);
 
+   useEffect(() => {
+      if (scrollableRef.current) {
+         scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
+      }
+   }, [messages]);
+
    return (
       <div className="bg-gray-100 flex items-center justify-center p-5 w-full">
-         <div className="w-full h-[500px] bg-white rounded-sm shadow-sm flex flex-col overflow-hidden">
+         <div className="w-full h-[500px] bg-white rounded-sm shadow-sm flex flex-col overflow-hidden border border-gray-200">
             {/* Header */}
-            <div className="bg-gray-200 text-gray-800 px-4 py-3 flex items-center justify-between">
+            <div className="bg-sec-green border-b border-emerald-300 text-white px-4 py-3 flex items-center justify-between">
                <div className="flex items-center gap-3">
                   <button
-                     className="text-gray-800 hover:text-gray-500 transition-colors"
+                     className="text-white hover:text-gray-300 transition-colors"
                      onClick={() => navigate(-1)}
                   >
                      <svg
@@ -101,11 +102,11 @@ function ChatInterface() {
                   </div>
                   <div>
                      <h2 className="font-semibold">{farmer}</h2>
-                     <p className="text-xs text-gray-500">Online</p>
+                     <p className="text-xs text-gray-200">Online</p>
                   </div>
                </div>
                <div className="flex items-center gap-4">
-                  <button className="text-gray-500 hover:text-white transition-colors">
+                  <button className="text-white hover:text-gray-300 transition-colors">
                      <MoreVertical size={18} />
                   </button>
                </div>
@@ -114,7 +115,10 @@ function ChatInterface() {
             {loading ? (
                <SOLoading />
             ) : (
-               <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+               <div
+                  ref={scrollableRef}
+                  className="flex-1 overflow-y-auto p-4 space-y-4 bg-white"
+               >
                   {messages.map((msg) => (
                      <div
                         key={msg._id}
@@ -130,17 +134,8 @@ function ChatInterface() {
                                     : "bg-white text-gray-800 shadow-sm rounded-bl-none"
                               }`}
                            >
-                              <p>{msg.content}</p>
+                              <p className="text-sm">{msg.content}</p>
                            </div>
-                           <span
-                              className={`text-xs mt-1 ${
-                                 msg.sender === "me"
-                                    ? "text-right text-gray-500"
-                                    : "text-gray-500"
-                              }`}
-                           >
-                              {msg.time || "Now"}
-                           </span>
                         </div>
                         {msg.sender === "me" && (
                            <div className="w-8 h-8 rounded-full bg-sec-green ml-2 flex-shrink-0 flex items-center justify-center">

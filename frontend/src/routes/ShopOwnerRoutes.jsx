@@ -7,7 +7,6 @@ import ShopOwnerNavBar from "../components/shopOwnerManagement/ShopOwnerNavBar";
 import FindCrops from "../pages/shopOwnerManagement/FindCrops";
 import ShopOwnerFooter from "../components/shopOwnerManagement/ShopOwnerFooter";
 import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
-import ShopOwnerInbox from "../pages/shopOwnerManagement/ShopOwnerInbox";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
 import DailyPrice from "@/components/other/DailyPrice";
 import ShopOwnerFinance from "@/pages/shopOwnerManagement/ShopOwnerFinance";
@@ -22,9 +21,11 @@ function ShopOwnerRoutes() {
          </div>
          <div className="w-full pl-80">
             {/* Navbar showing */}
-            <ShopOwnerNavBar />
+            <div className="z-50">
+               <ShopOwnerNavBar />
+            </div>
             {/* Daily pprice showing */}
-            <div className="mt-14 fixed top-0 z-50">
+            <div className="mt-[58px] fixed top-0 z-0">
                <DailyPrice />
             </div>
 
@@ -34,7 +35,6 @@ function ShopOwnerRoutes() {
                   <Route path="/" element={<ShopOwnerDashboard />}></Route>
                   <Route path="/findcrops" element={<FindCrops />}></Route>
                   <Route path="/orders" element={<ShopOwnerOrders />}></Route>
-                  <Route path="/inbox" element={<ShopOwnerInbox />}></Route>
                   <Route
                      path="/inventory"
                      element={<ManageInventory />}

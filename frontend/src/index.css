@@ -5,7 +5,6 @@
 /* Loading */
 
 @keyframes grow {
-
    0%,
    100% {
       transform: scale(1);
@@ -51,8 +50,6 @@ body {
 .text-light-green {
    color: var(--lightGreen);
 }
-
-
 
 @layer base {
    :root {
@@ -110,8 +107,6 @@ body {
       --chart-5: 340 75% 55%;
    }
 }
-
-
 
 @layer base {
    * {

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Payform from "@/components/financeManagement/Payform";
 import md5 from "crypto-js/md5";
 import SOLoading from "@/components/shopOwnerManagement/SOLoading";
+import OrderDetails from "@/components/shopOwnerManagement/OrderDetails";
 
 function ShopOwnerOrders() {
    // Shop owner details
@@ -117,84 +118,18 @@ function ShopOwnerOrders() {
 
                      <tbody className="divide-y divide-gray-200 ">
                         {allBids.map((bid) => (
-                           <tr
-                              className="hover:bg-gray-50 transition duration-150"
+                           <OrderDetails
                               key={bid._id}
-                           >
-                              <td className="px-6 py-4 ">
-                                 <div className="flex items-center">
-                                    <div className="">
-                                       <div className="text-sm font-medium text-gray-900">
-                                          {bid.farmer}
-                                       </div>
-                                    </div>
-                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                 <div className="text-sm text-gray-900">
-                                    {bid.product}
-                                 </div>
-                                 <div className="text-xs text-gray-500">
-                                    {bid.quantity}kg package
-                                 </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                 <div className="text-sm font-semibold text-gray-900">
-                                    LKR {bid.price * bid.quantity}
-                                 </div>
-                              </td>
-                              <td className="px-6 py-4 ">
-                                 {bid.status === "Accepted" ? (
-                                    <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-green-100 text-green-800">
-                                       <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
-                                       Waiting for Payment
-                                    </span>
-                                 ) : (
-                                    <span className="px-3 py-1 inline-flex  text-xs  font-semibold rounded-full bg-gray-100 text-gray-600">
-                                       <span className="h-2 w-2 rounded-full bg-gray-600 mr-1.5 mt-1"></span>
-                                       Pending Bid
-                                    </span>
-                                 )}
-                              </td>
-                              <td
-                                 className="py-6 px-4 cursor-pointer hover:text-gray-800"
-                                 onClick={() =>
-                                    navigate("/shopOwner/inbox/chat", {
-                                       state: {
-                                          farmer: bid.farmer,
-                                          orderId: bid._id,
-                                          shopOwnerId: sid,
-                                          farmerId: bid.farmerId,
-                                       },
-                                    })
-                                 }
-                              >
-                                 <i className="bi bi-envelope"></i>
-                              </td>
-                              <td className="px-6 py-4 ">
-                                 {bid.status === "Accepted" ? (
-                                    <button
-                                       onClick={() =>
-                                          goToPayment(
-                                             bid._id,
-                                             bid.product,
-                                             bid.price * bid.quantity
-                                          )
-                                       }
-                                       className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
-                                    >
-                                       Pay Now
-                                    </button>
-                                 ) : (
-                                    <button
-                                       disabled
-                                       className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
-                                    >
-                                       Pay Now
-                                    </button>
-                                 )}
-                              </td>
-                           </tr>
+                              orderId={bid._id}
+                              farmer={bid.farmer}
+                              product={bid.product}
+                              quantity={bid.quantity}
+                              farmerId={bid.farmerId}
+                              status={bid.status}
+                              price={bid.price}
+                              postId={bid.postId}
+                              goToPayment={goToPayment}
+                           />
                         ))}
                      </tbody>
                   </table>

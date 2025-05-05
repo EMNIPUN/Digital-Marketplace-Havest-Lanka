@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post("/payment", paymentController.notifyPayment);
 router.get("/all-payments", paymentController.getAllPayments);
+router.get("/getPaymentByOrderId/:order_id", paymentController.getPaymentByOrdeId)
 
 export default router;

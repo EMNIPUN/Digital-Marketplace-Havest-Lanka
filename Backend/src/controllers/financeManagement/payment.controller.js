@@ -15,7 +15,6 @@ const notifyPayment = async (req, res) => {
    }
 };
 
-
 const getAllPayments = async (req, res) => {
    try {
       const all_payments = await Payment.find();
@@ -26,4 +25,16 @@ const getAllPayments = async (req, res) => {
    }
 };
 
-export default { notifyPayment, getAllPayments };
+const getPaymentByOrdeId = async (req, res) => {
+   const order_id = req.params.order_id;
+
+   Payment.find({ order_id })
+      .then((response) => {
+         res.status(200).json(response);
+      })
+      .catch((error) => {
+         res.status(500).json(error);
+      });
+};
+
+export default { notifyPayment, getAllPayments, getPaymentByOrdeId };

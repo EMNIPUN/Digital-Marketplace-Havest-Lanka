@@ -10,8 +10,10 @@ const CheckAuth = () => {
    useEffect(() => {
       const checkAuth = async () => {
          try {
-            const response = await axios.get(`${BASE_URL}/check-auth`, { withCredentials: true });
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            const response = await axios.get(`${BASE_URL}/check-auth`, {
+               withCredentials: true,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             setIsAuthenticated(response.data.loggedIn);
          } catch (error) {
             setIsAuthenticated(false);
@@ -25,12 +27,8 @@ const CheckAuth = () => {
 
    if (loading) {
       return (
-         <div className="flex items-center justify-center h-screen bg-white">
-            <img
-               className="w-14 h-14 animate-spin"
-               src="https://www.svgrepo.com/show/70469/loading.svg"
-               alt="Loading icon"
-            />
+         <div className="h-screen w-full bg-white flex items-center justify-center">
+            <div className="w-9 h-9 border-4 border-[#4fab4a] border-t-transparent rounded-full animate-spin"></div>
          </div>
       );
    }
