@@ -35,6 +35,14 @@ function CropPost(props) {
       getFarmerDetails();
    }, []);
 
+    // add profile picture
+    const baseURL = "http://localhost:8005";
+
+    const profileImage = farmer.displayPicture
+      ? `${baseURL}${farmer.displayPicture}`
+      : "https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png";
+
+
    return (
       <div className="w-full p-5 rounded-sm bg-white flex flex-col gap-5 text-gray-600 border border-gray-200 shadow-sm">
          <div className="w-full flex items-center justify-between">
@@ -43,7 +51,7 @@ function CropPost(props) {
                   {product} - {quantity} Kg available
                </h3>
                <div className="farmer-name flex gap-2 items-center text-sm">
-                  <img src={User} width="25px" alt="" />
+                  <img src={profileImage} width="25px" alt="" className="rounded-full w-8 h-8 object-cover" />
                   <p className="text-sm tracking-wide">{}</p>
                   <p>{farmer && farmer.name} | 4.9</p>
                   <div className="font-medium text-sm">{}</div>
@@ -51,7 +59,7 @@ function CropPost(props) {
             </div>
             <div className="flex flex-col gap-1 items-end">
                <h3 className="text-gray-700 text-lg font-semibold">
-                  {price} / Kg
+                 LKR {price} / Kg
                </h3>
                <div className="flex gap-2 items-center justify-center">
                   <i className="bi bi-geo-fill text-sm text-rose-500"></i>

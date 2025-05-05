@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Token from "../userManagement/logins/Token";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ChatInterface from "./ChatInterface";
 
 function OrderDetails(props) {
    const {
@@ -59,86 +60,101 @@ function OrderDetails(props) {
       }
    }, [paymentData]);
 
+   // show chatbox
+   const [isShowInbox, setIsShowInbox] = useState(false);
+
    return (
-      <tr className="hover:bg-gray-50 transition duration-150">
-         <td className="px-6 py-4 ">
-            <div className="flex items-center">
-               <div className="">
-                  <div className="text-sm font-medium text-gray-900">
-                     {farmer}
+      <>
+         <tr className="hover:bg-gray-50 transition duration-150">
+            <td className="px-6 py-4 ">
+               <div className="flex items-center">
+                  <div className="">
+                     <div className="text-sm font-medium text-gray-900">
+                        {farmer}
+                     </div>
                   </div>
                </div>
-            </div>
-         </td>
-         <td className="px-6 py-4">
-            <div className="text-sm text-gray-900">{product}</div>
-            <div className="text-xs text-gray-500">{quantity}kg package</div>
-         </td>
-         <td className="px-6 py-4">
-            <div className="text-sm font-semibold text-gray-900">
-               LKR {price * quantity}
-            </div>
-         </td>
-         <td className="px-6 py-4 ">
-            {status === "Accepted" ? (
-               <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                  <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
-                  Bid Accepted
-               </span>
-            ) : status === "Payment Approved" ? (
-               <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-800 text-gray-100">
-                  <span className="h-2 w-2 rounded-full bg-gray-400 mr-1.5 mt-1"></span>
-                  Payment done
-               </span>
+            </td>
+            <td className="px-6 py-4">
+               <div className="text-sm text-gray-900">{product}</div>
+               <div className="text-xs text-gray-500">{quantity}kg package</div>
+            </td>
+            <td className="px-6 py-4">
+               <div className="text-sm font-semibold text-gray-900">
+                  LKR {price * quantity}
+               </div>
+            </td>
+            <td className="px-6 py-4 ">
+               {status === "Accepted" ? (
+                  <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                     <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
+                     Bid Accepted
+                  </span>
+               ) : status === "Payment Approved" ? (
+                  <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-800/90 text-gray-100">
+                     <span className="h-2 w-2 rounded-full bg-gray-400 mr-1.5 mt-1"></span>
+                     Payment done
+                  </span>
+               ) : (
+                  <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-600">
+                     <span className="h-2 w-2 rounded-full bg-gray-600 mr-1.5 mt-1"></span>
+                     Pending Bid
+                  </span>
+               )}
+            </td>
+            {status === "pending" ? (
+               <td className="py-6 px-4 cursor-pointer text-gray-200">
+                  <i className="bi bi-envelope"></i>
+               </td>
             ) : (
-               <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-600">
-                  <span className="h-2 w-2 rounded-full bg-gray-600 mr-1.5 mt-1"></span>
-                  Pending Bid
-               </span>
+               <td
+                  className="py-6 px-4 cursor-pointer hover:text-gray-800"
+                  onClick={() => setIsShowInbox(true)}
+               >
+                  <i className="bi bi-envelope"></i>
+               </td>
             )}
-         </td>
-         <td
-            className="py-6 px-4 cursor-pointer hover:text-gray-800"
-            onClick={() =>
-               navigate("/shopOwner/inbox/chat", {
-                  state: {
-                     farmer: farmer,
-                     orderId: orderId,
-                     shopOwnerId: sid,
-                     farmerId: farmerId,
-                  },
-               })
-            }
-         >
-            <i className="bi bi-envelope"></i>
-         </td>
-         <td className="px-6 py-4 ">
-            {status === "Accepted" ? (
-               <button
-                  onClick={() =>
-                     goToPayment(orderId, product, price * quantity)
-                  }
-                  className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
-               >
-                  Pay Now
-               </button>
-            ) : status === "Payment Approved" ? (
-               <button
-                  disabled
-                  className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
-               >
-                  Waiting
-               </button>
-            ) : (
-               <button
-                  disabled
-                  className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
-               >
-                  Pay Now
-               </button>
+
+            {isShowInbox && (
+               <td>
+                  <ChatInterface
+                     farmer={farmer}
+                     orderId={orderId}
+                     shopOwnerId={sid}
+                     farmerId={farmerId}
+                     setIsShowInbox={setIsShowInbox}
+                  />
+               </td>
             )}
-         </td>
-      </tr>
+
+            <td className="px-6 py-4 ">
+               {status === "Accepted" ? (
+                  <button
+                     onClick={() =>
+                        goToPayment(orderId, product, price * quantity)
+                     }
+                     className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
+                  >
+                     Pay Now
+                  </button>
+               ) : status === "Payment Approved" ? (
+                  <button
+                     disabled
+                     className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
+                  >
+                     Waiting
+                  </button>
+               ) : (
+                  <button
+                     disabled
+                     className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"
+                  >
+                     Pay Now
+                  </button>
+               )}
+            </td>
+         </tr>
+      </>
    );
 }
 
