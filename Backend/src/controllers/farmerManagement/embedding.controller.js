@@ -25,7 +25,7 @@ export const createEmbeddings = async (req, res) => {
           metadata: { _id },
         });
         return doc;
-      });
+      }); 
       
 
     await vectorIndex.addDocuments(docs);

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, Wheat, Leaf, Truck, FileText, Clock, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, Wheat, Leaf, Truck, FileText, Clock, AlertCircle, MessageSquare } from 'lucide-react';
 import HandleBitPlacement from '../HandleBitPlacement/HandleBitPlacement';
 import EditBidPost from '../EditBidPost/EditBidPost';
 import { Link } from 'react-router-dom';
 import TimeCountDown from '../TimeCountDown/TimeCountDown';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import ChatInterfaceFarmer from '@/components/shopOwnerManagement/ChatInterfaceFarmer';
 
 const MyBidsCard = ({ bid, bidId }) => {
   console.log(bidId);
 
   const [showDetails, setShowDetails] = useState(false);
   const [bidPlacementDetails, setBidPlacementDetails] = useState([]);
+  const [chatInterface, setChatInterface] = useState(false);
 
   // const getBidPlacementDetails = async () => {
   //   try {
@@ -121,6 +123,14 @@ const MyBidsCard = ({ bid, bidId }) => {
                 View Details
               </button>
             </Link>
+            <button onClick={() => setChatInterface(!chatInterface)}
+              className="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 transition-colors p-2 rounded-lg font-medium text-sm flex items-center"
+            >
+              <MessageSquare size={16} />
+              {
+                chatInterface && <ChatInterfaceFarmer  orderId={bid._id} />
+              }
+            </button>
           </div>
         </div>
 
@@ -152,13 +162,15 @@ const MyBidsCard = ({ bid, bidId }) => {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button  className="flex items-center justify-center px-4 py-2.5 bg-yellow-50 text-yellow-600 text-sm font-medium 
-              rounded-lg hover:bg-yellow-100 transition-colors duration-200 border border-yellow-200 
-              shadow-sm"
-          >
-            <Truck className="mr-2" size={16} />
-            Request Transport
-          </button>
+          <Link to={`/farmer/tarnsposition/${bid._id}`}>
+            <button  className="flex items-center justify-center px-4 py-2.5 bg-yellow-50 text-yellow-600 text-sm font-medium 
+                rounded-lg hover:bg-yellow-100 transition-colors duration-200 border border-yellow-200 
+                shadow-sm"
+            >
+              <Truck className="mr-2" size={16} />
+              Request Transport
+            </button>
+          </Link>
             
           <button 
             className="flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 text-sm font-medium 
@@ -193,6 +205,11 @@ const MyBidsCard = ({ bid, bidId }) => {
                 View Details
               </button>
             </Link>
+            <button 
+              className="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 transition-colors p-2 rounded-lg font-medium text-sm flex items-center"
+            >
+              <MessageSquare size={16} />
+            </button>
           </div>
         </div>
 
@@ -264,6 +281,11 @@ const MyBidsCard = ({ bid, bidId }) => {
                 View Details
               </button>
             </Link>
+            <button 
+              className="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 transition-colors p-2 rounded-lg font-medium text-sm flex items-center"
+            >
+              <MessageSquare size={16} />
+            </button>
           </div>
         </div>
         
