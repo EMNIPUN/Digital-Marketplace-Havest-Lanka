@@ -64,6 +64,14 @@ const MyBidsCard = ({ bid, bidId }) => {
           dotColor: "bg-green-600",
           icon: <Clock size={16} className="mr-2 text-green-600" />
         };
+      case "Payment Approved":
+        return {
+          bgColor: "bg-green-100",
+          textColor: "text-green-700",
+          borderColor: "border-green-200",
+          dotColor: "bg-green-600",
+          icon: <CheckCircle size={16} className="mr-2 text-blue-600" />
+        };
       case "Payment Pending":
         return { 
           bgColor: "bg-yellow-100", 
@@ -93,6 +101,78 @@ const MyBidsCard = ({ bid, bidId }) => {
 
   const statusConfig = getStatusConfig(bid.status);
 
+
+  if (bid.status === "Payment Approved") {
+    return (
+      <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 w-full max-w-3xl">
+        <div className="flex justify-between mb-2">
+          <div className="flex justify-center items-center gap-3 mb-4">
+            <div className="p-2 rounded-full bg-green-100">
+              <CheckCircle className="text-green-600 w-5 h-5" />
+            </div>
+            <h2 className="text-lg font-bold text-gray-800">Bid Accepted Successfully</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link to={'/farmer/mybids/'+bid._id}>
+              <button 
+                className="text-green-600 hover:text-green-800 bg-green-50 hover:bg-green-100 transition-colors px-4 py-1.5 rounded-lg font-medium text-sm flex items-center"
+                onClick={() => setShowDetails(!showDetails)}
+              > 
+                View Details
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        <p className="text-gray-600 mb-5 text-center">
+          Congratulations! Your bid has been accepted. Here are the details:
+        </p>
+        
+        <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
+          <div className="bg-gray-50 p-4 rounded-lg text-left flex-1 border border-gray-100">
+            <h3 className="text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">Bid Details</h3>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-700 flex justify-between"><span>Crops Name:</span> <span className="font-medium">{bid.cropsName}</span></p>
+              <p className="text-sm text-gray-700 flex justify-between"><span>Quantity:</span> <span className="font-medium">{bid.quantity} kg</span></p>
+              <p className="text-sm text-gray-700 flex justify-between"><span>Price per kg:</span> <span className="font-medium">Rs.{bid.price}.00</span></p>
+            </div>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg text-left flex-1 border border-gray-100">
+            <h3 className="text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">Delivery Information</h3>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-700 flex justify-between"><span>Estimated Delivery:</span> <span className="font-medium">Within 3-5 days</span></p>
+              <p className="text-sm text-gray-700 flex justify-between"><span>Total Amount:</span> <span className="font-medium">Rs.{bid.price * bid.quantity}.00</span></p>
+              <p className="text-sm text-gray-700 flex gap-4 items-center"><span>Status:</span> 
+                <span className="font-medium text-green-600">{bid.status}</span>
+                <CheckCircle size={16} className="mr-2 text-green-600" />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <button  className="flex items-center justify-center px-4 py-2.5 bg-yellow-50 text-yellow-600 text-sm font-medium 
+              rounded-lg hover:bg-yellow-100 transition-colors duration-200 border border-yellow-200 
+              shadow-sm"
+          >
+            <Truck className="mr-2" size={16} />
+            Request Transport
+          </button>
+            
+          <button 
+            className="flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 text-sm font-medium 
+              rounded-lg hover:bg-blue-100 transition-colors duration-200 border border-blue-200 
+              shadow-sm"
+            onClick={generateInvoice}
+          >
+            <FileText className="mr-2" size={16} />
+            Generate Invoice
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (bid.status === "Payment Pending") {
     return (
@@ -135,7 +215,7 @@ const MyBidsCard = ({ bid, bidId }) => {
             <div className="space-y-2">
               <p className="text-sm text-gray-700 flex justify-between"><span>Estimated Delivery:</span> <span className="font-medium">Within 3-5 days</span></p>
               <p className="text-sm text-gray-700 flex justify-between"><span>Total Amount:</span> <span className="font-medium">Rs.{bid.price * bid.quantity}.00</span></p>
-              <p className="text-sm text-gray-700 flex justify-between"><span>Status:</span> <span className="font-medium text-yellow-600">Payment Pending</span></p>
+              <p className="text-sm text-gray-700 flex justify-between"><span>Status:</span> <span className="font-medium text-yellow-600">{bid.status}</span></p>
             </div>
           </div>
         </div>

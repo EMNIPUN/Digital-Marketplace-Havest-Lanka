@@ -1,7 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { User, ShoppingBag, CheckCircle, CreditCard, ChevronRight } from 'lucide-react';
+import Token from '@/components/userManagement/logins/Token';
 
 const ProfileCard = () => {
+
+  const token = Token();
+  const farmerId = token.userId;
+  console.log(token)
+
   return (
     <div className="flex flex-col gap-6 p-6 max-w-md">
       {/* Profile Card */}
@@ -21,12 +28,13 @@ const ProfileCard = () => {
         <div className="pt-16 pb-6 px-6">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h1 className="text-xl font-bold text-gray-800">Nipun Dhanajaya</h1>
-              <p className="text-sm text-gray-500 mt-1">Premium Member since 2023</p>
+              <h1 className="text-xl font-bold text-gray-800">{token.name}</h1>
+              <p className="text-sm text-gray-500 mt-1">{token.email}</p>
+              <p className="text-sm text-gray-500 mt-1">{token.number}</p>
             </div>
-            <button className="bg-green-50 text-green-700 font-medium text-sm px-4 py-2 rounded-lg border border-green-200 hover:bg-green-100 transition-colors duration-200">
+            <Link to={`/profile/${farmerId}`} className="bg-green-50 text-green-700 font-medium text-sm px-4 py-2 rounded-lg border border-green-200 hover:bg-green-100 transition-colors duration-200">
               View Profile
-            </button>
+            </Link>
           </div>
           
           <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">

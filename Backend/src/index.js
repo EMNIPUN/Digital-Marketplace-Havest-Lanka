@@ -24,6 +24,7 @@ import paymentRoutes from "./routes/financeManagement/payment.routes.js";
 import cropsRouter from "./routes/farmerManagement/Crops.routes.js";
 import inboxRoutes from "./routes/shopOwnerManagement/inbox.routes.js";
 import messageRoutes from "./routes/shopOwnerManagement/message.route.js";
+import transportRoutes from "./routes/farmerManagement/Trasportation.routes.js";
 
 const app = express();
 app.use(express.json());
@@ -55,7 +56,7 @@ app.use("/check-auth", checkAuthRoutes);
 //farmer endpoints
 app.use("/api/BidPost", bidPostRouter);
 app.use("/api/crops", cropsRouter);
-
+app.use("/api/transport", transportRoutes);
 
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/bid", bidRoutes);
