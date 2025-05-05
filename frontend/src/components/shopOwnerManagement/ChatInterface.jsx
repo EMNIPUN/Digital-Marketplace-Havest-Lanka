@@ -5,10 +5,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SOLoading from "./SOLoading";
 
-function ChatInterface() {
+function ChatInterface(props) {
    const navigate = useNavigate();
    const location = useLocation();
-   const { farmer, farmerId, shopOwnerId, orderId } = location.state || {};
+   const { farmer, farmerId, shopOwnerId, orderId, setIsShowInbox } = props;
 
    const [inputMessage, setInputMessage] = useState("");
    const [messages, setMessages] = useState([]);
@@ -68,16 +68,25 @@ function ChatInterface() {
       }
    }, [messages]);
 
+   // close section
+   const closeSection = (e) => {
+      if (e.target === e.currentTarget) {
+         setIsShowInbox(false);
+      }
+   };
+
    return (
-      <div className="bg-gray-100 flex items-center justify-center p-5 w-full">
-         <div className="w-full h-[500px] bg-white rounded-sm shadow-sm flex flex-col overflow-hidden border border-gray-200">
+      <div className=" fixed top-0 left-0 z-[10000] flex  w-full h-screen">
+         <div
+            onClick={closeSection}
+            className="w-4/6 h-screen bg-black/70"
+            id="close-inbox"
+         ></div>
+         <div className="w-2/6 h-screen bg-white  shadow-sm flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="bg-sec-green border-b border-emerald-300 text-white px-4 py-3 flex items-center justify-between">
+            <div className="bg-main-green  text-white px-4 py-3 flex items-center justify-between">
                <div className="flex items-center gap-3">
-                  <button
-                     className="text-white hover:text-gray-300 transition-colors"
-                     onClick={() => navigate(-1)}
-                  >
+                  <button className="text-white hover:text-gray-300 transition-colors">
                      <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="20"
@@ -151,16 +160,13 @@ function ChatInterface() {
 
             {/* Input */}
             <div className="bg-white px-4 py-3 flex items-center gap-2 border-t border-gray-200">
-               <button className="p-2 text-gray-500 hover:text-sec-green hover:bg-gray-100 rounded-full transition-colors">
-                  <Smile size={18} />
-               </button>
                <input
                   type="text"
                   placeholder="Type a message..."
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  className="flex-1 px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-700"
+                  className="flex-1 px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-300 text-gray-700 text-sm border border-gray-300"
                />
                <button
                   onClick={handleSendMessage}

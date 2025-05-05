@@ -6,6 +6,7 @@ import Payform from "@/components/financeManagement/Payform";
 import md5 from "crypto-js/md5";
 import SOLoading from "@/components/shopOwnerManagement/SOLoading";
 import OrderDetails from "@/components/shopOwnerManagement/OrderDetails";
+import ChatInterface from "@/components/shopOwnerManagement/ChatInterface";
 
 function ShopOwnerOrders() {
    // Shop owner details
@@ -75,6 +76,9 @@ function ShopOwnerOrders() {
 
       return hash.toString().toUpperCase();
    };
+
+   // show chatbox
+   const [isShowInbox, setIsShowInbox] = useState(false);
 
    return (
       <div className="p-[20px] w-full text-gray-500 flex flex-col gap-5">
