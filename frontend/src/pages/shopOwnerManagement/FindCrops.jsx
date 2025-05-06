@@ -184,6 +184,7 @@ function FindCrops() {
                               description={post.description}
                               bids={post.bids}
                               farmer={post.farmer}
+                              status={post.status}
                            />
                         ))
                      ) : (
