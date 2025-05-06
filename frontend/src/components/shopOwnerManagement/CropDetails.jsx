@@ -56,8 +56,8 @@ function CropDetails(props) {
          hideProgressBar: true,
          autoClose: 3000,
          style: {
-            background: " #108a01",
-            color: "#fff",
+            background: " #fff",
+            color: "#108a01",
          },
       });
    };
@@ -107,7 +107,23 @@ function CropDetails(props) {
          });
    };
 
+   // validation bidding form
+   const [error, setError] = useState(false);
+
    const handleChnage = (e) => {
+      // validations
+      if (e.target.name === "quantity") {
+         if (e.target.value < 1 || e.target.value > quantity) {
+            if (e.target.value !== null) {
+               setError(true);
+            } else {
+               setError(false);
+            }
+         } else {
+            setError(false);
+         }
+      }
+
       setBidFormData({ ...bidFormData, [e.target.name]: e.target.value });
    };
 
@@ -181,10 +197,17 @@ function CropDetails(props) {
                <div className="line w-full h-px bg-gray-200"></div>
                {/* Add bid section */}
                {status === "Active" ? (
-                  <div className="flex flex-col gap-5 px-[50px] pb-[40px]">
+                  <div className="flex flex-col gap-3 px-[50px] pb-[40px]">
                      <h2 className="text-xl font-semibold text-gray-800 capitalize">
                         Bid to this crops
                      </h2>
+                     {error && (
+                        <div className="text-xs w-full py-2 bg-red-100 text-center rounded-sm text-gray-600">
+                           <i className="bi bi-exclamation-circle text-red-700 pr-3"></i>
+                           Qunatity must between 1 and {quantity} Kg
+                        </div>
+                     )}
+
                      {!isPlacedBid ? (
                         <form
                            action=""
@@ -198,7 +221,7 @@ function CropDetails(props) {
                               <input
                                  type="number"
                                  placeholder={`Enter quantity (Max : ${quantity} Kg)`}
-                                 className="w-full h-12 px-4 py-3 rounded border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 text-gray-700 text-sm shadow-sm focus:outline-none"
+                                 className="w-full h-12 px-4 py-3 rounded border border-gray-300 focus:border-gray-500  transition-all duration-200 text-gray-700 text-sm shadow-sm focus:outline-none"
                                  required
                                  name="quantity"
                                  value={bidFormData.quantity}
@@ -230,12 +253,22 @@ function CropDetails(props) {
                                  onChange={handleChnage}
                               />
                            </div>
-                           <button
-                              type="submit"
-                              className="w-1/2cd backend  h-12 px-6 py-3 bg-sec-green hover:bg-green-700 text-white font-medium rounded text-sm shadow-md transition-all duration-200 flex items-center justify-center whitespace-nowrap"
-                           >
-                              Place Bid
-                           </button>
+                           {error ? (
+                              <button
+                                 disabled
+                                 type="submit"
+                                 className="w-1/2cd backend  h-12 px-6 py-3 bg-gray-200 text-gray-500 font-semibold rounded text-sm  transition-all duration-200 flex items-center justify-center whitespace-nowrap"
+                              >
+                                 Place Bid
+                              </button>
+                           ) : (
+                              <button
+                                 type="submit"
+                                 className="w-1/2cd backend  h-12 px-6 py-3 bg-sec-green hover:bg-green-700 text-white font-semibold rounded text-sm  transition-all duration-200 flex items-center justify-center whitespace-nowrap"
+                              >
+                                 Place Bid
+                              </button>
+                           )}
                         </form>
                      ) : (
                         <div className="w-full p-4 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-center">
