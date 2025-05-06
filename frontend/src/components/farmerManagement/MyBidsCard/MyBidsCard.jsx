@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState,useEffect } from 'react';
 import { X, CheckCircle, Wheat, Leaf, Truck, FileText, Clock, AlertCircle, MessageSquare } from 'lucide-react';
 import HandleBitPlacement from '../HandleBitPlacement/HandleBitPlacement';
 import EditBidPost from '../EditBidPost/EditBidPost';
@@ -10,20 +10,13 @@ import ChatInterfaceFarmer from '@/components/shopOwnerManagement/ChatInterfaceF
 
 const MyBidsCard = ({ bid, bidId }) => {
   console.log(bidId);
+  console.log(bid);
+
 
   const [showDetails, setShowDetails] = useState(false);
   const [bidPlacementDetails, setBidPlacementDetails] = useState([]);
   const [chatInterface, setChatInterface] = useState(false);
 
-  // const getBidPlacementDetails = async () => {
-  //   try {
-  //     const response = await axios.get('http://localhost:8005/api/bid/getBids/'+id);
-  //     console.log(response.data)
-  //     setBidPlacementDetails(response.data)
-  //   } catch (error) {
-  //     console.error("Error fetching bid placement details")
-  //   }
-  // }
 
   const generateInvoice = () => {
     const doc = new jsPDF();
@@ -171,6 +164,16 @@ const MyBidsCard = ({ bid, bidId }) => {
               Request Transport
             </button>
           </Link>
+
+          <Link to={`/farmer/tarnsposition/${bid._id}`}>
+            <button  className="flex items-center justify-center px-4 py-2.5 bg-yellow-50 text-yellow-600 text-sm font-medium 
+                rounded-lg hover:bg-yellow-100 transition-colors duration-200 border border-yellow-200 
+                shadow-sm"
+            >
+              <Truck className="mr-2" size={16} />
+              Request Transport
+            </button>
+          </Link>
             
           <button 
             className="flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 text-sm font-medium 
@@ -205,10 +208,14 @@ const MyBidsCard = ({ bid, bidId }) => {
                 View Details
               </button>
             </Link>
-            <button 
+            
+            <button onClick={() => setChatInterface(!chatInterface)}
               className="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 transition-colors p-2 rounded-lg font-medium text-sm flex items-center"
             >
               <MessageSquare size={16} />
+              {
+                chatInterface && <ChatInterfaceFarmer  orderId={bid._id} />
+              }
             </button>
           </div>
         </div>
@@ -244,7 +251,14 @@ const MyBidsCard = ({ bid, bidId }) => {
             <Truck className="mr-2" size={16} />
             Request Transport
           </button>
-            
+          
+          <button disabled className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
+                font-medium rounded-lg cursor-not-allowed opacity-70 border border-gray-200 shadow-sm"
+          >
+            <Truck className="mr-2" size={16} />
+            Delivery Crops
+          </button>
+
           <button 
             className="flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 text-sm font-medium 
               rounded-lg hover:bg-blue-100 transition-colors duration-200 border border-blue-200 

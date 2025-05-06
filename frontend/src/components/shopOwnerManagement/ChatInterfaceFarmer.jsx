@@ -1,7 +1,8 @@
 import React from "react";
 
 
-function ChatInterfaceFarmer(props) {
+function ChatInterfaceFarmer({orderId}) {
+   console.log(orderId);
    // const { farmerId, orderId, shopOwnerId } = props;
 
    // const [inputMessage, setInputMessage] = useState("");
@@ -66,6 +67,7 @@ function ChatInterfaceFarmer(props) {
       <div className="w-full h-screen bg-black/30 fixed z-50 top-0 right-0">
          <div className="absolute w-[500px] h-screen bg-white top-0 right-0">
            <h1>hiii</h1>
+           <p>{orderId}</p>
          </div>
       </div>
    );
