@@ -10,7 +10,6 @@ import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
 import DailyPrice from "@/components/other/DailyPrice";
 import ShopOwnerFinance from "@/pages/shopOwnerManagement/ShopOwnerFinance";
-import ChatInterface from "@/components/shopOwnerManagement/ChatInterface";
 
 function ShopOwnerRoutes() {
    return (
@@ -25,7 +24,7 @@ function ShopOwnerRoutes() {
                <ShopOwnerNavBar />
             </div>
             {/* Daily pprice showing */}
-            <div className="mt-[58px] fixed top-0 z-0">
+            <div className="mt-[58px] fixed top-0 z-20">
                <DailyPrice />
             </div>
 
@@ -40,7 +39,6 @@ function ShopOwnerRoutes() {
                      element={<ManageInventory />}
                   ></Route>
                   <Route path="/finance" element={<ShopOwnerFinance />}></Route>
-                  <Route path="/inbox/chat" element={<ChatInterface />}></Route>
                </Routes>
             </div>
             {/* Footer showing */}
