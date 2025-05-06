@@ -16,6 +16,7 @@ function ChatInterface(props) {
 
    const scrollableRef = useRef(null);
 
+   // get message data
    const getMessageData = async () => {
       setLoading(true);
       try {
@@ -30,6 +31,7 @@ function ChatInterface(props) {
       }
    };
 
+   // send new message
    const handleSendMessage = async () => {
       if (!inputMessage.trim()) return;
 
@@ -62,6 +64,7 @@ function ChatInterface(props) {
       getMessageData();
    }, []);
 
+   // always scroll to bottom
    useEffect(() => {
       if (scrollableRef.current) {
          scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
@@ -74,6 +77,30 @@ function ChatInterface(props) {
          setIsShowInbox(false);
       }
    };
+
+   // get farmer details
+   const [farmerDetails, setFarmerDetails] = useState([]);
+   const getFarmerDetails = async () => {
+      await axios
+         .get(`http://localhost:8005/user/find/${farmerId}`)
+         .then((response) => {
+            setFarmerDetails(response.data.user);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   useEffect(() => {
+      getFarmerDetails();
+   }, []);
+
+   // add profile picture
+   const baseURL = "http://localhost:8005";
+
+   const profileImage = farmerDetails.displayPicture
+      ? `${baseURL}${farmerDetails.displayPicture}`
+      : User;
 
    return (
       <div className=" fixed top-0 left-0 z-[10000] flex  w-full h-screen">
@@ -104,9 +131,9 @@ function ChatInterface(props) {
                   </button>
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
                      <img
-                        src={User}
+                        src={profileImage}
                         alt="User avatar"
-                        className="rounded-full"
+                        className="rounded-full w-10 h-10 object-cover border border-white"
                      />
                   </div>
                   <div>
@@ -140,7 +167,7 @@ function ChatInterface(props) {
                               className={`px-4 py-2 rounded-2xl ${
                                  msg.sender === "me"
                                     ? "bg-gray-100 text-gray-700 rounded-br-none"
-                                    : "bg-white text-gray-800 shadow-sm rounded-bl-none"
+                                    : "bg-sec-green text-white shadow-sm rounded-bl-none"
                               }`}
                            >
                               <p className="text-sm">{msg.content}</p>
@@ -148,7 +175,7 @@ function ChatInterface(props) {
                         </div>
                         {msg.sender === "me" && (
                            <div className="w-8 h-8 rounded-full bg-sec-green ml-2 flex-shrink-0 flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">
+                              <span className="text-white text-xs font-medium">
                                  ME
                               </span>
                            </div>

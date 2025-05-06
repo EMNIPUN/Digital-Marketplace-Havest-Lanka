@@ -34,13 +34,13 @@ function CropPost(props) {
 
    useEffect(() => {
       getFarmerDetails();
-   });
+   }, []);
 
    // get bid count according to post
    const [allBids, setAllBids] = useState([]);
 
-   const getAllBids = () => {
-      axios
+   const getAllBids = async () => {
+      await axios
          .get(`http://localhost:8005/api/bid/getBids/${postId}`)
          .then((response) => {
             setAllBids(response.data);
@@ -52,7 +52,7 @@ function CropPost(props) {
 
    useEffect(() => {
       getAllBids();
-   });
+   }, []);
 
    const bidCount = allBids ? allBids.length : 0;
 

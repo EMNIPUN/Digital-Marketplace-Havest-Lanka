@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Send, MoreVertical } from "lucide-react";
 import SOLoading from "./SOLoading";
+import User from "../../assets/shopOwnerManagement/profile.png";
 
 function ChatInterfaceFarmer({ orderId, setChatInterface, farmerName }) {
    const [orderDetails, setOrderDetails] = useState([]);
@@ -86,11 +87,38 @@ function ChatInterfaceFarmer({ orderId, setChatInterface, farmerName }) {
       }
    }, [messages]);
 
+   // close the section
    const closeSection = (e) => {
       if (e.target.id === "close-inbox-farmer") {
          setChatInterface(false);
       }
    };
+
+   // find the shop owner
+   const [shopOwnerDetails, setShopOwnerDetails] = useState([]);
+   const getShopOwnerDetails = async () => {
+      await axios
+         .get(`http://localhost:8005/user/find/${acceptedBid.shopOwnerId}`)
+         .then((response) => {
+            setShopOwnerDetails(response.data.user);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   useEffect(() => {
+      if (acceptedBid && acceptedBid.shopOwnerId) {
+         getShopOwnerDetails();
+      }
+   }, [acceptedBid]);
+
+   // add profile picture
+   const baseURL = "http://localhost:8005";
+
+   const profileImage = shopOwnerDetails.displayPicture
+      ? `${baseURL}${shopOwnerDetails.displayPicture}`
+      : User;
 
    return (
       <div className="fixed top-0 left-0 z-[10000] flex w-full h-screen">
@@ -103,17 +131,34 @@ function ChatInterfaceFarmer({ orderId, setChatInterface, farmerName }) {
             {/* Header */}
             <div className="bg-main-green text-white px-4 py-3 flex items-center justify-between">
                <div className="flex items-center gap-3">
+                  <button
+                     className="text-white hover:text-gray-300 transition-colors"
+                     onClick={() => setChatInterface(false)}
+                  >
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-chevron-left"
+                     >
+                        <path d="m15 18-6-6 6-6" />
+                     </svg>
+                  </button>
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-                     {/* <img
-                        src={}
+                     <img
+                        src={profileImage}
                         alt="Farmer avatar"
-                        className="rounded-full"
-                     /> */}
+                        className="rounded-full w-10 h-10 object-cover border border-white"
+                     />
                   </div>
                   <div>
-                     <h2 className="font-semibold">
-                        {farmerName || "Shop Owner"}
-                     </h2>
+                     <h2 className="font-semibold">{shopOwnerDetails.name}</h2>
                      <p className="text-xs text-gray-200">Online</p>
                   </div>
                </div>
@@ -145,8 +190,8 @@ function ChatInterfaceFarmer({ orderId, setChatInterface, farmerName }) {
                            <div
                               className={`px-4 py-2 rounded-2xl ${
                                  msg.sender === "me"
-                                    ? "bg-gray-100 text-gray-700 rounded-br-none"
-                                    : "bg-white text-gray-800 shadow-sm rounded-bl-none"
+                                    ? "bg-sec-green text-white rounded-bl-none"
+                                    : "bg-gray-100 text-gray-700 shadow-sm rounded-br-none"
                               }`}
                            >
                               <p className="text-sm">{msg.content}</p>

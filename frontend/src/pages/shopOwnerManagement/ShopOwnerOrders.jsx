@@ -92,9 +92,11 @@ function ShopOwnerOrders() {
          </div>
 
          <div className="w-full mx-auto bg-white shadow-sm rounded-sm border border-gray-200">
-            <div className="overflow-x-auto min-h-52 flex items-center justify-center">
+            <div className="overflow-x-auto min-h-52 flex">
                {isLoading ? (
-                  <SOLoading />
+                  <div className="flex items-center justify-center min-h-52 w-full">
+                     <SOLoading />
+                  </div>
                ) : (
                   <table className="w-full text-left border-collapse">
                      <thead>
