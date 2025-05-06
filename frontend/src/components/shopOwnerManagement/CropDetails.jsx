@@ -18,6 +18,7 @@ function CropDetails(props) {
       farmerId,
       postId,
       status,
+      profileImage,
    } = props;
 
    // Shop-owner Id
@@ -130,23 +131,27 @@ function CropDetails(props) {
          id="cropDetailsBg"
          onClick={close}
       >
-         <div className="w-3/5 h-screen bg-white px-[70px] py-[40px] overflow-y-scroll">
-            <div className="flex w-full flex-col gap-6 ">
+         <div className="w-1/2 h-screen bg-white overflow-y-scroll">
+            <div className="flex w-full flex-col gap-5  ">
                {/* Details header */}
-               <div className="flex w-full items-center justify-between">
-                  <div className="profile flex gap-2 items-center">
-                     <img src={Profile} className="w-10 h-10" alt="" />
+               <div className="flex w-full items-center justify-between  px-[50px] py-[20px] bg-main-green">
+                  <div className="profile flex gap-2 items-center text-white">
+                     <img
+                        src={profileImage}
+                        className="w-10 h-10 rounded-full object-cover border border-white"
+                        alt=""
+                     />
                      <p>{farmer}</p>
                      <p>|</p>
                      <p>4.9</p>
                   </div>
-                  <div className="text-sm font-medium text-gray-500">
+                  <div className="text-sm font-medium text-gray-100">
                      {bidCount} Bids posted
                   </div>
                </div>
-               <div className="line w-full h-px bg-gray-200"></div>
+
                {/* Post details */}
-               <div className="flex flex-col gap-4">
+               <div className="flex flex-col gap-4 px-[50px] py-[40px]">
                   <h2 className="text-2xl font-semibold text-gray-800 capitalize">
                      {product} - {quantity} Kgs Available
                   </h2>
@@ -176,7 +181,7 @@ function CropDetails(props) {
                <div className="line w-full h-px bg-gray-200"></div>
                {/* Add bid section */}
                {status === "Active" ? (
-                  <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-5 px-[50px] pb-[40px]">
                      <h2 className="text-xl font-semibold text-gray-800 capitalize">
                         Bid to this crops
                      </h2>
@@ -253,10 +258,10 @@ function CropDetails(props) {
                      )}
                   </div>
                ) : (
-                  "Bid Closed"
+                  <div className="w-full h-20 flex items-center justify-center px-[50px] pb-20px gap-2">
+                     <i class="bi bi-lock-fill mb-0"></i> <p>Bidding Closed</p>
+                  </div>
                )}
-
-               <div className="line w-full h-px bg-gray-200"></div>
             </div>
          </div>
          <ToastContainer />

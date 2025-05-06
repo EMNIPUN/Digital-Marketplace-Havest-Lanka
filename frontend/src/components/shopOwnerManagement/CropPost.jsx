@@ -34,7 +34,7 @@ function CropPost(props) {
 
    useEffect(() => {
       getFarmerDetails();
-   }, []);
+   });
 
    // get bid count according to post
    const [allBids, setAllBids] = useState([]);
@@ -61,7 +61,7 @@ function CropPost(props) {
 
    const profileImage = farmer.displayPicture
       ? `${baseURL}${farmer.displayPicture}`
-      : "https://cdn.pixabay.com/photo/2022/03/31/14/53/camp-7103189_1280.png";
+      : User;
 
    return (
       <div className="w-full p-5 rounded-sm bg-white flex flex-col gap-5 text-gray-600 border border-gray-200 shadow-sm">
@@ -127,6 +127,7 @@ function CropPost(props) {
                postId={postId}
                bidCount={bidCount}
                status={status}
+               profileImage={profileImage}
             />
          )}
       </div>
