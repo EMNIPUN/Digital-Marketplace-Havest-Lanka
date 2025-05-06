@@ -92,13 +92,6 @@ function BidPlacementCard({ bidplacementDetails }) {
                      shopOwnerId={bidplacementDetails.shopOwnerId}
                   />
                )}
-
-               <button
-                  className="px-2 py-1 mt-4 bg-gray-200 hover:bg-gray-300 text-gray-600 text-sm font-medium rounded-md "
-                  onClick={() => setViewInbox(true)}
-               >
-                  Inbox
-               </button>
             </div>
 
             <div className="w-[1px] h-[100px] bg-gray-300 mt-4"></div>
