@@ -58,6 +58,7 @@ const TransportRequest = () => {
             driverName: `${selectedVehicle.driverFirstName} ${selectedVehicle.driverLastName}`,
             contactNumberDriver: selectedVehicle.contactNumber,
             vehicaleNo: selectedVehicle.vehicleNumber,
+            status: 'Transport Accepted'
          };
 
          await axios.put(

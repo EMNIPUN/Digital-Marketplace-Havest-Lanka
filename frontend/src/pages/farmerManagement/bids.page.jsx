@@ -18,7 +18,7 @@ function Bids() {
   const [shopOwnerBidDetails, setShopOwnerBidDetails] = useState([]);
   const [bidPlacementDetails, setBidPlacementDetails] = useState([]);
 
-  const BidsType = ["All Bids", "Active", "Payment Pending", "payment Approved", "Completed"];
+  const BidsType = ["All Bids", "Active", "Payment Pending", "payment Approved", "Transport Completed"];
   const farmerId = token.userId;
 
   const handleTypeClick = (BidsType) => {
