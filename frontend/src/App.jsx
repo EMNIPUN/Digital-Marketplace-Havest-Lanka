@@ -22,6 +22,8 @@ const DriverDashboard = lazy(() =>
 );
 const Payform = lazy(() => import("./components/financeManagement/Payform"));
 
+import ForgotPasswordPage from "./pages/userManagement/dashboardPages/ForgotPasswordPage";
+
 function App() {
    return (
       <Routes>
@@ -40,6 +42,7 @@ function App() {
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />
+         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
          <Route path="/logout/*" element={<LogoutRoute />} />
          <Route path="/farmer/register" element={<FarmerRegistration />} />
       </Routes>

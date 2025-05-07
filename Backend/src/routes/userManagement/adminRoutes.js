@@ -12,6 +12,10 @@ import GetActiveSessions from '../../controllers/userManagement/fetch/GetActiveS
 import DeactivateUser from '../../controllers/userManagement/DeactivateAccount.js'
 import ReactivateUsers from '../../controllers/userManagement/ReactivateAccounts.js'
 import UserRegistrationReport from '../../controllers/userManagement/reports/UserRegistrationReport.js'
+import { getAllActivities } from '../../controllers/userManagement/LogActivity.js'
+import { generateLoginReport } from '../../controllers/userManagement/reports/SystemLoginActivityReport.js'
+import { generateBidReport } from '../../controllers/userManagement/reports/BiddingSuccessReport.js'
+import { createSystemBackup, listBackups } from '../../controllers/userManagement/backup/Backup.js'
 
 const router = express.Router()
 
@@ -27,7 +31,12 @@ router.get("/getactivesessions", GetActiveSessions)
 router.post("/deactivate", DeactivateUser)
 router.post("/reactivate", ReactivateUsers)
 router.get("/report/user-registration", UserRegistrationReport)
+router.get('/report/login-activities', generateLoginReport);
+router.get('/report/bidding', generateBidReport);
+router.get("/activity", getAllActivities)
+router.get("/backup", listBackups)
+router.post("/backup", createSystemBackup)
 
-router.get("/test/manual-alerts", addMultipleAlertsByUrl)
+// router.get("/test/manual-alerts", addMultipleAlertsByUrl)
 
 export default router

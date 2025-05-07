@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import bcrypt from 'bcryptjs'
+import OTPBuffer from '../../models/userManagement/OTPBuffer.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -130,6 +131,40 @@ export const filterUsers = async (req, res) => {
         res.status(500).json({ error: 'Error filtering users' });
     }
 };
+
+const IsOTPValidated = async (email) => {
+    try {
+        const otpBuffer = await OTPBuffer.findOne({ email })
+        if (!otpBuffer) {
+            return false
+        } else if (otpBuffer.validated) {
+            return true
+        }
+        return false
+    } catch (e) {
+        res.status(500).json({ message: e.message })
+    }
+}
+
+export const ResetPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body
+
+        if (IsOTPValidated(email)) {
+            const user = await User.findOne({ email: email })
+            if (!user) {
+                return res.status(404).json({ message: "User not found" })
+            }
+
+            user.password = await bcrypt.hash(password, 10)
+
+            await user.save()
+            res.status(200).json({ message: "Password reset successful" });
+        }
+    } catch (e) {
+        res.status(500).json({ message: e.message })
+    }
+}
 
 
 export const ChangePassword = async (req, res) => {

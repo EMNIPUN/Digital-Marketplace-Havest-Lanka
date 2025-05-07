@@ -67,7 +67,7 @@ app.use("/api/message", messageRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-app.use("/uploads", express.static(path.join(__dirname, "../uploads"))); //Access images
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const port = 8005;
 app.listen(port, () => {

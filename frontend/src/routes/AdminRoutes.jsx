@@ -12,6 +12,7 @@ import ReportsPage from "../pages/userManagement/dashboardPages/ReportsPage";
 import ActivityMonitoringPage from "../pages/userManagement/dashboardPages/ActivityMonitoringPage";
 import SystemConfigurationsPage from "../pages/userManagement/dashboardPages/SystemConfigurationsPage";
 import TransportManagerRegistration from "../pages/userManagement/dashboardPages/TransportManagerRegistration";
+import AdministrationToolsPage from "@/pages/userManagement/dashboardPages/AdministrationToolsPage";
 
 function AdminRoutes() {
    return (
@@ -33,6 +34,8 @@ function AdminRoutes() {
             <Route path="reports" element={<ReportsPage />} />
 
             <Route path="activity-monitoring" element={<ActivityMonitoringPage />} />
+
+            <Route path="administration-tools" element={<AdministrationToolsPage />} />
 
             <Route path="system-configurations" element={<SystemConfigurationsPage />} />
          </Route>

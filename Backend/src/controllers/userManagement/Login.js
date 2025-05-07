@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import User from '../../models/userManagement/User.js'
 import { IncreseActiveSessions } from './ActiveTokens.js'
+import logActivity from './LogActivity.js'
 
 export const Login = async (req, res) => {
     try {
@@ -33,7 +34,7 @@ export const Login = async (req, res) => {
         })
 
         IncreseActiveSessions()
-
+        await logActivity({ user, action: "logged in", type: "login" });
         res.status(200).json({ message: "Login successful" })
     } catch (e) {
         res.status(500).json({ message: e.message })
