@@ -80,14 +80,45 @@ function ShopOwnerOrders() {
    // show chatbox
    const [isShowInbox, setIsShowInbox] = useState(false);
 
+   // filter items
+   const [selectStatus, setSelectedStatus] = useState("All");
+
+   const handelChangeOnCategory = (e) => {
+      e.preventDefault();
+      setSelectedStatus(e.target.value);
+   };
+
    return (
       <div className="p-[20px] w-full text-gray-500 flex flex-col gap-5">
          <div className="py-3 px-5 bg-white w-full flex items-center justify-between shadow-sm border border-gray-200 rounded-sm">
             <div>
                Active Orders - {orderCount} ({orderAmount} LKR)
             </div>
-            <div className="border border-gray-200 py-2 px-5 text-sm">
-               <p>All Orders</p>
+            <div className="flex gap-2 items-center ">
+               <div className="text-xs tracking-wide uppercase font-semibold text-gray-500">
+                  Filter By:
+               </div>
+               <form
+                  action=""
+                  className="flex gap-2"
+                  onSubmit={handelChangeOnCategory}
+               >
+                  <select
+                     name=""
+                     id=""
+                     defaultValue={"All"}
+                     onChange={handelChangeOnCategory}
+                     className="py-2 px-4 h-10 border border-gray-300 w-64 rounded text-gray-600 text-sm focus:outline-none focus:ring-gray-400"
+                  >
+                     <option value="All">All Ongoing orders</option>
+                     <option value="Accepted">Accepted Bids</option>
+                     <option value="Payment Approved">
+                        Waiting for Delivery
+                     </option>
+                     <option value="On delivery">On Delivery</option>
+                     <option value="complete">Completed Orders</option>
+                  </select>
+               </form>
             </div>
          </div>
 
@@ -123,20 +154,29 @@ function ShopOwnerOrders() {
                      </thead>
 
                      <tbody className="divide-y divide-gray-200 ">
-                        {allBids.map((bid) => (
-                           <OrderDetails
-                              key={bid._id}
-                              orderId={bid._id}
-                              farmer={bid.farmer}
-                              product={bid.product}
-                              quantity={bid.quantity}
-                              farmerId={bid.farmerId}
-                              status={bid.status}
-                              price={bid.price}
-                              postId={bid.postId}
-                              goToPayment={goToPayment}
-                           />
-                        ))}
+                        {allBids
+                           .filter((bid) => {
+                              if (selectStatus === "All") {
+                                 return bid.status !== "complete";
+                              } else {
+                                 return bid.status === selectStatus;
+                              }
+                           })
+                           .map((bid) => (
+                              <OrderDetails
+                                 key={bid._id}
+                                 orderId={bid._id}
+                                 farmer={bid.farmer}
+                                 product={bid.product}
+                                 quantity={bid.quantity}
+                                 farmerId={bid.farmerId}
+                                 status={bid.status}
+                                 price={bid.price}
+                                 postId={bid.postId}
+                                 goToPayment={goToPayment}
+                                 getAllBids={getAllBids}
+                              />
+                           ))}
                      </tbody>
                   </table>
                )}

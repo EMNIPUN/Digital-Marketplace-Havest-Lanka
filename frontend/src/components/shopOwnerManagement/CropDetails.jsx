@@ -19,6 +19,7 @@ function CropDetails(props) {
       postId,
       status,
       profileImage,
+      getCropPostDetails,
    } = props;
 
    // Shop-owner Id
@@ -101,6 +102,7 @@ function CropDetails(props) {
             });
             notifyAdd();
             getBids();
+            getCropPostDetails();
          })
          .catch((error) => {
             console.log(error);

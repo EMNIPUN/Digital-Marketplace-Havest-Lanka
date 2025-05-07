@@ -14,6 +14,7 @@ function CropPost(props) {
       farmerId,
       postId,
       status,
+      getCropPostDetails,
    } = props;
 
    // set crop dtails showing
@@ -128,6 +129,7 @@ function CropPost(props) {
                bidCount={bidCount}
                status={status}
                profileImage={profileImage}
+               getCropPostDetails={getCropPostDetails}
             />
          )}
       </div>
