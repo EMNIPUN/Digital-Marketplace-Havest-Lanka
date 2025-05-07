@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
    Navigation,
    Pagination,
@@ -15,8 +15,56 @@ import "swiper/css/bundle";
 import slide2 from "../../assets/shopOwnerManagement/slide-2.jpg";
 import slide3 from "../../assets/shopOwnerManagement/slide-3.jpg";
 import slide1 from "../../assets/shopOwnerManagement/slide-1.jpg";
+import Token from "@/components/userManagement/logins/Token";
+import axios from "axios";
 
 function ShopOwnerDashboard() {
+   // get shop owner details
+   const token = Token();
+   const sid = token.userId;
+
+   // Get all bids
+   const [allBids, setAllBids] = useState([]);
+
+   // get order details
+   const getAllBids = async () => {
+      await axios
+         .get(`http://localhost:8005/api/bid/getAllbids/${sid}`)
+         .then((response) => {
+            setAllBids(response.data);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
+
+   useEffect(() => {
+      getAllBids();
+   }, []);
+
+   // ongoing orders
+   const ongoingOrders = allBids.filter(
+      (x) => x.status !== "pending" && x.status !== "complete"
+   );
+
+   const totalAmountOngoingOrders = ongoingOrders.reduce((acc, item) => {
+      return acc + item.quantity * item.price;
+   }, 0);
+
+   // ongoing bids
+   const ongoingBids = allBids.filter((x) => x.status === "pending");
+
+   const totalAmountOngoingBids = ongoingBids.reduce((acc, item) => {
+      return acc + item.quantity * item.price;
+   }, 0);
+
+   // complete orders
+   const completeOrders = allBids.filter((x) => x.status === "complete");
+
+   const totalAmountCompleteOrders = completeOrders.reduce((acc, item) => {
+      return acc + item.quantity * item.price;
+   }, 0);
+
    return (
       <div className="p-[20px] flex flex-col gap-5">
          <div className="w-full  flex  gap-5">
@@ -28,24 +76,26 @@ function ShopOwnerDashboard() {
                <div className="flex items-center justify-between mt-5">
                   <div className="flex flex-col gap-1">
                      <h4 className="text-gray-500 text-sm">Total Spend</h4>
-                     <p className="font-medium text-lg">240 000 LKR</p>
+                     <p className="font-medium text-lg">
+                        {totalAmountCompleteOrders} LKR
+                     </p>
                   </div>
-                  <div className="line w-px self-stretch bg-gray-400"></div>
+                  <div className="line w-px self-stretch bg-gray-300"></div>
                   <div className="flex flex-col gap-1">
                      <h4 className="text-gray-500 text-sm">
                         Active order amount
                      </h4>
                      <p className="font-medium text-lg text-sec-green">
-                        50 000 LKR
+                        {totalAmountOngoingOrders} LKR
                      </p>
                   </div>
                   <div className="line w-px self-stretch bg-gray-400"></div>
                   <div className="flex flex-col gap-1">
                      <h4 className="text-gray-500 text-sm">
-                        Cancel order amount
+                        Active bids amount
                      </h4>
                      <p className="font-medium text-lg text-gray-500">
-                        13 500 LKR
+                        {totalAmountOngoingBids} LKR
                      </p>
                   </div>
                </div>
@@ -56,21 +106,27 @@ function ShopOwnerDashboard() {
                <h3 className="text-gray-700 font-medium">
                   Order details in this month
                </h3>
-    
+
                <div className="flex items-center justify-between mt-5">
                   <div className="flex flex-col gap-1">
                      <h4 className="text-gray-500 text-sm">Completed orders</h4>
-                     <p className="font-medium text-lg">234</p>
+                     <p className="font-medium text-lg">
+                        {completeOrders.length}
+                     </p>
                   </div>
                   <div className="line w-px self-stretch bg-gray-400"></div>
                   <div className="flex flex-col gap-1">
                      <h4 className="text-gray-500 text-sm">Ongoing orders</h4>
-                     <p className="font-medium text-lg text-sec-green">3</p>
+                     <p className="font-medium text-lg text-sec-green">
+                        {ongoingOrders.length}
+                     </p>
                   </div>
                   <div className="line w-px self-stretch bg-gray-400"></div>
                   <div className="flex flex-col gap-1">
-                     <h4 className="text-gray-500 text-sm">Canceled orders</h4>
-                     <p className="font-medium text-lg text-rose-500">4</p>
+                     <h4 className="text-gray-500 text-sm">Ongoing Bids</h4>
+                     <p className="font-medium text-lg text-rose-500">
+                        {ongoingBids.length}
+                     </p>
                   </div>
                </div>
             </div>
