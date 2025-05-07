@@ -53,9 +53,10 @@ function OrderDetails(props) {
          console.log(error);
       }
    };
+   
 
    useEffect(() => {
-      if (paymentData.length > 0 && status !== "paid") {
+      if (paymentData.length > 0 && status !== "Payment Approved") {
          updateBidStatus();
       }
    }, [paymentData]);
