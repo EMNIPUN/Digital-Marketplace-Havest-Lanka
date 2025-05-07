@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Line, Bar, Pie } from "react-chartjs-2";
 import {
    Chart as ChartJS,
@@ -13,10 +13,13 @@ import {
    Legend,
 } from "chart.js";
 
+
+
 import FinanceNavBar from "./FinanceNavBar";
 import FinanceSidebar from "./FinanceSidebar";
 import FinanceFooter from "./FinanceFooter";
 import SalesChart from "./SalesChart";
+import axios from "axios";
 
 
 // Register required elements for Chart.js
@@ -33,56 +36,40 @@ ChartJS.register(
 );
 
 export default function FinanceOverview() {
-   const topSellingProducts = {
-      labels: ["Apples", "Tomatoes", "Potatoes", "Oranges", "Carrots"],
-      datasets: [
-         {
-            label: "Units Sold",
-            data: [500, 450, 400, 350, 300],
-            backgroundColor: [
-               "rgba(255, 99, 132, 0.5)",
-               "rgba(54, 162, 235, 0.5)",
-               "rgba(255, 206, 86, 0.5)",
-               "rgba(75, 192, 192, 0.5)",
-               "rgba(153, 102, 255, 0.5)",
-            ],
-         },
-      ],
-   };
 
-   const profitDistribution = {
-      labels: ["Fruits", "Vegetables", "Herbs"],
-      datasets: [
-         {
-            data: [45, 40, 15],
-            backgroundColor: [
-               "rgba(255, 99, 132, 0.5)",
-               "rgba(75, 192, 192, 0.5)",
-               "rgba(255, 206, 86, 0.5)",
-            ],
-         },
-      ],
-   };
+   const [totalAmount, setTotalAmount] = useState(0);
+   const [totalCount, setTotalCount] = useState(0);
 
-   const salesData = {
-      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      datasets: [
-         {
-            label: "Sales (USD)",
-            data: [12500, 15000, 18000, 16500, 21000, 22000, 20000],
-            borderColor: "rgb(75, 192, 192)",
-            tension: 0.1,
-         },
-      ],
-   };
+   useEffect(() => {
+   axios.get('http://localhost:8005/api/all-payments')
+      .then((response) => {
+         const successfulPayments = response.data.filter(p => p.status_code === '2');
+         
+         let tot = 0
+         let count = successfulPayments.length
+         setTotalCount(count)
+        
+
+         successfulPayments.forEach(payment => {
+            tot += parseFloat(payment.payhere_amount); // convert string to float
+          });
+
+         setTotalAmount(tot);
+      })
+      .catch(err => console.error('Error fetching data:', err));
+   }, [])
+
+   
+   console.log(totalAmount)
+   console.log(totalCount)
 
    const [selectedDateRange, setSelectedDateRange] = useState("week");
 
    const metrics = [
-      { title: "Total Revenue", value: "$125,000", change: "+12.5%" },
-      { title: "Average Order Value", value: "$750", change: "+5.2%" },
-      { title: "Total Orders", value: "167", change: "+8.1%" },
-      { title: "Active Customers", value: "45", change: "+15.3%" },
+      { title: "Total Revenue", value: `Rs.${totalAmount}`},
+      { title: "Average Order Value", value: `Rs.${(totalAmount/totalCount).toFixed(2)}`},
+      { title: "Total Orders", value: totalCount}
+     
    ];
 
    return (
@@ -106,15 +93,7 @@ export default function FinanceOverview() {
                         <span className="text-2xl font-bold text-gray-900">
                            {metric.value}
                         </span>
-                        <span
-                           className={`ml-2 text-sm ${
-                              metric.change.startsWith("+")
-                                 ? "text-green-500"
-                                 : "text-red-500"
-                           }`}
-                        >
-                           {metric.change}
-                        </span>
+                        
                      </div>
                   </div>
                ))}

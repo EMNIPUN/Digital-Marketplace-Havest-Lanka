@@ -13,7 +13,7 @@ export default function () {
          .get("http://localhost:8005/api/all-payments")
          .then((response) => {
             
-            setTransactions(response.data);
+            setTransactions(response.data.reverse());
          })
          .catch((error) => {
             console.error("Error fetching transactions", error);
