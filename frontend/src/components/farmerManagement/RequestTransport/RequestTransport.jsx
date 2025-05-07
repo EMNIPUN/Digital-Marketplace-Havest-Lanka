@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { FaMapMarkerAlt, FaCalendarAlt, FaBox, FaInfoCircle } from 'react-icons/fa';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import Token from '@/components/userManagement/logins/Token';
 import { useParams } from 'react-router-dom';
 
@@ -30,21 +31,68 @@ function RequestTransport() {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };    
+
+    const fetchBidPostData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8005/api/transport/bidpost/${id}`);
+            setData(response.data);
+            console.log("Fetched data:", response.data); // Debug log
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };    
+
+    useEffect(() => {
+        fetchBidPostData();
+    }, []);
+
+    // Get order details (bids)
+    const [orderDetails, setOrderDetails] = useState([]);
+   const getOrderDetails = async () => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8005/api/bid/getBids/${id}`
+        );
+            setOrderDetails(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
-        // Fetch bid post data
-        const fetchBidPostData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8005/api/transport/bidpost/${id}`);
-                setData(response.data);
-                console.log("Fetched data:", response.data); // Debug log
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchBidPostData();
-    }, [id]);
+        getOrderDetails();
+     }, []);
+
+    // Extract accepted bid
+    const acceptedBid = orderDetails.find((item) => item.status === "Payment Approved");
+    const bidId = acceptedBid ? acceptedBid._id : null;
+
+    console.log(bidId);
+
+    const handleTransportAccept = async (e) => {
+        e.preventDefault();
+  
+        try {
+           await axios.put(
+              `http://localhost:8005/api/bid/updateBid/${bidId}`,
+              { status: "On Delivery" }
+           );
+  
+           await axios
+              .put(
+                 `http://localhost:8005/api/BidPost/${id}`,
+                 { status: "Transport Completed" }
+              )
+              .then((response) => console.log("Update response:", response.data))
+              .catch((error) => console.error("Update error:", error));
+           fetchBidPostData();
+  
+           console.log("Bid Accepted Successfully");
+        } catch (error) {
+           console.error("Error updating bid status:", error);
+        }
+     };
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -71,6 +119,7 @@ function RequestTransport() {
                 vehcaleNo: 'Not Available',
                 status: 'Transport Pending'
             });
+            fetchBidPostData();
             
             setTimeout(() => {
                 setShowSuccess(false);
@@ -95,6 +144,9 @@ function RequestTransport() {
     const cargoTypes = [
         "Vegetables", "Fruits", "Grains", "Spices", "Tea", "Other"
     ];
+
+    
+    
 
     return (
         <div className="space-y-8">
@@ -316,21 +368,32 @@ function RequestTransport() {
                             </div>
 
                             <div className="bg-gray-50 p-4 rounded-lg text-center flex justify-between items-center gap-4">
-                                <p className="text-gray-600">
-                                    <span className="font-bold">Status:</span> 
-                                    <span className={`font-medium ${
+                                <div className="flex items-center gap-2">
+                                    {item.status === 'Transport Pending' ? (
+                                        <Clock className="w-5 h-5 text-yellow-500" />
+                                    ) : item.status === 'Transport Accepted' ? (
+                                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                                    ) : item.status === 'Completed' ? (
+                                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                                    ) : (
+                                        <AlertCircle className="w-5 h-5 text-gray-500" />
+                                    )}
+                                    <p className={`font-medium ${
                                         item.status === 'Transport Pending' ? 'text-yellow-500' :
-                                        item.status === 'On Going' ? 'text-blue-500' :
+                                        item.status === 'Transport Accepted' ? 'text-green-500' :
                                         item.status === 'Completed' ? 'text-green-500' :
                                         'text-gray-500'
-                                    }`}> {item.status}</span> 
-                                </p>
-                                <button 
-                                    className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2 shadow-sm"
-                                >
-                                    <FaCalendarAlt className="text-white" />
-                                    Confirm Pickup
-                                </button>
+                                    }`}> {item.status}</p>
+                                </div>
+                                
+                                    <button 
+                                        onClick={handleTransportAccept}
+                                        className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2 shadow-sm"
+                                    >
+                                        <FaCalendarAlt className="text-white" />
+                                        <Link to="/farmer/mybids">Confirm Pickup</Link>
+                                    </button>
+
                             </div>
                         </div>
                     ))
