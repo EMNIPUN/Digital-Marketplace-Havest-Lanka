@@ -17,14 +17,38 @@ import TimeCountDown from "../TimeCountDown/TimeCountDown";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ChatInterfaceFarmer from "@/components/shopOwnerManagement/ChatInterfaceFarmer";
+import axios from "axios";
 
 const MyBidsCard = ({ bid, bidId }) => {
    console.log(bidId);
    console.log(bid);
 
+
+
    const [showDetails, setShowDetails] = useState(false);
    const [bidPlacementDetails, setBidPlacementDetails] = useState([]);
    const [chatInterface, setChatInterface] = useState(false);
+   const [getBidPlaccementDetails, setGetBidPlaccementDetails] = useState({});
+   const [filterBidPlacementDetails, setFilterBidPlacementDetails] = useState({});
+
+   const fetchBidPlacementDetails = () => {
+      axios
+         .get(`http://localhost:8005/api/bid/getBids/${bid._id}`)
+         .then((response) => {
+            setGetBidPlaccementDetails(response.data);
+            // Filter only accepted bids
+            const acceptedBids = response.data.filter(bid => bid.status === "Accepted");
+            setFilterBidPlacementDetails(acceptedBids);
+            console.log("Accepted bids:", acceptedBids);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   }
+
+   useEffect(() => {
+      fetchBidPlacementDetails();
+   }, []);
 
    const generateInvoice = () => {
       const doc = new jsPDF();
@@ -151,7 +175,7 @@ const MyBidsCard = ({ bid, bidId }) => {
 
             <p className="text-gray-600 mb-5 text-center">
                Congratulations! Your bid has been accepted. Here are the
-               details:
+               details: 
             </p>
 
             <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
@@ -177,7 +201,7 @@ const MyBidsCard = ({ bid, bidId }) => {
 
                <div className="bg-gray-50 p-4 rounded-lg text-left flex-1 border border-gray-100">
                   <h3 className="text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                     Delivery Information
+                     BID PLACEMNT DETAILS
                   </h3>
                   <div className="space-y-2">
                      <p className="text-sm text-gray-700 flex justify-between">
@@ -218,12 +242,12 @@ const MyBidsCard = ({ bid, bidId }) => {
 
                <Link to={`/farmer/tarnsposition/${bid._id}`}>
                   <button
-                     className="flex items-center justify-center px-4 py-2.5 bg-yellow-50 text-yellow-600 text-sm font-medium 
-                rounded-lg hover:bg-yellow-100 transition-colors duration-200 border border-yellow-200 
+                     className="flex items-center justify-center px-4 py-2.5 bg-green-50 text-green-600 text-sm font-medium 
+                rounded-lg hover:bg-green-100 transition-colors duration-200 border border-green-200 
                 shadow-sm"
                   >
                      <Truck className="mr-2" size={16} />
-                     Request Transport
+                     Delivery Crops
                   </button>
                </Link>
 
@@ -306,25 +330,31 @@ const MyBidsCard = ({ bid, bidId }) => {
 
                <div className="bg-gray-50 p-4 rounded-lg text-left flex-1 border border-gray-100">
                   <h3 className="text-sm font-medium text-gray-700 mb-2 uppercase tracking-wider">
-                     Delivery Information
+                     BID PLACEMENT DETAILS
                   </h3>
                   <div className="space-y-2">
-                     <p className="text-sm text-gray-700 flex justify-between">
-                        <span>Estimated Delivery:</span>{" "}
-                        <span className="font-medium">Within 3-5 days</span>
-                     </p>
-                     <p className="text-sm text-gray-700 flex justify-between">
-                        <span>Total Amount:</span>{" "}
-                        <span className="font-medium">
-                           Rs.{bid.price * bid.quantity}.00
-                        </span>
-                     </p>
-                     <p className="text-sm text-gray-700 flex justify-between">
-                        <span>Status:</span>{" "}
-                        <span className="font-medium text-yellow-600">
-                           {bid.status}
-                        </span>
-                     </p>
+                     {filterBidPlacementDetails && filterBidPlacementDetails.length > 0 ? (
+                        filterBidPlacementDetails.map((placement, index) => (
+                           <div key={index} className="border-b border-gray-100 pb-2">
+                              <p className="text-sm text-gray-700 flex justify-between mb-2">
+                                 <span>Price per kg:</span>{" "}
+                                 <span className="font-medium">Rs.{placement.price || 'N/A'}.00</span>
+                              </p>
+                              <p className="text-sm text-gray-700 flex justify-between mb-2">
+                                 <span>Bid Amount:</span>{" "}
+                                 <span className="font-medium">Rs.{placement.price * placement.quantity || 'N/A'}.00</span>
+                              </p>
+                              <p className="text-sm text-gray-700 flex justify-between">
+                                 <span>Status:</span>{" "}
+                                 <span className="font-medium text-yellow-600">
+                                    {bid.status}
+                                 </span>
+                              </p>
+                           </div>
+                        ))
+                     ) : (
+                        <p className="text-sm text-gray-500">No accepted bids yet</p>
+                     )}
                   </div>
                </div>
             </div>
@@ -452,6 +482,35 @@ const MyBidsCard = ({ bid, bidId }) => {
                </div>
             </div>
          </div>
+         <div className="flex flex-col sm:flex-row justify-center gap-4">
+               <button
+                  disabled
+                  className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
+                font-medium rounded-lg cursor-not-allowed opacity-70 border border-gray-200 shadow-sm"
+               >
+                  <Truck className="mr-2" size={16} />
+                  Request Transport
+               </button>
+
+               <button
+                  disabled
+                  className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
+                font-medium rounded-lg cursor-not-allowed opacity-70 border border-gray-200 shadow-sm"
+               >
+                  <Truck className="mr-2" size={16} />
+                  Delivery Crops
+               </button>
+
+               <button
+                  disabled
+                  className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
+                font-medium rounded-lg cursor-not-allowed opacity-70 border border-gray-200 shadow-sm"
+                  onClick={generateInvoice}
+               >
+                  <FileText className="mr-2" size={16} />
+                  Generate Invoice
+               </button>
+            </div>
       </div>
    );
 };
