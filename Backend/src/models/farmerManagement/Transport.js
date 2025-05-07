@@ -6,6 +6,11 @@ const TrasnportSchema = new mongoose.Schema({
         ref: 'User',
         required:true
     },
+    bidPostId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'BidPost',
+        required: true
+    },
     pickupLocation:{
         type: String,
         required:true

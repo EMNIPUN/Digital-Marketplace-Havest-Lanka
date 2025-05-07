@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import CropsPredictionPage from "@/pages/farmerManagement/cropsprediction.page";
 import TranspotationPage from "@/pages/farmerManagement/transpotation.page";
 import PaymentHistory from "@/pages/farmerManagement/payamenthistory.page";
+import ShopDetailsPage from "@/pages/farmerManagement/shopdetails.page";
 
 function FarmerRoutes() {
    return (
@@ -18,6 +19,7 @@ function FarmerRoutes() {
          <Route path="/ai-prediction" element={<CropsPredictionPage />} />
          <Route path="/tarnsposition/:id" element={<TranspotationPage />} />
          <Route path="/orders/history" element={<PaymentHistory/>} />
+         <Route path="/shops" element={<ShopDetailsPage/>} />
       </Routes>
    );
 }
