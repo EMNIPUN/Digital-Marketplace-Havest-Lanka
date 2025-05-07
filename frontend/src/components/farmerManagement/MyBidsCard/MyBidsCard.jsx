@@ -341,17 +341,6 @@ const MyBidsCard = ({ bid, bidId }) => {
                   </button>
                </Link>
 
-               <Link to={`/farmer/tarnsposition/${bid._id}`}>
-                  <button
-                     className="flex items-center justify-center px-4 py-2.5 bg-green-50 text-green-600 text-sm font-medium 
-                rounded-lg hover:bg-green-100 transition-colors duration-200 border border-green-200 
-                shadow-sm"
-                  >
-                     <Truck className="mr-2" size={16} />
-                     Delivery Crops
-                  </button>
-               </Link>
-
                <button
                   className="flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 text-sm font-medium 
               rounded-lg hover:bg-blue-100 transition-colors duration-200 border border-blue-200 
@@ -471,15 +460,6 @@ const MyBidsCard = ({ bid, bidId }) => {
                </button>
 
                <button
-                  disabled
-                  className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
-                font-medium rounded-lg cursor-not-allowed opacity-70 border border-gray-200 shadow-sm"
-               >
-                  <Truck className="mr-2" size={16} />
-                  Delivery Crops
-               </button>
-
-               <button
                   className="flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 text-sm font-medium 
               rounded-lg hover:bg-blue-100 transition-colors duration-200 border border-blue-200 
               shadow-sm"
@@ -592,16 +572,7 @@ const MyBidsCard = ({ bid, bidId }) => {
                   <Truck className="mr-2" size={16} />
                   Request Transport
                </button>
-
-               <button
-                  disabled
-                  className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
-                font-medium rounded-lg cursor-not-allowed opacity-70 border border-gray-200 shadow-sm"
-               >
-                  <Truck className="mr-2" size={16} />
-                  Delivery Crops
-               </button>
-
+               
                <button
                   disabled
                   className="flex items-center justify-center px-4 py-2.5 bg-gray-100 text-gray-500 text-sm 
