@@ -11,13 +11,13 @@ const SalesChart = () => {
       .then((response) => {
         const rawData = response.data;
 
-        // Filter successful payments (status_code === '2')
+        
         const successfulPayments = rawData.filter(p => p.status_code === '2');
 
-        // Aggregate payhere_amount by date
+        
         const salesByDate = {};
         successfulPayments.forEach(payment => {
-          const date = new Date(payment.createdAt).toISOString().split('T')[0]; // format: YYYY-MM-DD
+          const date = new Date(payment.createdAt).toISOString().split('T')[0]; 
           const amount = parseFloat(payment.payhere_amount);
           salesByDate[date] = (salesByDate[date] || 0) + amount;
         });
@@ -32,8 +32,8 @@ const SalesChart = () => {
               label: 'Daily Sales (LKR)',
               data: amounts,
               fill: true,
-              backgroundColor: 'rgba(59, 130, 246, 0.2)', // Tailwind blue-500 @ 20%
-              borderColor: '#3b82f6', // Tailwind blue-500
+              backgroundColor: 'rgba(34, 197, 94, 0.2)', 
+              borderColor: '#22C55E',
               tension: 0.3,
             },
           ],
@@ -43,7 +43,7 @@ const SalesChart = () => {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-2xl mt-2">
+    <div className="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-2xl ">
       <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Sales Overview</h2>
       {chartData ? (
         <Line data={chartData} />
