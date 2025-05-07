@@ -30,7 +30,6 @@ function CropDetails(props) {
    const close = (e) => {
       if (e.target.id === "cropDetailsBg") {
          setIsClickViewCropDetails(false);
-         getCropPostDetails();
       }
    };
 
@@ -190,11 +189,6 @@ function CropDetails(props) {
                   <p className="text-sm text-gray-600 tracking-wide">
                      {description}
                   </p>
-                  <div className="images flex gap-2">
-                     <div className="w-1/3 h-44 bg-gray-200 rounded-sm"></div>
-                     <div className="w-1/3 h-44 bg-gray-200 rounded-sm"></div>
-                     <div className="w-1/3 h-44 bg-gray-200 rounded-sm"></div>
-                  </div>
                </div>
                <div className="line w-full h-px bg-gray-200"></div>
                {/* Add bid section */}

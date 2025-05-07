@@ -140,12 +140,18 @@ function OrderDetails(props) {
             </td>
             {currentStatus !== "complete" && (
                <>
-                  <td
-                     className="py-6 px-4 cursor-pointer hover:text-gray-800"
-                     onClick={() => setIsShowInbox(true)}
-                  >
-                     <i className="bi bi-envelope"></i>
-                  </td>
+                  {currentStatus !== "pending" ? (
+                     <td
+                        className="py-6 px-4 cursor-pointer hover:text-gray-800"
+                        onClick={() => setIsShowInbox(true)}
+                     >
+                        <i className="bi bi-envelope"></i>
+                     </td>
+                  ) : (
+                     <td className="py-6 px-4 cursor-pointer hover:text-gray-800">
+                        <i className="bi bi-envelope text-gray-300"></i>
+                     </td>
+                  )}
 
                   {isShowInbox && (
                      <td>
