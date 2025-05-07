@@ -156,7 +156,7 @@ function Bids() {
             {filteredBids.length > 0 ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredBids.map((bid, index) => (
-                  <MyBidsCard key={index} bid={bid} bidId={bid._id}/>
+                  <MyBidsCard key={index} bid={bid} bidIdNo={bid._id}/>
                 ))}
               </div>
             ) : (

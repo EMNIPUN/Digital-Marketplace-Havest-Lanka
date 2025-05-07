@@ -22,8 +22,7 @@ function Navigation() {
           {/* Logo Section */}
           <div className="flex items-center">
             <Link to="/farmer" className="flex items-center">
-              <img src={logo} alt="Avest Logo" className="h-12 w-auto" />
-              <span className="ml-2 text-xl font-semibold text-green-600 hidden md:block">Avest</span>
+              <img src={logo} alt="Avest Logo" className="h-32 w-auto" />
             </Link>
           </div>
 

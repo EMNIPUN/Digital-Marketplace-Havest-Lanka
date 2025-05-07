@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Token from "@/components/userManagement/logins/Token";
 import { Link } from "react-router-dom";
+import logo from '@/assets/farmerManagement/Navigation/avest.png';
 
 function DriverDashboard() {
    const token = Token();
@@ -21,7 +22,11 @@ function DriverDashboard() {
       <div className="min-h-screen bg-gray-50">
          {/* header */}
          <header className="w-full h-14 shadow flex items-center justify-between px-14">
-            <img src={logo} alt="" className="w-32" />
+            <div className="flex items-center">
+               <Link to="/farmer" className="flex items-center">
+               <img src={logo} alt="Avest Logo" className="h-32 w-auto" />
+               </Link>
+            </div>
             <Link to={`/profile/${tid}`}>
                <button className="bg-sec-green py-2 px-4 rounded text-white">
                   Profile

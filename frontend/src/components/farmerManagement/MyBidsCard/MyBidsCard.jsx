@@ -49,6 +49,7 @@ const MyBidsCard = ({ bid, bidId }) => {
    useEffect(() => {
       fetchBidPlacementDetails();
    }, []);
+   
 
    const generateInvoice = () => {
       const doc = new jsPDF();

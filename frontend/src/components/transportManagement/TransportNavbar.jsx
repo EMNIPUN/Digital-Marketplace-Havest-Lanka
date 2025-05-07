@@ -2,6 +2,7 @@ import React from "react";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Token from "../userManagement/logins/Token";
+import logo from '@/assets/farmerManagement/Navigation/avest.png';
 
 function TransportNavbar() {
    const token = Token();
@@ -10,10 +11,10 @@ function TransportNavbar() {
       <nav className="bg-white shadow-sm sticky top-0 z-50">
          <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-between h-16 items-center">
-               <div className="flex items-center space-x-2">
-                  <span className="text-xl font-semibold text-green-800">
-                     Harvest Lanka
-                  </span>
+               <div className="flex items-center">
+                  <Link to="/farmer" className="flex items-center">
+                  <img src={logo} alt="Avest Logo" className="h-32 w-auto" />
+                  </Link>
                </div>
                <div className="flex items-center space-x-6">
                   <Link to="/transport">Dashboard</Link>
