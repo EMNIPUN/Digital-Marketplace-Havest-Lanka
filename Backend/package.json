@@ -14,8 +14,8 @@
       "@langchain/core": "^0.3.22",
       "@langchain/mongodb": "^0.1.0",
       "@langchain/openai": "^0.3.14",
-      "axios": "^1.9.0",
       "archiver": "^7.0.1",
+      "axios": "^1.9.0",
       "bcrypt": "^5.1.1",
       "bcryptjs": "^3.0.2",
       "body-parser": "^1.20.3",
@@ -38,6 +38,7 @@
       "passport-google-oauth20": "^2.0.0",
       "pdfkit": "^0.16.0",
       "pdfmake": "^0.2.18",
+      "socket.io": "^4.8.1",
       "systeminformation": "^5.25.11"
    },
    "keywords": []

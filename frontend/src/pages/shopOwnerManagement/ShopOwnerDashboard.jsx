@@ -80,7 +80,7 @@ function ShopOwnerDashboard() {
                         {totalAmountCompleteOrders} LKR
                      </p>
                   </div>
-                  <div className="line w-px self-stretch bg-gray-300"></div>
+                  <div className="line w-px self-stretch bg-gray-400"></div>
                   <div className="flex flex-col gap-1">
                      <h4 className="text-gray-500 text-sm">
                         Active order amount
