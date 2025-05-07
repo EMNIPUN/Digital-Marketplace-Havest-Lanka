@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import LandingPage from "./pages/LandingPage";
+import PaymentDone from "./components/shopOwnerManagement/paymentDone";
 
 const ShopOwnerRoutes = lazy(() => import("./routes/ShopOwnerRoutes"));
 const FarmerRoutes = lazy(() => import("./routes/FarmerRoutes"));
@@ -35,6 +36,7 @@ function App() {
             <Route path="profile/:id" element={<ProfilePage />} />
             <Route path="driver/" element={<DriverDashboard />} />
             <Route path="payform" element={<Payform />} />
+            <Route path="paymentdone" element={<PaymentDone />} />
          </Route>
 
          <Route path="/login/*" element={<LoginRoutes />} />
