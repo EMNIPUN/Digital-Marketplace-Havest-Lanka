@@ -1,97 +1,125 @@
-import React, { useState, useRef, useEffect } from "react";
-import { X, SendHorizontal } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { IoMdClose } from "react-icons/io";
+import Token from "../../logins/Token";
 
-function PopupChatBox({ onClose }) {
-    const [messages, setMessages] = useState([
-        { id: 1, text: "Hello! How can I help you today?", sender: "agent", time: "10:00 AM" },
-        { id: 2, text: "I have an issue with my order.", sender: "user", time: "10:02 AM" },
-        { id: 3, text: "I'm sorry to hear that. Can you provide your order number?", sender: "agent", time: "10:03 AM" },
-    ]);
+const PopupChatBox = ({ conversationId, userId, onClose }) => {
+    const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const messagesEndRef = useRef(null);
-    const chatBoxRef = useRef(null);
 
+    const { role } = Token();
+
+
+    // Scroll to bottom when messages update
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
-        function handleClickOutside(event) {
-            if (chatBoxRef.current && !chatBoxRef.current.contains(event.target)) {
-                onClose();
+    // Fetch messages for current conversation
+    useEffect(() => {
+        if (!conversationId) return;
+
+        const fetchMessages = async () => {
+            try {
+                const res = await axios.get(`http://localhost:8005/api/admin/convo/messages/${conversationId}`, {
+                    withCredentials: true
+                });
+                setMessages(res.data.messages);
+            } catch (err) {
+                console.error("Error fetching messages:", err);
             }
-        }
+        };
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [onClose]);
+        fetchMessages();
+    }, [conversationId]);
 
-    const handleSend = () => {
-        if (input.trim() !== "") {
-            const newMessage = {
-                id: messages.length + 1,
-                text: input,
-                sender: "user",
-                time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    // Send a new message
+    const handleSend = async () => {
+        if (!input.trim()) return;
+
+        const isMarketManager = role === "marketmanager";
+
+        const endpoint = isMarketManager
+            ? "http://localhost:8005/api/admin/convo/send"
+            : "http://localhost:8005/api/admin/convo/send/user";
+
+        const payload = isMarketManager
+            ? {
+                sender: userId,
+                conversationId,
+                message: input
+            }
+            : {
+                sender: userId,
+                message: input
             };
-            setMessages([...messages, newMessage]);
+
+        try {
+            const res = await axios.post(endpoint, payload, {
+                withCredentials: true
+            });
+
+            const newMessage = isMarketManager ? res.data.message : res.data.data;
+
+            setMessages((prev) => [...prev, newMessage]);
             setInput("");
+        } catch (err) {
+            console.error("Error sending message:", err);
         }
     };
 
+
+
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-            <AnimatePresence>
-                <motion.div
-                    ref={chatBoxRef}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.2 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="bg-white w-full max-w-md rounded-2xl shadow-lg flex flex-col h-[600px]"
-                >
-                    <div className="flex items-center justify-between p-4 border-b bg-green-600 text-white rounded-t-2xl">
-                        <h3 className="text-lg font-semibold">John Snow</h3>
-                        <button onClick={onClose} className="hover:text-gray-300">
-                            <X className="h-6 w-6" />
-                        </button>
-                    </div>
+        <div className="fixed bottom-5 right-5 w-96 h-96 bg-white rounded-xl shadow-lg flex flex-col border border-gray-200 z-50">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-2 bg-gray-100 border-b border-gray-200 rounded-t-xl">
+                <h2 className="font-semibold text-lg">Chat</h2>
+                <button onClick={onClose} className="text-gray-600 hover:text-red-500">
+                    <IoMdClose size={22} />
+                </button>
+            </div>
 
-                    <div className="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-100 rounded-b-2xl scrollbar-thin scrollbar-thumb-[#0895663f] scrollbar-track-[#f3f2f7]">
-                        {messages.map((msg) => (
-                            <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                                <div
-                                    className={`relative p-3 rounded-lg text-sm max-w-[80%] ${msg.sender === "user"
-                                        ? "bg-green-500 text-white self-end"
-                                        : "bg-white text-gray-800 shadow-md self-start"
-                                        }`}
-                                >
-                                    <p>{msg.text}</p>
-                                </div>
-                            </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
-
-                    <div className="p-4 border-t bg-white flex items-center justify-between space-x-2 rounded-b-2xl">
-                        <input
-                            type="text"
-                            className="flex-1 border rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-                            placeholder="Type your message..."
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                        />
-                        <button
-                            onClick={handleSend}
-                            className="bg-green-500 text-white p-2 flex items-center justify-center rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+            {/* Message List */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50">
+                {messages.map((msg, index) => (
+                    <div
+                        key={index}
+                        className={`flex ${msg.sender === userId ? "justify-end" : "justify-start"
+                            }`}
+                    >
+                        <div
+                            className={`px-4 py-2 rounded-lg max-w-xs ${msg.sender === userId
+                                ? "bg-blue-500 text-white rounded-br-none"
+                                : "bg-gray-300 text-black rounded-bl-none"
+                                }`}
                         >
-                            <SendHorizontal size={20} strokeWidth={1.5} absoluteStrokeWidth />
-                        </button>
+                            {msg.message}
+                        </div>
                     </div>
-                </motion.div>
-            </AnimatePresence>
+                ))}
+                <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Area */}
+            <div className="flex p-3 border-t border-gray-200 bg-white">
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type a message..."
+                    className="flex-1 border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring focus:ring-blue-300"
+                />
+                <button
+                    onClick={handleSend}
+                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 text-sm"
+                >
+                    Send
+                </button>
+            </div>
         </div>
     );
-}
+};
 
 export default PopupChatBox;

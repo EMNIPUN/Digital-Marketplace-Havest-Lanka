@@ -16,6 +16,8 @@ import { getAllActivities } from '../../controllers/userManagement/LogActivity.j
 import { generateLoginReport } from '../../controllers/userManagement/reports/SystemLoginActivityReport.js'
 import { generateBidReport } from '../../controllers/userManagement/reports/BiddingSuccessReport.js'
 import { createSystemBackup, listBackups } from '../../controllers/userManagement/backup/Backup.js'
+import { closeConversation, getAdminConversations, getConversations, getMessages, joinConversation, sendMessage, sendUserMessage } from '../../controllers/userManagement/chat/Chat.js'
+
 
 const router = express.Router()
 
@@ -24,19 +26,30 @@ router.get("/piechartdata", PieChartData)
 router.get("/sysload", getSystemLoad)
 router.get("/critical-alerts", CriticalAlerts)
 router.post("/critical-alerts-seen", CheckCriticalAlerts)
+
 router.post("/broadcast/add", AddBroadcast)
 router.get("/broadcast/get", GetBroadcast)
+
 router.get("/getallaccounts", GetAllAccounts)
 router.get("/getactivesessions", GetActiveSessions)
+
 router.post("/deactivate", DeactivateUser)
 router.post("/reactivate", ReactivateUsers)
+
 router.get("/report/user-registration", UserRegistrationReport)
 router.get('/report/login-activities', generateLoginReport);
 router.get('/report/bidding', generateBidReport);
+
 router.get("/activity", getAllActivities)
 router.get("/backup", listBackups)
 router.post("/backup", createSystemBackup)
 
-// router.get("/test/manual-alerts", addMultipleAlertsByUrl)
+router.get("/convo", getConversations)
+router.get("/convo/admin", getAdminConversations)
+router.post("/convo/join", joinConversation)
+router.get("/convo/messages/:conversationId", getMessages)
+router.post("/convo/close", closeConversation)
+router.post("/convo/send", sendMessage)
+router.post("/convo/send/user", sendUserMessage);
 
 export default router

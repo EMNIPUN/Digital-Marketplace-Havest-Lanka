@@ -34,8 +34,6 @@ function SideNavTabs() {
 
             <SideNavTab sendActiveTabUrl={recieveActiveTabUrl} icon={<Glob2 />} active={activeTabUrl} tabName="Activity Monitoring" url="/admin/activity-monitoring" />
 
-            <SideNavTab sendActiveTabUrl={recieveActiveTabUrl} icon={<Folder />} active={activeTabUrl} tabName="Administration Tools" url="/admin/administration-tools" />
-
             <SideNavTab sendActiveTabUrl={recieveActiveTabUrl} icon={<Configs />} active={activeTabUrl} tabName="System Configurations" url="/admin/system-configurations" />
         </div>
     );

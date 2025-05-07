@@ -13,7 +13,7 @@ const ServerInfo = () => {
                     disk: `${serverData.diskUsage || 0}% Used`,
                     ip: { public: "192.168.1.1", private: "10.0.0.1" },
                     database: "MongoDB",
-                    temperature: `${serverData.swapMemory || "N/A"} GB`,
+                    temperature: `${serverData.swapMemory || "N/A"} C`,
                     powerStatus: serverData.powerStatus || "Unknown Power Status",
                     hostname: "localhost",
                     cpuLoad: `${serverData.cpuUsage || 0}%`,
