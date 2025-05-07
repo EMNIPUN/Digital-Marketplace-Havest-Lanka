@@ -45,6 +45,6 @@ export const retriveCrops = async (req, res) => {
     res
       .status(200)
       .json(
-        matchedCrops.length > 3 ? matchedCrops.slice(0, 4) : matchedCrops
+        matchedCrops.length > 3 ? matchedCrops.slice(0, 3) : matchedCrops
       );
 }

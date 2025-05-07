@@ -18,11 +18,21 @@ export const getTransportById = async (req, res) => {
    }
 };
 
+export const getTransportByBidPostId = async (req, res) => {
+   try {
+      const transport = await Transport.find({ bidPostId: req.params.id });
+      res.status(200).json(transport);
+   } catch (error) {
+      res.status(500).json({ message: "Error in fetching transports" });
+   }
+};
+
 export const addTransport = async (req, res) => {
    try {
       const transport = req.body;  
 
       if (!transport.farmerId ||
+          !transport.bidPostId ||
           !transport.pickupLocation || 
           !transport.deliveryLocation || 
           !transport.cargoType || 
@@ -39,6 +49,7 @@ export const addTransport = async (req, res) => {
 
       await Transport.create({
          farmerId: transport.farmerId,
+         bidPostId: transport.bidPostId,
          pickupLocation: transport.pickupLocation,
          deliveryLocation: transport.deliveryLocation,
          cargoType: transport.cargoType,
