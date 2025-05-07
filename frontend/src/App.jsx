@@ -1,37 +1,46 @@
 import { Routes, Route } from "react-router-dom";
-import ShopOwnerRoutes from "./routes/ShopOwnerRoutes";
-import FarmerRoutes from "./routes/FarmerRoutes";
-import TransportRoutes from "./routes/TransportRoutes";
-import FinanceRoutes from "./routes/FinanceRoutes";
-import AdminRoutes from "./routes/AdminRoutes";
-import LoginRoutes from "./routes/LoginRoutes";
-import LogoutRoute from "./routes/LogoutRoutes";
-import CheckAuth from "./components/userManagement/logins/CheckAuth";
+import { lazy, Suspense } from "react";
 import LandingPage from "./pages/LandingPage";
-import ProfilePage from "./pages/userManagement/ProfilePage";
-import FarmerRegistration from "./pages/userManagement/dashboardPages/FarmerRegistration";
-import DriverDashboard from "./pages/transportManagement/DriverDashboard";
-import Payform from "./components/financeManagement/Payform";
+
+const ShopOwnerRoutes = lazy(() => import("./routes/ShopOwnerRoutes"));
+const FarmerRoutes = lazy(() => import("./routes/FarmerRoutes"));
+const TransportRoutes = lazy(() => import("./routes/TransportRoutes"));
+const FinanceRoutes = lazy(() => import("./routes/FinanceRoutes"));
+const AdminRoutes = lazy(() => import("./routes/AdminRoutes"));
+const LoginRoutes = lazy(() => import("./routes/LoginRoutes"));
+const LogoutRoute = lazy(() => import("./routes/LogoutRoutes"));
+const CheckAuth = lazy(() => import("./components/userManagement/logins/CheckAuth"));
+const ProfilePage = lazy(() => import("./pages/userManagement/ProfilePage"));
+const FarmerRegistration = lazy(() => import("./pages/userManagement/dashboardPages/FarmerRegistration"));
+const DriverDashboard = lazy(() => import("./pages/transportManagement/DriverDashboard"));
+const Payform = lazy(() => import("./components/financeManagement/Payform"));
+
+
+
+
 
 function App() {
    return (
-      <Routes>
-         <Route index element={<LandingPage />} />
-         <Route element={<CheckAuth />} path="/*">
-            <Route path="shopOwner/*" element={<ShopOwnerRoutes />} />
-            <Route path="farmer/*" element={<FarmerRoutes />} />
-            <Route path="transport/*" element={<TransportRoutes />} />
-            <Route path="admin/*" element={<AdminRoutes />} />
-            <Route path="finance/*" element={<FinanceRoutes />} />
-            <Route path="profile/:id" element={<ProfilePage />} />
-            <Route path="driver/" element={<DriverDashboard />} />
-            <Route path="payform" element={<Payform />}></Route>
-         </Route>
+      <Suspense fallback={<div>Loading...</div>}>
+         <Routes>
+            <Route index element={<LandingPage />} />
 
-         <Route path="/login/*" element={<LoginRoutes />} />
-         <Route path="/logout/*" element={<LogoutRoute />} />
-         <Route path="/farmer/register" element={<FarmerRegistration />} />
-      </Routes>
+            <Route element={<CheckAuth />} path="/*">
+               <Route path="shopOwner/*" element={<ShopOwnerRoutes />} />
+               <Route path="farmer/*" element={<FarmerRoutes />} />
+               <Route path="transport/*" element={<TransportRoutes />} />
+               <Route path="admin/*" element={<AdminRoutes />} />
+               <Route path="finance/*" element={<FinanceRoutes />} />
+               <Route path="profile/:id" element={<ProfilePage />} />
+               <Route path="driver/" element={<DriverDashboard />} />
+               <Route path="payform" element={<Payform />} />
+            </Route>
+
+            <Route path="/login/*" element={<LoginRoutes />} />
+            <Route path="/logout/*" element={<LogoutRoute />} />
+            <Route path="/farmer/register" element={<FarmerRegistration />} />
+         </Routes>
+      </Suspense>
    );
 }
 
