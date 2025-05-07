@@ -24,6 +24,7 @@ function OrderDetails(props) {
 
    // get payment details by order id
    const [paymentData, setPaymentData] = useState([]);
+   const [currentStatus, setCurrentStatus] = useState(status);
 
    const getPaymentDetails = async () => {
       try {
@@ -36,6 +37,7 @@ function OrderDetails(props) {
       }
    };
 
+   // Fetch payment details when component mounts or orderId changes
    useEffect(() => {
       getPaymentDetails();
    }, [orderId]);
@@ -49,14 +51,14 @@ function OrderDetails(props) {
          await axios.put(`http://localhost:8005/api/BidPost/${postId}`, {
             status: "Payment Approved",
          });
+         setCurrentStatus("Payment Approved");
       } catch (error) {
          console.log(error);
       }
    };
-   
 
    useEffect(() => {
-      if (paymentData.length > 0 && status !== "Payment Approved") {
+      if (paymentData.length > 0 && currentStatus !== "Payment Approved") {
          updateBidStatus();
       }
    }, [paymentData]);
@@ -86,12 +88,12 @@ function OrderDetails(props) {
                </div>
             </td>
             <td className="px-6 py-4 ">
-               {status === "Accepted" ? (
+               {currentStatus === "Accepted" ? (
                   <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">
                      <span className="h-2 w-2 rounded-full bg-green-600 mr-1.5 mt-1"></span>
                      Bid Accepted
                   </span>
-               ) : status === "Payment Approved" ? (
+               ) : currentStatus === "Payment Approved" ? (
                   <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-800/90 text-gray-100">
                      <span className="h-2 w-2 rounded-full bg-gray-400 mr-1.5 mt-1"></span>
                      Payment done
@@ -103,7 +105,7 @@ function OrderDetails(props) {
                   </span>
                )}
             </td>
-            {status === "pending" ? (
+            {currentStatus === "pending" ? (
                <td className="py-6 px-4 cursor-pointer text-gray-200">
                   <i className="bi bi-envelope"></i>
                </td>
@@ -129,16 +131,19 @@ function OrderDetails(props) {
             )}
 
             <td className="px-6 py-4 ">
-               {status === "Accepted" ? (
+               {currentStatus === "Accepted" ? (
                   <button
                      onClick={() =>
-                        goToPayment(orderId, product, price * quantity)
+                        goToPayment(orderId, product, price * quantity, () => {
+                           // ✅ after payment, refresh payment status immediately
+                           getPaymentDetails();
+                        })
                      }
                      className="text-xs bg-sec-green text-white py-2 px-4 rounded-sm"
                   >
                      Pay Now
                   </button>
-               ) : status === "Payment Approved" ? (
+               ) : currentStatus === "Payment Approved" ? (
                   <button
                      disabled
                      className="text-xs bg-gray-400 text-white py-2 px-4 rounded-sm"

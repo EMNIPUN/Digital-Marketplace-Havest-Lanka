@@ -65,8 +65,6 @@ export default function Payform() {
 
    return (
       <div className="max-w-lg mx-auto p-8 bg-white rounded-lg shadow-md">
-         <h1>Hash is: {hash}</h1>
-
          <form
             method="post"
             action="https://sandbox.payhere.lk/pay/checkout"
@@ -77,7 +75,7 @@ export default function Payform() {
             <input
                type="hidden"
                name="return_url"
-               value="http://localhost:5173/shopowner"
+               value="http://localhost:5173/paymentdone"
             />
             <input
                type="hidden"

@@ -10,6 +10,7 @@ import ShopOwnerOrders from "../pages/shopOwnerManagement/ShopOwnerOrders";
 import ManageInventory from "../pages/shopOwnerManagement/ManageInventory";
 import DailyPrice from "@/components/other/DailyPrice";
 import ShopOwnerFinance from "@/pages/shopOwnerManagement/ShopOwnerFinance";
+import PaymentDone from "@/components/shopOwnerManagement/paymentDone";
 
 function ShopOwnerRoutes() {
    return (
@@ -27,6 +28,8 @@ function ShopOwnerRoutes() {
             <div className="mt-[58px] fixed top-0 z-20">
                <DailyPrice />
             </div>
+
+            {/* payment done */}
 
             <div className="mt-[105px]">
                {/* Routes for shopowner's pages */}
