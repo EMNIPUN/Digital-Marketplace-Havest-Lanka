@@ -44,7 +44,10 @@ function ShopOwnerDashboard() {
 
    // ongoing orders
    const ongoingOrders = allBids.filter(
-      (x) => x.status !== "pending" && x.status !== "complete"
+      (x) =>
+         x.status !== "pending" &&
+         x.status !== "complete" &&
+         x.shopOwnerId === sid
    );
 
    const totalAmountOngoingOrders = ongoingOrders.reduce((acc, item) => {
@@ -52,14 +55,18 @@ function ShopOwnerDashboard() {
    }, 0);
 
    // ongoing bids
-   const ongoingBids = allBids.filter((x) => x.status === "pending");
+   const ongoingBids = allBids.filter(
+      (x) => x.status === "pending" && x.shopOwnerId === sid
+   );
 
    const totalAmountOngoingBids = ongoingBids.reduce((acc, item) => {
       return acc + item.quantity * item.price;
    }, 0);
 
    // complete orders
-   const completeOrders = allBids.filter((x) => x.status === "complete");
+   const completeOrders = allBids.filter(
+      (x) => x.status === "complete" && x.shopOwnerId === sid
+   );
 
    const totalAmountCompleteOrders = completeOrders.reduce((acc, item) => {
       return acc + item.quantity * item.price;

@@ -19,6 +19,7 @@ function CropDetails(props) {
       postId,
       status,
       profileImage,
+      getCropPostDetails,
    } = props;
 
    // Shop-owner Id
@@ -29,6 +30,7 @@ function CropDetails(props) {
    const close = (e) => {
       if (e.target.id === "cropDetailsBg") {
          setIsClickViewCropDetails(false);
+         getCropPostDetails();
       }
    };
 
