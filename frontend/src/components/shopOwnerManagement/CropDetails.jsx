@@ -30,6 +30,7 @@ function CropDetails(props) {
    const close = (e) => {
       if (e.target.id === "cropDetailsBg") {
          setIsClickViewCropDetails(false);
+         getCropPostDetails();
       }
    };
 
@@ -102,7 +103,6 @@ function CropDetails(props) {
             });
             notifyAdd();
             getBids();
-            getCropPostDetails();
          })
          .catch((error) => {
             console.log(error);
