@@ -41,7 +41,7 @@ const TrasnportSchema = new mongoose.Schema({
     },
     status:{
         type: String,
-        default: 'Active'
+        default: 'Transport Pending'
     },
     createdAt:{
         type: Date,

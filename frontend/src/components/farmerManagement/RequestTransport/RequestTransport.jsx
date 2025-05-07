@@ -25,7 +25,7 @@ function RequestTransport() {
         driverName: 'Not Available',
         contactNumberDriver: 'Not Available',
         vehcaleNo: 'Not Available',
-        status: 'Pending'
+        status: 'On Going',
     });
 
     const handleChange = (e) => {
@@ -69,7 +69,7 @@ function RequestTransport() {
                 driverName: 'Not Available',
                 contactNumberDriver: 'Not Available',
                 vehcaleNo: 'Not Available',
-                status: 'Pending'
+                status: 'Transport Pending'
             });
             
             setTimeout(() => {
@@ -80,12 +80,16 @@ function RequestTransport() {
         }
     };
 
-    const districts = [
+    const Pickupdistricts = [
         "Colombo", "Gampaha", "Kalutara", "Kandy", "Matale", "Nuwara Eliya",
         "Galle", "Matara", "Hambantota", "Jaffna", "Kilinochchi", "Mannar",
         "Vavuniya", "Mullaitivu", "Batticaloa", "Ampara", "Trincomalee",
         "Kurunegala", "Puttalam", "Anuradhapura", "Polonnaruwa", "Badulla",
         "Monaragala", "Ratnapura", "Kegalle"
+    ];
+
+    const Deliverydistricts = [
+        "Dambulla"
     ];
     
     const cargoTypes = [
@@ -119,7 +123,7 @@ function RequestTransport() {
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                         >
                             <option value="">Select District</option>
-                            {districts.map((district) => (
+                            {Pickupdistricts.map((district) => (
                                 <option key={district} value={district}>{district}</option>
                             ))}
                         </select>
@@ -138,7 +142,7 @@ function RequestTransport() {
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                         >
                             <option value="">Select District</option>
-                            {districts.map((district) => (
+                            {Deliverydistricts.map((district) => (
                                 <option key={district} value={district}>{district}</option>
                             ))}
                         </select>
@@ -314,7 +318,12 @@ function RequestTransport() {
                             <div className="bg-gray-50 p-4 rounded-lg text-center flex justify-between items-center gap-4">
                                 <p className="text-gray-600">
                                     <span className="font-bold">Status:</span> 
-                                    <span className="font-medium text-green-500"> {item.status}</span> 
+                                    <span className={`font-medium ${
+                                        item.status === 'Transport Pending' ? 'text-yellow-500' :
+                                        item.status === 'On Going' ? 'text-blue-500' :
+                                        item.status === 'Completed' ? 'text-green-500' :
+                                        'text-gray-500'
+                                    }`}> {item.status}</span> 
                                 </p>
                                 <button 
                                     className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2 shadow-sm"
