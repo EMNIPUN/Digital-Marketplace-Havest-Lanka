@@ -63,7 +63,7 @@ function Navigation() {
                       Active Orders
                     </Link>
                     <Link to="/farmer/orders/history" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Order History
+                      Payment History
                     </Link>
                   </div>
                 )}

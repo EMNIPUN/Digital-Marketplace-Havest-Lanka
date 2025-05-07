@@ -10,14 +10,24 @@ function CropsPredictionPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [temperature, setTemperature] = useState('');
+  const [humidity, setHumidity] = useState('');
+  const [soilType, setSoilType] = useState('');
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
 
   const handleSearch = () => {
     setLoading(true);
     setError(null);
+    const params = new URLSearchParams({
+      query: searchQuery,
+      temperature: temperature,
+      humidity: humidity,
+      soilType: soilType
+    });
+    
     axios
-      .get(`http://localhost:8005/api/crops/search/retrive?query=${searchQuery}`)
+      .get(`http://localhost:8005/api/crops/search/retrive?${params.toString()}`)
       .then((response) => {
         setCrops(response.data);
         setLoading(false);
@@ -74,19 +84,61 @@ function CropsPredictionPage() {
 
         {/* Search Section */}
         <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 mb-12">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-grow">
+          <div className="flex flex-col gap-4">
+            <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
                 className="w-full p-3 pl-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
-                placeholder="Search for crops, soil types, or conditions..."
+                placeholder="Search for crops..."
               />
               <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
             </div>
-            <div className="flex gap-2 w-full md:w-auto">
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="relative">
+                <input
+                  type="number"
+                  value={temperature}
+                  onChange={(e) => setTemperature(e.target.value)}
+                  className="w-full p-3 pl-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                  placeholder="Temperature (°C)"
+                />
+                <span className="absolute left-4 top-3.5 text-gray-400">°C</span>
+              </div>
+              
+              <div className="relative">
+                <input
+                  type="number"
+                  value={humidity}
+                  onChange={(e) => setHumidity(e.target.value)}
+                  className="w-full p-3 pl-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                  placeholder="Humidity (%)"
+                />
+                <span className="absolute left-4 top-3.5 text-gray-400">%</span>
+              </div>
+              
+              <div className="relative">
+                <select
+                  value={soilType}
+                  onChange={(e) => setSoilType(e.target.value)}
+                  className="w-full p-3 pl-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                >
+                  <option value="">Select Soil Type</option>
+                  <option value="Clay">Clay</option>
+                  <option value="Sandy">Sandy</option>
+                  <option value="Loamy">Loamy</option>
+                  <option value="Silt">Silt</option>
+                  <option value="Peaty">Peaty</option>
+                  <option value="Chalky">Chalky</option>
+                </select>
+                <span className="absolute left-4 top-3.5 text-gray-400">🌱</span>
+              </div>
+            </div>
+
+            <div className="flex justify-end">
               <button
                 onClick={handleSearch}
                 className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300 font-medium"

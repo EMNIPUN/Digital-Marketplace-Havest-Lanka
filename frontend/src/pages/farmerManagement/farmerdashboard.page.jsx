@@ -37,7 +37,7 @@ function FarmerDashboardPage() {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-500">Total Sales</p>
-                <p className="text-2xl font-semibold text-gray-900">₹1,25,000</p>
+                <p className="text-2xl font-semibold text-gray-900">Rs.1,25,000</p>
               </div>
             </div>
           </div>
