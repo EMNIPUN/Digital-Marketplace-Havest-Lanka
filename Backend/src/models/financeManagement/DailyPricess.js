@@ -7,7 +7,7 @@ const priceSchema = new mongoose.Schema({
   price: { type: Number, required: true }
 });
 
-// Compound index to prevent duplicate entries for the same item on the same date
+
 priceSchema.index({ category: 1, name: 1, date: 1 }, { unique: true });
 
 const DailyPricess = mongoose.model('DailyPrice', priceSchema);

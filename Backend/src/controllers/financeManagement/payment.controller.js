@@ -1,5 +1,7 @@
 import DailyPricess from "../../models/financeManagement/DailyPricess.js";
 import Payment from "../../models/financeManagement/payment.js";
+import FarmerpaymentSchema from "../../models/financeManagement/paymentSchema.js";
+
 
 
 const notifyPayment = async (req, res) => {
@@ -95,7 +97,33 @@ const getAllPrices = async (req, res) => {
  };
 
 
+ const addFarmerPayment = async (req, res) => {
+  try {
+    const newPayment = new FarmerpaymentSchema(req.body);
+    const saved = await newPayment.save();
+    res.status(201).json({ message: 'Payment added successfully', payment: saved });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Get all payments
+const getAllFarmerPayments = async (req, res) => {
+  try {
+    const payments = await FarmerpaymentSchema.find().sort({ date: -1 });
+    res.status(200).json(payments);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
 export default { notifyPayment, getAllPayments , getAllPrices,
    getRecentPrices,
    getPricesByName,
-   addPrice };
+   addPrice,
+  addFarmerPayment,
+  getAllFarmerPayments
+};

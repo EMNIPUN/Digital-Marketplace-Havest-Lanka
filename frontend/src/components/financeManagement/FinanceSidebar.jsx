@@ -13,6 +13,7 @@ import user from "../../assets/shopOwnerManagement/profile.png";
 import Token from "../userManagement/logins/Token";
 import ruchith from '../../assets/financeManagement/CHE_5153.jpg'
 
+
 export default function FinanceSidebar() {
    const token = Token();
    const fid = token.userId;

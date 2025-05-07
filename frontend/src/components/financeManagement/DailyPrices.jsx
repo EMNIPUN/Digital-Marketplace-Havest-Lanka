@@ -5,7 +5,7 @@ const DailyPrices = () => {
   const [priceData, setPriceData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch recent prices from the API
+  
   useEffect(() => {
     const fetchPrices = async () => {
       try {
@@ -21,7 +21,7 @@ const DailyPrices = () => {
     fetchPrices();
   }, []);
 
-  // Group data by item name
+  
   const grouped = {};
   priceData.forEach((item) => {
     if (!grouped[item.name]) grouped[item.name] = [];
@@ -44,7 +44,7 @@ const DailyPrices = () => {
               <thead>
                 <tr className="bg-gray-100">
                   <th className="border px-4 py-2">Date</th>
-                  <th className="border px-4 py-2">Category</th>
+                  
                   <th className="border px-4 py-2">Price</th>
                 </tr>
               </thead>
@@ -53,8 +53,8 @@ const DailyPrices = () => {
                   .sort((a, b) => new Date(b.date) - new Date(a.date))
                   .map((item, index) => (
                     <tr key={index}>
-                      <td className="border px-4 py-2">{item.date}</td>
-                      <td className="border px-4 py-2">{item.category}</td>
+                      <td className="border px-4 py-2">{item.date.slice(0,10)}</td>
+                     
                       <td className="border px-4 py-2">{item.price}</td>
                     </tr>
                   ))}
