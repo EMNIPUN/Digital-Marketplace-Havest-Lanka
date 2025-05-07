@@ -12,6 +12,13 @@ const reports = [
   { id: 6, icon: <BarChart className="w-14 h-14 text-indigo-600" />, title: "Bidding Success Rate Report", description: "Shows how many bids were successfully completed.", color: "border-indigo-300 bg-indigo-400 bg-opacity-20", textColor: "text-indigo-700", colSpan: 4 },
 ];
 
+const downloadMap = {
+  "User Registration Report": { endpoint: "/report/user-registration", filename: "user_registration_report.pdf" },
+  "System Login Activity Report": { endpoint: "/report/login-activities", filename: "login_activities_report.pdf" },
+  "Bidding Success Rate Report": { endpoint: "/report/bidding", filename: "bidding_success_rate_report.pdf" },
+  // Add more mappings as your backend expands
+};
+
 const cardVariants = {
   hidden: { opacity: 0, y: 15 },
   visible: (i) => ({
@@ -26,22 +33,27 @@ const cardVariants = {
 };
 
 function ReportsGrid() {
+  const downloadReport = async (title) => {
+    const downloadInfo = downloadMap[title];
+    if (!downloadInfo) {
+      console.log("No download available for this report.");
+      return;
+    }
 
-  const userRegistrationReportDownload = async () => {
     try {
-      const response = await axios.get(`http://localhost:8005/api/admin/report/user-registration`, {
-        responseType: 'blob'
+      const response = await axios.get(`http://localhost:8005/api/admin${downloadInfo.endpoint}`, {
+        responseType: 'blob',
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'user_registration_report.pdf'); // Set the file name
+      link.setAttribute('download', downloadInfo.filename);
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (e) {
-      console.log("Error downloading user registration report: " + e.message);
+      console.log(`Error downloading ${title.toLowerCase()}: ${e.message}`);
     }
   };
 
@@ -61,7 +73,7 @@ function ReportsGrid() {
           <h3 className="font-bold text-md mt-3">{title}</h3>
           <p className="text-[12px] text-gray-700">{description}</p>
           <button
-            onClick={title === "User Registration Report" ? userRegistrationReportDownload : null}
+            onClick={() => downloadReport(title)}
             className={`mt-3 ${textColor} font-semibold hover:underline flex items-center gap-2`}
           >
             <Download className="w-6 h-6" /> Download
