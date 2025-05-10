@@ -22,6 +22,3 @@ We follow the Agile methodology, ensuring iterative development and continuous f
 
 👥 Team
 Developed by a team of 5 software engineers as a university project.
-
-MONGODB_URI=mongodb+srv://admin:HavestLanka123@havestlanka.f3kte.mongodb.net/DMFFAS?retryWrites=true&w=majority&appName=HavestLanka
-JWT_SECRET=HarvestLanka@99
