@@ -22,3 +22,4 @@ We follow the Agile methodology, ensuring iterative development and continuous f
 
 👥 Team
 Developed by a team of 5 software engineers as a university project.
+updated
