@@ -579,17 +579,36 @@ Sanitize regex inputs using an escape function (e.g., `lodash.escapeRegExp` or c
 ### Vulnerability VULN-20: Missing HTTP Security Headers & Absence of Rate Limiting
 - **OWASP Category:** A05:2021 – Security Misconfiguration & A04:2021 – Insecure Design
 - **Severity Level:** Medium (CVSS v3.1: 5.3 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L`)
-- **Detection Method:** Architectural Code Review
+- **Detection Method:** Dynamic Application Security Testing (DAST via OWASP ZAP 2.17.0)
+- **Evidence Link:** [`security-audit/reports/zap-report.html`](./reports/zap-report.html) | Screenshot: [`security-audit/media/zap-scan-alerts.png`](./media/zap-scan-alerts.png)
 - **Affected File:** `Backend/src/index.js` (lines 1–76)
 
 #### 1. Description & Root Cause
 The Express server has no `helmet` middleware installed, resulting in missing standard security headers (`Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security`). Additionally, no rate limiting is attached to authentication routes (`/login`, `/user/register`, `/user/otp/send`), enabling automated credential stuffing and brute-force attacks.
 
-#### 2. Security Impact
+#### 2. Scan Evidence & PoC (OWASP ZAP Dynamic Scan)
+The dynamic scan executed via **OWASP ZAP 2.17.0** against `http://localhost:8005` flagged 7 specific security misconfigurations:
+1. **Missing Anti-clickjacking Header (`X-Frame-Options`):** Medium Risk (CWE-1021) – The server does not restrict framing, exposing users to UI redressing and Clickjacking attacks.
+2. **Content Security Policy (CSP) Header Not Set / Incomplete Directives:** Medium Risk (CWE-693) – Missing `frame-ancestors` and `form-action` fallback directives.
+3. **HTTP Only Site (Missing HSTS / HTTPS enforcement):** Medium Risk (CWE-311) – API traffic is transmitted over unencrypted HTTP.
+4. **Server Leaks Information via `X-Powered-By: Express`:** Low Risk (CWE-200) – HTTP responses disclose the backend framework (`Express`), assisting attackers in fingerprinting version-specific vulnerabilities.
+5. **X-Content-Type-Options Header Missing:** Low Risk (CWE-693) – Missing `nosniff` directive allows browsers to MIME-sniff response bodies into executable types.
+
+![OWASP ZAP Scan Alerts Tree](./media/zap-scan-alerts.png)
+*Figure 20.1: OWASP ZAP Automated DAST Scan results on http://localhost:8005 confirming missing security headers and technology fingerprint leakage.*
+
+#### 3. Security Impact
 - **Confidentiality:** Low
 - **Integrity:** Low
 - **Availability:** Medium
-- **Impact Summary:** Increased exposure to clickjacking, MIME sniffing, and brute-force authentication attacks.
+- **Impact Summary:** Increased exposure to clickjacking, MIME sniffing, technology reconnaissance, and brute-force authentication attacks.
 
 #### 4. Remediation Strategy
-Mount `helmet()` and `express-rate-limit` globally and configure stricter limiters on authentication endpoints.
+Mount `helmet()` and `express-rate-limit` globally and configure stricter limiters on authentication endpoints:
+```javascript
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+
+app.use(helmet());
+app.disable('x-powered-by');
+```
