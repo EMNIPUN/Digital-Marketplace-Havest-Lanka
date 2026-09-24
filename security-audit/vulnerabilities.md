@@ -21,26 +21,26 @@
 
 | Vuln ID | Vulnerability Title | OWASP Top 10 (2021) Category | Severity (CVSS v3.1) | Detection Method | Affected File / Component |
 |---|---|---|---|---|---|
-| `VULN-01` | **Critical Password Reset Bypass (Promise Truthiness Bug)** | A07: Identification & Auth Failures | **Critical (9.8)** | Static Code Review | `UserData.js:153` (`POST /user/reset-password`) |
-| `VULN-02` | **Missing JWT Cryptographic Signature Verification** | A07: Identification & Auth Failures | **Critical (9.1)** | Static Code Review | `CheckAuth.js:4-10` (`GET /check-auth`) |
-| `VULN-03` | **Unauthenticated Administrative Data Exfiltration** | A01: Broken Access Control | **Critical (9.1)** | Architectural Route Audit | `adminRoutes.js:33` (`GET /api/admin/getallaccounts`) |
-| `VULN-04` | **Arbitrary File Overwrite & Symlink Path Traversal (`tar`)** | A06: Vulnerable & Outdated Components | **Critical (9.1)** | OWASP Dependency-Check | `Backend/node_modules/tar` (`GHSA-34x7-hfp2-rc4v`) |
-| `VULN-05` | **Frontend Prototype Pollution (`swiper`)** | A06: Vulnerable & Outdated Components | **Critical (9.1)** | OWASP Dependency-Check | `frontend/node_modules/swiper` (`GHSA-hmx5-qpq5-p643`) |
-| `VULN-06` | **Unauthenticated Arbitrary Account Deactivation** | A01: Broken Access Control | **High (8.6)** | Route & Logic Audit | `DeactivateAccount.js` (`POST /api/admin/deactivate`) |
-| `VULN-07` | **IDOR & Unauthenticated Deletion on User Accounts** | A01: Broken Access Control | **High (8.5)** | Static Code Review | `UserData.js:80` (`DELETE /user/del`) |
-| `VULN-08` | **IDOR & Unauthenticated CRUD on Bid Posts** | A01: Broken Access Control | **High (8.5)** | Architectural Route Audit | `BidPost.controller.js` (`DELETE/PUT /api/BidPost/:id`) |
-| `VULN-09` | **Privilege Escalation via Mass Assignment (Register as Admin)** | A01: Broken Access Control | **High (8.5)** | Static Code Review | `UserRegistration.js:18,48` (`POST /user/register`) |
-| `VULN-10` | **Unrestricted File Upload & Remote Stored XSS** | A04: Insecure Design | **High (8.2)** | Static Code Review | `UserRegistration.js:7-14`, `UserData.js:41-48` |
-| `VULN-11` | **OS Command Injection via `systeminformation` on Windows** | A06: Vulnerable & Outdated Components | **High (8.2)** | OWASP Dependency-Check | `Backend/node_modules/systeminformation` (`GHSA-wphj-fx3q-84ch`) |
-| `VULN-12` | **Unauthenticated RCE via Deserialization (`react-router`)** | A06: Vulnerable & Outdated Components | **High (8.1)** | OWASP Dependency-Check | `frontend/node_modules/react-router` (`GHSA-49rj-9fvp-4h2h`) |
-| `VULN-13` | **Hardcoded Secrets Leaked in Git History (Gmail App Password)** | A02: Cryptographic Failures | **High (7.5)** | Git History Scan | Commit `1ee655b` in `Mail.js` |
-| `VULN-14` | **Sensitive Data Exposure: Password Hash Leakage in API Responses** | A02: Cryptographic Failures | **High (7.5)** | Data Flow Analysis | `UserRegistration.js:54`, `UserData.js:71` |
-| `VULN-15` | **Unverified Payment Webhook (Payment Forgery)** | A08: Software & Data Integrity Failures | **High (7.5)** | Logic Review | `payment.controller.js:5-18` (`POST /api/notify`) |
-| `VULN-16` | **SMTP Command Injection & File Read in `nodemailer`** | A06: Vulnerable & Outdated Components | **High (7.5)** | OWASP Dependency-Check | `Backend/node_modules/nodemailer` (`GHSA-c7w3-x93f-qmm8`) |
-| `VULN-17` | **Insecure Session Cookie Flags (Missing HttpOnly & Secure)** | A05: Security Misconfiguration | **Medium (6.5)** | Static Code Review | `Login.js:30-34` (`POST /login`) |
-| `VULN-18` | **Weak Cryptographic PRNG in OTP Generation (`Math.random`)** | A02: Cryptographic Failures | **Medium (5.3)** | Static Code Review | `ValidateMail.js:77` (`POST /user/otp/send`) |
-| `VULN-19` | **Regular Expression Denial of Service (ReDoS) via Unsanitized Input** | A03: Injection | **Medium (5.3)** | Static Code Review | `payment.controller.js:78`, `UserData.js:114` |
-| `VULN-20` | **Missing HTTP Security Headers & Global Rate Limiting** | A05: Security Misconfiguration | **Medium (5.3)** | Architecture Review | `index.js:1-76` |
+| `VULN-01` | **Critical Password Reset Bypass (Promise Truthiness Bug)** | A07: Identification & Auth Failures | **Critical (9.8)** | Manual Source Code Review (Business Logic) | `UserData.js:153` (`POST /user/reset-password`) |
+| `VULN-02` | **Missing JWT Cryptographic Signature Verification** | A07: Identification & Auth Failures | **Critical (9.1)** | Manual Source Code Review (Auth Flow) | `CheckAuth.js:4-10` (`GET /check-auth`) |
+| `VULN-03` | **Unauthenticated Administrative Data Exfiltration** | A01: Broken Access Control | **Critical (9.1)** | Manual Source Code Review (Access Control) | `adminRoutes.js:33` (`GET /api/admin/getallaccounts`) |
+| `VULN-04` | **Arbitrary File Overwrite & Symlink Path Traversal (`tar`)** | A06: Vulnerable & Outdated Components | **Critical (9.1)** | OWASP Dependency-Check (SCA) | `Backend/node_modules/tar` (`GHSA-34x7-hfp2-rc4v`) |
+| `VULN-05` | **Frontend Prototype Pollution (`swiper`)** | A06: Vulnerable & Outdated Components | **Critical (9.1)** | OWASP Dependency-Check (SCA) | `frontend/node_modules/swiper` (`GHSA-hmx5-qpq5-p643`) |
+| `VULN-06` | **Unauthenticated Arbitrary Account Deactivation** | A01: Broken Access Control | **High (8.6)** | Manual Source Code Review (Access Control) | `DeactivateAccount.js` (`POST /api/admin/deactivate`) |
+| `VULN-07` | **IDOR & Unauthenticated Deletion on User Accounts** | A01: Broken Access Control | **High (8.5)** | Manual Source Code Review (IDOR) | `UserData.js:80` (`DELETE /user/del`) |
+| `VULN-08` | **IDOR & Unauthenticated CRUD on Bid Posts** | A01: Broken Access Control | **High (8.5)** | Manual Source Code Review (IDOR) | `BidPost.controller.js` (`DELETE/PUT /api/BidPost/:id`) |
+| `VULN-09` | **Privilege Escalation via Mass Assignment (Register as Admin)** | A01: Broken Access Control | **High (8.5)** | Manual Source Code Review (Data Binding) | `UserRegistration.js:18,48` (`POST /user/register`) |
+| `VULN-10` | **Unrestricted File Upload & Remote Stored XSS** | A04: Insecure Design | **High (8.2)** | Manual Source Code Review (Input Validation) | `UserRegistration.js:7-14`, `UserData.js:41-48` |
+| `VULN-11` | **OS Command Injection via `systeminformation` on Windows** | A06: Vulnerable & Outdated Components | **High (8.2)** | OWASP Dependency-Check (SCA) | `Backend/node_modules/systeminformation` (`GHSA-wphj-fx3q-84ch`) |
+| `VULN-12` | **Unauthenticated RCE via Deserialization (`react-router`)** | A06: Vulnerable & Outdated Components | **High (8.1)** | OWASP Dependency-Check (SCA) | `frontend/node_modules/react-router` (`GHSA-49rj-9fvp-4h2h`) |
+| `VULN-13` | **Hardcoded Secrets Leaked in Git History (Gmail App Password)** | A02: Cryptographic Failures | **High (7.5)** | Secret Scanning (`git log` audit) | Commit `1ee655b` in `Mail.js` |
+| `VULN-14` | **Sensitive Data Exposure: Password Hash Leakage in API Responses** | A02: Cryptographic Failures | **High (7.5)** | Manual Source Code Review (Data Flow) | `UserRegistration.js:54`, `UserData.js:71` |
+| `VULN-15` | **Unverified Payment Webhook (Payment Forgery)** | A08: Software & Data Integrity Failures | **High (7.5)** | Manual Source Code Review (Business Logic) | `payment.controller.js:5-18` (`POST /api/notify`) |
+| `VULN-16` | **SMTP Command Injection & File Read in `nodemailer`** | A06: Vulnerable & Outdated Components | **High (7.5)** | OWASP Dependency-Check (SCA) | `Backend/node_modules/nodemailer` (`GHSA-c7w3-x93f-qmm8`) |
+| `VULN-17` | **Insecure Session Cookie Flags (Missing HttpOnly & Secure)** | A05: Security Misconfiguration | **Medium (6.5)** | Dynamic Analysis (OWASP ZAP) / Code Review | `Login.js:30-34` (`POST /login`) |
+| `VULN-18` | **Weak Cryptographic PRNG in OTP Generation (`Math.random`)** | A02: Cryptographic Failures | **Medium (5.3)** | Automated SAST / Manual Code Review | `ValidateMail.js:77` (`POST /user/otp/send`) |
+| `VULN-19` | **Regular Expression Denial of Service (ReDoS) via Unsanitized Input** | A03: Injection | **Medium (5.3)** | Automated SAST / Manual Code Review | `payment.controller.js:78`, `UserData.js:114` |
+| `VULN-20` | **Missing HTTP Security Headers & Global Rate Limiting** | A05: Security Misconfiguration | **Medium (5.3)** | Dynamic Analysis (OWASP ZAP) / Code Review | `index.js:1-76` |
 
 ---
 

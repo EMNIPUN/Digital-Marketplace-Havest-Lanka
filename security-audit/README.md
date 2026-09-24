@@ -39,28 +39,28 @@ security-audit/
 
 All findings are documented in detail with root cause, affected files, PoC, and remediation in [`vulnerabilities.md`](./vulnerabilities.md).
 
-| # | Vulnerability Title | OWASP Top 10 Category | Severity | Detection Technique | Selected to Fix? |
+| # | Vulnerability Title | OWASP Top 10 Category | Severity | Detection Technique / Tool | Selected to Fix? |
 |---|---|---|---|---|:---:|
-| 1 | **Critical Password Reset Bypass (Promise Truthiness Bug)** | A07:2021 – Auth Failures | Critical (9.8) | Static Code Review | [ ] |
-| 2 | **Missing JWT Cryptographic Signature Verification** | A07:2021 – Auth Failures | Critical (9.1) | Static Code Review | [ ] |
-| 3 | **Unauthenticated Administrative Data Exfiltration** | A01:2021 – Broken Access Control | Critical (9.1) | Architectural Route Audit | [ ] |
-| 4 | **Arbitrary File Overwrite & Symlink Path Traversal (`tar`)** | A06:2021 – Outdated Components | Critical (9.1) | OWASP Dependency-Check | [ ] |
-| 5 | **Frontend Prototype Pollution (`swiper`)** | A06:2021 – Outdated Components | Critical (9.1) | OWASP Dependency-Check | [ ] |
-| 6 | **Unauthenticated Arbitrary Account Deactivation** | A01:2021 – Broken Access Control | High (8.6) | Route & Logic Audit | [ ] |
-| 7 | **IDOR & Unauthenticated Deletion on User Accounts** | A01:2021 – Broken Access Control | High (8.5) | Static Code Review | [ ] |
-| 8 | **IDOR & Unauthenticated CRUD on Bid Posts** | A01:2021 – Broken Access Control | High (8.5) | Architectural Route Audit | [ ] |
-| 9 | **Privilege Escalation via Mass Assignment (Register as Admin)** | A01:2021 – Broken Access Control | High (8.5) | Static Code Review | [ ] |
-| 10 | **Unrestricted File Upload & Remote Stored XSS** | A04:2021 – Insecure Design | High (8.2) | Static Code Review | [ ] |
-| 11 | **OS Command Injection via `systeminformation` on Windows** | A06:2021 – Outdated Components | High (8.2) | OWASP Dependency-Check | [ ] |
-| 12 | **Unauthenticated RCE via Deserialization (`react-router`)** | A06:2021 – Outdated Components | High (8.1) | OWASP Dependency-Check | [ ] |
-| 13 | **Hardcoded Secrets Leaked in Git History (Gmail App Password)** | A02:2021 – Cryptographic Failures | High (7.5) | Git History Scan | [ ] |
-| 14 | **Sensitive Data Exposure: Password Hash Returned in API Responses** | A02:2021 – Cryptographic Failures | High (7.5) | Data Flow Analysis | [ ] |
-| 15 | **Unverified Payment Webhook (Payment Forgery)** | A08:2021 – Integrity Failures | High (7.5) | Logic Review | [ ] |
-| 16 | **SMTP Command Injection & File Read in `nodemailer`** | A06:2021 – Outdated Components | High (7.5) | OWASP Dependency-Check | [ ] |
-| 17 | **Insecure Session Cookie Flags (Missing HttpOnly & Secure)** | A05:2021 – Security Misconfiguration | Medium (6.5) | Static Code Review | [ ] |
-| 18 | **Weak Cryptographic PRNG in OTP Generation (`Math.random`)** | A02:2021 – Cryptographic Failures | Medium (5.3) | Static Code Review | [ ] |
-| 19 | **Regular Expression Denial of Service (ReDoS)** | A03:2021 – Injection | Medium (5.3) | Static Code Review | [ ] |
-| 20 | **Missing HTTP Security Headers & Absence of Rate Limiting** | A05:2021 & A04:2021 | Medium (5.3) | Architecture Review | [ ] |
+| 1 | **Critical Password Reset Bypass (Promise Truthiness Bug)** | A07:2021 – Auth Failures | Critical (9.8) | Manual Source Code Review (Business Logic) | [ ] |
+| 2 | **Missing JWT Cryptographic Signature Verification** | A07:2021 – Auth Failures | Critical (9.1) | Manual Source Code Review (Auth Flow) | [ ] |
+| 3 | **Unauthenticated Administrative Data Exfiltration** | A01:2021 – Broken Access Control | Critical (9.1) | Manual Source Code Review (Access Control) | [ ] |
+| 4 | **Arbitrary File Overwrite & Symlink Path Traversal (`tar`)** | A06:2021 – Outdated Components | Critical (9.1) | OWASP Dependency-Check (SCA) | [ ] |
+| 5 | **Frontend Prototype Pollution (`swiper`)** | A06:2021 – Outdated Components | Critical (9.1) | OWASP Dependency-Check (SCA) | [ ] |
+| 6 | **Unauthenticated Arbitrary Account Deactivation** | A01:2021 – Broken Access Control | High (8.6) | Manual Source Code Review (Access Control) | [ ] |
+| 7 | **IDOR & Unauthenticated Deletion on User Accounts** | A01:2021 – Broken Access Control | High (8.5) | Manual Source Code Review (IDOR) | [ ] |
+| 8 | **IDOR & Unauthenticated CRUD on Bid Posts** | A01:2021 – Broken Access Control | High (8.5) | Manual Source Code Review (IDOR) | [ ] |
+| 9 | **Privilege Escalation via Mass Assignment (Register as Admin)** | A01:2021 – Broken Access Control | High (8.5) | Manual Source Code Review (Data Binding) | [ ] |
+| 10 | **Unrestricted File Upload & Remote Stored XSS** | A04:2021 – Insecure Design | High (8.2) | Manual Source Code Review (Input Validation) | [ ] |
+| 11 | **OS Command Injection via `systeminformation` on Windows** | A06:2021 – Outdated Components | High (8.2) | OWASP Dependency-Check (SCA) | [ ] |
+| 12 | **Unauthenticated RCE via Deserialization (`react-router`)** | A06:2021 – Outdated Components | High (8.1) | OWASP Dependency-Check (SCA) | [ ] |
+| 13 | **Hardcoded Secrets Leaked in Git History (Gmail App Password)** | A02:2021 – Cryptographic Failures | High (7.5) | Secret Scanning (`git log` audit) | [ ] |
+| 14 | **Sensitive Data Exposure: Password Hash Returned in API Responses** | A02:2021 – Cryptographic Failures | High (7.5) | Manual Source Code Review (Data Flow) | [ ] |
+| 15 | **Unverified Payment Webhook (Payment Forgery)** | A08:2021 – Integrity Failures | High (7.5) | Manual Source Code Review (Business Logic) | [ ] |
+| 16 | **SMTP Command Injection & File Read in `nodemailer`** | A06:2021 – Outdated Components | High (7.5) | OWASP Dependency-Check (SCA) | [ ] |
+| 17 | **Insecure Session Cookie Flags (Missing HttpOnly & Secure)** | A05:2021 – Security Misconfiguration | Medium (6.5) | Dynamic Analysis (OWASP ZAP) / Code Review | [ ] |
+| 18 | **Weak Cryptographic PRNG in OTP Generation (`Math.random`)** | A02:2021 – Cryptographic Failures | Medium (5.3) | Automated SAST / Manual Code Review | [ ] |
+| 19 | **Regular Expression Denial of Service (ReDoS)** | A03:2021 – Injection | Medium (5.3) | Automated SAST / Manual Code Review | [ ] |
+| 20 | **Missing HTTP Security Headers & Absence of Rate Limiting** | A05:2021 & A04:2021 | Medium (5.3) | Dynamic Analysis (OWASP ZAP) / Code Review | [ ] |
 
 ---
 
