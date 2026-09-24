@@ -43,6 +43,26 @@ app.use(cookieParser());
 
 connectDB();
 
+app.get("/", (req, res) => {
+   res.status(200).send(`
+      <!DOCTYPE html>
+      <html>
+      <head><title>Harvest Lanka API</title></head>
+      <body>
+         <h1>Harvest Lanka API Gateway</h1>
+         <ul>
+            <li><a href="/check-auth">Check Auth</a></li>
+            <li><a href="/api/admin/getallaccounts">Admin Accounts</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/user/register">Register</a></li>
+            <li><a href="/api/BidPost">Bid Posts</a></li>
+            <li><a href="/uploads">Uploads</a></li>
+         </ul>
+      </body>
+      </html>
+   `);
+});
+
 // Use Routes
 app.use(trackRequest);
 app.use("/api", transactionRoutes);
