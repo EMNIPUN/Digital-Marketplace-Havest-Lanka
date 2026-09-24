@@ -2,24 +2,14 @@
 
 This folder contains all visual evidence, screenshots, tool export reports, and architecture diagrams linked within the security markdown reports.
 
-### File Naming Convention:
-To keep everything organized and easy to track across group members, please follow this naming pattern:
+### Recommended File Naming Convention:
+* **Vulnerability Proofs of Concept:** `vuln-01-poc.png`, `vuln-02-poc.png`, `vuln-03-poc.png`, ...
+* **Remediation Code / Fix Evidence:** `fix-01-evidence.png`, `fix-02-evidence.png`, ...
+* **OAuth Architecture / Workflow:** `oauth-flow-diagram.png`, `oauth-login-demo.png`
+* **Automated Scan Reports:** `zap-scan-report.png`, `npm-audit-results.png`
 
-* **Member 1 Findings:** `m1-v01-poc.png`, `m1-v02-poc.png`, ...
-* **Member 2 Findings:** `m2-v01-poc.png`, `m2-v02-poc.png`, ...
-* **Member 3 Findings:** `m3-v01-poc.png`, `m3-v02-poc.png`, ...
-* **Member 4 Findings:** `m4-v01-poc.png`, `m4-v02-poc.png`, ...
-* **Selected 7 Fixes (Before vs After):** `selected-v01-fix.png`, `selected-v02-fix.png`, ...
-* **OAuth Architecture / Sequence:** `oauth-flow-diagram.png`, `oauth-login-demo.png`
-* **Automated Scan Reports:** `zap-scan-summary.png`, `npm-audit-report.png`
-
-### Linking in Markdown:
-From `member-X/vulnerabilities.md`:
+### Markdown Linking:
+From `vulnerabilities.md` or `selected-7-vulnerabilities.md`:
 ```markdown
-![M1-V01 Proof of Concept](../media/m1-v01-poc.png)
-```
-
-From `selected-7-vulnerabilities.md` or `README.md`:
-```markdown
-![Architecture Diagram](./media/oauth-flow-diagram.png)
+![PoC Evidence](./media/vuln-01-poc.png)
 ```
