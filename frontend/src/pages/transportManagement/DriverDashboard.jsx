@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../assets/shopOwnerManagement/logo-white.jpg";
 import {
    TruckIcon,
    MapIcon,
