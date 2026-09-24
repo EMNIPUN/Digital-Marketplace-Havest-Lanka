@@ -397,15 +397,26 @@ Update React Router to `>= 7.17.1` via `npm audit fix`.
 ### Vulnerability VULN-13: Hardcoded Secrets Leaked in Git History
 - **OWASP Category:** A02:2021 – Cryptographic Failures
 - **Severity Level:** High (CVSS v3.1: 7.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N`)
-- **Detection Method:** Git History Audit (`git log -S "SMTP_PASS" -p`)
+- **Detection Method:** Secret Scanning via Git History Audit (`git log -S "xcbr" --oneline` & `git show`)
 - **Affected File & Commit:** Commit `1ee655bce93071d89dfb0f60ee1acead2a60a926` in `Backend/src/controllers/userManagement/smtp/Mail.js`
+- **Evidence Link:** [`security-audit/media/vuln-13-git-secret-leak.png`](./media/vuln-13-git-secret-leak.png)
 
 #### 1. Description & Root Cause
-In commit `1ee655b`, the Gmail App Password `pass: 'xcbr yhvi bbdf uben'` was committed directly to source control for account `harvestlanka904@gmail.com`. Even though later committed to read from `process.env.SMTP_PASS`, the secret remains visible in the repository's git tree.
+In commit `1ee655b`, the Gmail App Password `pass: 'xcbr yhvi bbdf uben'` was committed directly to source control for account `harvestlanka904@gmail.com`. Even though later committed to read from `process.env.SMTP_PASS`, the secret remains permanently visible in the repository's git commit graph.
 
 #### 2. Proof of Concept (PoC) & Steps to Reproduce
-1. Run `git log -p -S "xcbr"` on the repository.
-2. The application password for the official organizational email is exposed in cleartext.
+1. Execute git pickaxe search to identify commits modifying the secret:
+   ```powershell
+   git log -S "xcbr" --oneline
+   ```
+2. Inspect the commit diff:
+   ```powershell
+   git show 1ee655b -- "Backend/src/controllers/userManagement/smtp/Mail.js"
+   ```
+3. The organizational email service app password is exposed in cleartext.
+
+![Git Secret Leak Evidence](./media/vuln-13-git-secret-leak.png)
+*Figure 13.1: Terminal execution showing cleartext exposure of Google SMTP application password in Git commit history.*
 
 #### 3. Security Impact
 - **Confidentiality:** High

@@ -28,6 +28,7 @@ security-audit/
 │   ├── backend-npm-audit-summary.png  <- Backend npm audit summary (29 vulnerabilities: 2 critical, 21 high, 6 mod)
 │   ├── frontend-npm-audit-part1.png   <- Frontend npm audit detailed findings
 │   ├── frontend-npm-audit-summary.png <- Frontend npm audit summary (31 vulnerabilities: 3 critical, 19 high, 6 mod, 3 low)
+│   ├── vuln-13-git-secret-leak.png    <- Git log secret scan evidence showing leaked Google App Password
 │   └── README.md
 └── reports/                           <- Automated tool audit outputs
     └── dependency-check/
