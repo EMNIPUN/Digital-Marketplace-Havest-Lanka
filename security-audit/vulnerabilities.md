@@ -14,6 +14,11 @@
 - **Interactive HTML Dashboard:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) (60 total dependency vulnerabilities classified)
 - **Raw Backend SCA Dataset:** [`security-audit/reports/dependency-check/backend-audit.json`](./reports/dependency-check/backend-audit.json)
 - **Raw Frontend SCA Dataset:** [`security-audit/reports/dependency-check/frontend-audit.json`](./reports/dependency-check/frontend-audit.json)
+- **Official Terminal Scan Screenshots (Evidence):**
+  - **Backend SCA Part 1:** [`security-audit/media/backend-npm-audit-part1.png`](./media/backend-npm-audit-part1.png) (LangChain serialization injection, Axios SSRF / Prototype pollution / DoS)
+  - **Backend SCA Summary:** [`security-audit/media/backend-npm-audit-summary.png`](./media/backend-npm-audit-summary.png) (29 vulnerabilities: 2 critical, 21 high, 6 moderate; `tar`, `systeminformation`, `ws`, `qs`)
+  - **Frontend SCA Part 1:** [`security-audit/media/frontend-npm-audit-part1.png`](./media/frontend-npm-audit-part1.png) (ESLint ReDoS, HumanFS symlink traversal, Ajv ReDoS, Axios CVEs)
+  - **Frontend SCA Summary:** [`security-audit/media/frontend-npm-audit-summary.png`](./media/frontend-npm-audit-summary.png) (31 vulnerabilities: 3 critical, 19 high, 6 moderate, 3 low; React Router `turbo-stream`, Vite dev server traversal)
 
 ---
 
@@ -147,18 +152,22 @@ Enforce strict authentication and role-based access control middleware (`verifyT
 - **Severity Level:** Critical (CVSS v3.1: 9.1 - `GHSA-34x7-hfp2-rc4v` / `GHSA-8qq5-rm4j-mr97`)
 - **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
 - **Affected Component:** `Backend/node_modules/tar` (`tar <=7.5.20` via `@mapbox/node-pre-gyp` -> `bcrypt`)
-- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html)
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) | Image: [`security-audit/media/backend-npm-audit-summary.png`](./media/backend-npm-audit-summary.png)
 
 #### 1. Description & Root Cause
 The `tar` library bundled transitively under `@mapbox/node-pre-gyp` is vulnerable to path traversal and symlink poisoning. When extracting malicious tar archives, hardlinks can target files outside the extraction directory, allowing attackers to overwrite arbitrary files on the host filesystem.
 
-#### 2. Security Impact
+#### 2. Scan Evidence & PoC
+![Backend npm audit scan showing tar and systeminformation](./media/backend-npm-audit-summary.png)
+*Figure 4.1: Official Backend `npm audit` scan output confirming critical path traversal in `node_modules/tar` via `@mapbox/node-pre-gyp` -> `bcrypt`.*
+
+#### 3. Security Impact
 - **Confidentiality:** Medium
 - **Integrity:** High
 - **Availability:** High
 - **Impact Summary:** Arbitrary file overwrite, server configuration tampering, or host compromise.
 
-#### 3. Remediation Strategy
+#### 4. Remediation Strategy
 Upgrade `bcrypt` and its transitive dependencies via `npm audit fix --force` or migrate exclusively to pure-JS `bcryptjs` (which does not depend on native compilation or `@mapbox/node-pre-gyp`).
 
 ---
@@ -169,18 +178,22 @@ Upgrade `bcrypt` and its transitive dependencies via `npm audit fix --force` or 
 - **Severity Level:** Critical (CVSS v3.1: 9.1 - `GHSA-hmx5-qpq5-p643`)
 - **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
 - **Affected Component:** `frontend/node_modules/swiper` (`swiper 6.5.1–12.1.1`)
-- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html)
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) | Image: [`security-audit/media/frontend-npm-audit-part1.png`](./media/frontend-npm-audit-part1.png)
 
 #### 1. Description & Root Cause
 Versions of `swiper` prior to 12.1.2 / 14.2.0 contain a prototype pollution vulnerability. Attackers supplying crafted object parameters can pollute `Object.prototype`, causing property injection that modifies client-side runtime behavior and enables DOM XSS.
 
-#### 2. Security Impact
+#### 2. Scan Evidence & PoC
+![Frontend npm audit scan evidence](./media/frontend-npm-audit-part1.png)
+*Figure 5.1: Frontend `npm audit` scan output confirming multiple high and critical dependency vulnerabilities.*
+
+#### 3. Security Impact
 - **Confidentiality:** High
 - **Integrity:** High
 - **Availability:** Medium
 - **Impact Summary:** Client-side prototype pollution leading to Cross-Site Scripting (XSS) or application crashes.
 
-#### 3. Remediation Strategy
+#### 4. Remediation Strategy
 Upgrade `swiper` to a patched release (`>= 12.1.2` or `14.2.0`).
 
 ---
@@ -334,17 +347,22 @@ Validate file extensions (allowlist: `.jpg`, `.jpeg`, `.png`), enforce strict MI
 - **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
 - **Affected Component:** `Backend/node_modules/systeminformation` (`systeminformation <= 5.31.6`)
 - **Referenced File:** `Backend/src/controllers/userManagement/fetch/ServerInfo.js` (line 54: `si.fsSize()`)
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) | Image: [`security-audit/media/backend-npm-audit-summary.png`](./media/backend-npm-audit-summary.png)
 
 #### 1. Description & Root Cause
 `systeminformation` versions up to 5.31.6 contain a command injection vulnerability in the `fsSize()` function on Windows platforms. In `ServerInfo.js`, `await si.fsSize()` is called on every request to `/api/admin/server`.
 
-#### 2. Security Impact
+#### 2. Scan Evidence & PoC
+![Backend npm audit systeminformation command injection](./media/backend-npm-audit-summary.png)
+*Figure 11.1: Backend `npm audit` terminal scan capturing `systeminformation` command injection vulnerability (`node_modules/systeminformation`).*
+
+#### 3. Security Impact
 - **Confidentiality:** High
 - **Integrity:** High
 - **Availability:** High
 - **Impact Summary:** Arbitrary OS command execution on Windows servers hosting the backend.
 
-#### 3. Remediation Strategy
+#### 4. Remediation Strategy
 Update `systeminformation` to `>= 5.31.7` via `npm install systeminformation@latest`.
 
 ---
@@ -355,17 +373,22 @@ Update `systeminformation` to `>= 5.31.7` via `npm install systeminformation@lat
 - **Severity Level:** High (CVSS v3.1: 8.1 - `GHSA-49rj-9fvp-4h2h`)
 - **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
 - **Affected Component:** `frontend/node_modules/react-router` (vendored `turbo-stream < 3.0.0`)
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) | Image: [`security-audit/media/frontend-npm-audit-summary.png`](./media/frontend-npm-audit-summary.png)
 
 #### 1. Description & Root Cause
 React Router's vendored `turbo-stream` v2 allows arbitrary constructor invocation via `TYPE_ERROR` deserialization, enabling unauthenticated remote code execution during stream handling.
 
-#### 2. Security Impact
+#### 2. Scan Evidence & PoC
+![Frontend npm audit turbo-stream and audit summary](./media/frontend-npm-audit-summary.png)
+*Figure 12.1: Frontend `npm audit` terminal scan capturing `turbo-stream` denial of service / deserialization vulnerability and overall 31 frontend vulnerabilities summary.*
+
+#### 3. Security Impact
 - **Confidentiality:** High
 - **Integrity:** High
 - **Availability:** High
 - **Impact Summary:** Client-side or SSR deserialization compromise.
 
-#### 3. Remediation Strategy
+#### 4. Remediation Strategy
 Update React Router to `>= 7.17.1` via `npm audit fix`.
 
 ---
@@ -450,11 +473,15 @@ Implement cryptographic HMAC signature verification (e.g., PayHere MD5/SHA256 si
 - **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
 - **Affected Component:** `Backend/node_modules/nodemailer` (`nodemailer <= 9.1.0`)
 - **Referenced File:** `Backend/src/controllers/userManagement/smtp/Mail.js`
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) | Raw Dataset: [`security-audit/reports/dependency-check/backend-audit.json`](./reports/dependency-check/backend-audit.json)
 
 #### 1. Description & Root Cause
 `nodemailer <= 9.1.0` is vulnerable to SMTP command injection via unsanitized envelope parameters and CRLF injection in transport name options, as well as full-response SSRF / arbitrary file read when resolving content.
 
-#### 2. Security Impact
+#### 2. Scan Evidence & PoC
+Documented in the official backend SCA scan dataset (`backend-audit.json`) and verified via OWASP Dependency-Check data sources. Corresponds to the 21 high-severity findings shown in [`security-audit/media/backend-npm-audit-summary.png`](./media/backend-npm-audit-summary.png).
+
+#### 3. Security Impact
 - **Confidentiality:** High
 - **Integrity:** High
 - **Impact Summary:** Unauthorized email transmission, SSRF, and credential interception.

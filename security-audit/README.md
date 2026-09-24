@@ -24,7 +24,10 @@ security-audit/
 ├── vulnerabilities.md                 <- Master log of all 20 discovered vulnerabilities with PoC & details
 ├── selected-7-vulnerabilities.md      <- 7 chosen vulnerabilities for code remediation & OAuth implementation
 ├── media/                             <- Proof-of-concept screenshots, tool scan reports, diagrams
-│   ├── .gitkeep
+│   ├── backend-npm-audit-part1.png    <- Backend npm audit detailed findings
+│   ├── backend-npm-audit-summary.png  <- Backend npm audit summary (29 vulnerabilities: 2 critical, 21 high, 6 mod)
+│   ├── frontend-npm-audit-part1.png   <- Frontend npm audit detailed findings
+│   ├── frontend-npm-audit-summary.png <- Frontend npm audit summary (31 vulnerabilities: 3 critical, 19 high, 6 mod, 3 low)
 │   └── README.md
 └── reports/                           <- Automated tool audit outputs
     └── dependency-check/
