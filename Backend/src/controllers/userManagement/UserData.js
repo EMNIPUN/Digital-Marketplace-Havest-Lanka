@@ -134,37 +134,53 @@ export const filterUsers = async (req, res) => {
 
 const IsOTPValidated = async (email) => {
     try {
-        const otpBuffer = await OTPBuffer.findOne({ email })
+        const otpBuffer = await OTPBuffer.findOne({ email });
         if (!otpBuffer) {
-            return false
-        } else if (otpBuffer.validated) {
-            return true
+            return false;
         }
-        return false
+        return Boolean(otpBuffer.validated);
     } catch (e) {
-        res.status(500).json({ message: e.message })
+        console.error("Error verifying OTP buffer:", e);
+        return false;
     }
-}
+};
 
 export const ResetPassword = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
 
-        if (IsOTPValidated(email)) {
-            const user = await User.findOne({ email: email })
-            if (!user) {
-                return res.status(404).json({ message: "User not found" })
-            }
-
-            user.password = await bcrypt.hash(password, 10)
-
-            await user.save()
-            res.status(200).json({ message: "Password reset successful" });
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and new password are required." });
         }
+
+        if (password.length < 8) {
+            return res.status(400).json({ message: "Password must be at least 8 characters long." });
+        }
+
+        // 1. Await the asynchronous OTP validation
+        const isValidated = await IsOTPValidated(email);
+        if (!isValidated) {
+            return res.status(403).json({ message: "Unauthorized: Email OTP has not been verified or has expired." });
+        }
+
+        // 2. Find target user
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // 3. Cryptographically hash the new password (10 salt rounds)
+        user.password = await bcrypt.hash(password, 10);
+        await user.save();
+
+        // 4. Invalidate the OTP to prevent replay attacks (Single-Use Token)
+        await OTPBuffer.deleteOne({ email });
+
+        return res.status(200).json({ message: "Password reset successful. Please log in with your new credentials." });
     } catch (e) {
-        res.status(500).json({ message: e.message })
+        return res.status(500).json({ message: "Server error during password reset.", error: e.message });
     }
-}
+};
 
 
 export const ChangePassword = async (req, res) => {
