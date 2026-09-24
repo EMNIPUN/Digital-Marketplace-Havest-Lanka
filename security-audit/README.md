@@ -48,28 +48,28 @@ security-audit/
 
 | # | Vulnerability Name | OWASP Top 10 Category | Severity | Discovered By | Selected for Fix? |
 |---|---|---|---|---|:---:|
-| 1 | *Finding 1* | A07:2021 - Identification & Auth | High | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 1 | *Finding 1* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
 | 2 | *Finding 2* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
 | 3 | *Finding 3* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
 | 4 | *Finding 4* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
 | 5 | *Finding 5* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
 | 6 | *Finding 6* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
 | 7 | *Finding 7* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
-| 8 | *Finding 1* | A01:2021 - Broken Access Control | High | KUMBUKAGE S S (IT23155534) | [ ] |
+| 8 | *Finding 1* | | | KUMBUKAGE S S (IT23155534) | [ ] |
 | 9 | *Finding 2* | | | KUMBUKAGE S S (IT23155534) | [ ] |
 | 10 | *Finding 3* | | | KUMBUKAGE S S (IT23155534) | [ ] |
 | 11 | *Finding 4* | | | KUMBUKAGE S S (IT23155534) | [ ] |
 | 12 | *Finding 5* | | | KUMBUKAGE S S (IT23155534) | [ ] |
 | 13 | *Finding 6* | | | KUMBUKAGE S S (IT23155534) | [ ] |
 | 14 | *Finding 7* | | | KUMBUKAGE S S (IT23155534) | [ ] |
-| 15 | *Finding 1* | A03:2021 - Injection | High | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 15 | *Finding 1* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
 | 16 | *Finding 2* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
 | 17 | *Finding 3* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
 | 18 | *Finding 4* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
 | 19 | *Finding 5* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
 | 20 | *Finding 6* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
 | 21 | *Finding 7* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
-| 22 | *Finding 1* | A05:2021 - Security Misconfiguration | Medium | CROOS E D (IT23314238) | [ ] |
+| 22 | *Finding 1* | | | CROOS E D (IT23314238) | [ ] |
 | 23 | *Finding 2* | | | CROOS E D (IT23314238) | [ ] |
 | 24 | *Finding 3* | | | CROOS E D (IT23314238) | [ ] |
 | 25 | *Finding 4* | | | CROOS E D (IT23314238) | [ ] |
