@@ -4,32 +4,43 @@
 **Course:** SE4030 – Secure Software Development  
 **Branch:** `security-audit-remediation`  
 **Assessment Methodologies Employed:**
-- **SCA (Software Composition Analysis):** Automated dependency auditing (`npm audit`)
-- **Secret Scanning:** Git commit history analysis & configuration auditing
+- **SCA (Software Composition Analysis):** Automated dependency auditing (`npm audit` & OWASP Dependency-Check data sources)
+- **Secret Scanning:** Git commit history analysis (`git log -S`) & configuration auditing
 - **Static Application Security Testing (SAST) & Manual Code Review:** Architectural data flow tracing, route authorization auditing, and OWASP Top 10 mapping
 
 ---
 
-## 📋 Comprehensive Vulnerability Master Index
+## 📊 Software Composition Analysis Artifacts Generated
+- **Interactive HTML Dashboard:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) (60 total dependency vulnerabilities classified)
+- **Raw Backend SCA Dataset:** [`security-audit/reports/dependency-check/backend-audit.json`](./reports/dependency-check/backend-audit.json)
+- **Raw Frontend SCA Dataset:** [`security-audit/reports/dependency-check/frontend-audit.json`](./reports/dependency-check/frontend-audit.json)
 
-| Vuln ID | Vulnerability Title | OWASP Top 10 (2021) Category | Severity (CVSS v3) | Detection Method | Affected File / Endpoint |
+---
+
+## 📋 Comprehensive Vulnerability Master Index (20 Detailed Findings)
+
+| Vuln ID | Vulnerability Title | OWASP Top 10 (2021) Category | Severity (CVSS v3.1) | Detection Method | Affected File / Component |
 |---|---|---|---|---|---|
 | `VULN-01` | **Critical Password Reset Bypass (Promise Truthiness Bug)** | A07: Identification & Auth Failures | **Critical (9.8)** | Static Code Review | `UserData.js:153` (`POST /user/reset-password`) |
-| `VULN-02` | **Missing JWT Verification in Session Validation** | A07: Identification & Auth Failures | **Critical (9.1)** | Static Code Review | `CheckAuth.js:4-10` (`GET /check-auth`) |
+| `VULN-02` | **Missing JWT Cryptographic Signature Verification** | A07: Identification & Auth Failures | **Critical (9.1)** | Static Code Review | `CheckAuth.js:4-10` (`GET /check-auth`) |
 | `VULN-03` | **Unauthenticated Administrative Data Exfiltration** | A01: Broken Access Control | **Critical (9.1)** | Architectural Route Audit | `adminRoutes.js:33` (`GET /api/admin/getallaccounts`) |
-| `VULN-04` | **Unauthenticated Arbitrary Account Deactivation** | A01: Broken Access Control | **High (8.6)** | Route & Logic Audit | `DeactivateAccount.js` (`POST /api/admin/deactivate`) |
-| `VULN-05` | **IDOR & Unauthenticated Deletion on User Accounts** | A01: Broken Access Control | **High (8.5)** | Static Code Review | `UserData.js:80` (`DELETE /user/del`) |
-| `VULN-06` | **IDOR & Unauthenticated CRUD on Bid Posts** | A01: Broken Access Control | **High (8.5)** | Architectural Route Audit | `BidPost.controller.js` (`DELETE/PUT /api/BidPost/:id`) |
-| `VULN-07` | **Privilege Escalation via Mass Assignment (Register as Admin)** | A01: Broken Access Control | **High (8.5)** | Static Code Review | `UserRegistration.js:18,48` (`POST /user/register`) |
-| `VULN-08` | **Unrestricted File Upload & Remote Stored XSS** | A04: Insecure Design | **High (8.2)** | Static Code Review | `UserRegistration.js:7-14`, `UserData.js:41-48` |
-| `VULN-09` | **Hardcoded Secrets Leaked in Git History (Gmail App Password)** | A02: Cryptographic Failures | **High (7.5)** | Git History Scan | Commit `1ee655b` in `Mail.js` |
-| `VULN-10` | **Sensitive Data Exposure: Password Hash Leakage in API Responses** | A02: Cryptographic Failures | **High (7.5)** | Data Flow Analysis | `UserRegistration.js:54`, `UserData.js:71` |
-| `VULN-11` | **Unverified Payment Webhook (Payment Forgery)** | A08: Software & Data Integrity Failures | **High (7.5)** | Logic Review | `payment.controller.js:5-18` (`POST /api/notify`) |
-| `VULN-12` | **Known Critical & High Vulnerabilities in Third-Party Packages** | A06: Vulnerable & Outdated Components | **Critical / High** | SCA (`npm audit`) | `Backend/package.json`, `frontend/package.json` |
-| `VULN-13` | **Insecure Session Cookie Configuration (Missing HttpOnly & Secure Flags)** | A05: Security Misconfiguration | **Medium (6.5)** | Code Review | `Login.js:30-34` (`POST /login`) |
-| `VULN-14` | **Weak Cryptographic PRNG in OTP Generation (`Math.random`)** | A02: Cryptographic Failures | **Medium (5.3)** | Static Code Review | `ValidateMail.js:77` (`POST /user/otp/send`) |
-| `VULN-15` | **Regular Expression Denial of Service (ReDoS) via Unsanitized Regex** | A03: Injection | **Medium (5.3)** | Static Code Review | `payment.controller.js:78`, `UserData.js:114` |
-| `VULN-16` | **Missing HTTP Security Headers & Global Rate Limiting** | A05: Security Misconfiguration | **Medium (5.3)** | Architecture Review | `index.js:1-76` |
+| `VULN-04` | **Arbitrary File Overwrite & Symlink Path Traversal (`tar`)** | A06: Vulnerable & Outdated Components | **Critical (9.1)** | OWASP Dependency-Check | `Backend/node_modules/tar` (`GHSA-34x7-hfp2-rc4v`) |
+| `VULN-05` | **Frontend Prototype Pollution (`swiper`)** | A06: Vulnerable & Outdated Components | **Critical (9.1)** | OWASP Dependency-Check | `frontend/node_modules/swiper` (`GHSA-hmx5-qpq5-p643`) |
+| `VULN-06` | **Unauthenticated Arbitrary Account Deactivation** | A01: Broken Access Control | **High (8.6)** | Route & Logic Audit | `DeactivateAccount.js` (`POST /api/admin/deactivate`) |
+| `VULN-07` | **IDOR & Unauthenticated Deletion on User Accounts** | A01: Broken Access Control | **High (8.5)** | Static Code Review | `UserData.js:80` (`DELETE /user/del`) |
+| `VULN-08` | **IDOR & Unauthenticated CRUD on Bid Posts** | A01: Broken Access Control | **High (8.5)** | Architectural Route Audit | `BidPost.controller.js` (`DELETE/PUT /api/BidPost/:id`) |
+| `VULN-09` | **Privilege Escalation via Mass Assignment (Register as Admin)** | A01: Broken Access Control | **High (8.5)** | Static Code Review | `UserRegistration.js:18,48` (`POST /user/register`) |
+| `VULN-10` | **Unrestricted File Upload & Remote Stored XSS** | A04: Insecure Design | **High (8.2)** | Static Code Review | `UserRegistration.js:7-14`, `UserData.js:41-48` |
+| `VULN-11` | **OS Command Injection via `systeminformation` on Windows** | A06: Vulnerable & Outdated Components | **High (8.2)** | OWASP Dependency-Check | `Backend/node_modules/systeminformation` (`GHSA-wphj-fx3q-84ch`) |
+| `VULN-12` | **Unauthenticated RCE via Deserialization (`react-router`)** | A06: Vulnerable & Outdated Components | **High (8.1)** | OWASP Dependency-Check | `frontend/node_modules/react-router` (`GHSA-49rj-9fvp-4h2h`) |
+| `VULN-13` | **Hardcoded Secrets Leaked in Git History (Gmail App Password)** | A02: Cryptographic Failures | **High (7.5)** | Git History Scan | Commit `1ee655b` in `Mail.js` |
+| `VULN-14` | **Sensitive Data Exposure: Password Hash Leakage in API Responses** | A02: Cryptographic Failures | **High (7.5)** | Data Flow Analysis | `UserRegistration.js:54`, `UserData.js:71` |
+| `VULN-15` | **Unverified Payment Webhook (Payment Forgery)** | A08: Software & Data Integrity Failures | **High (7.5)** | Logic Review | `payment.controller.js:5-18` (`POST /api/notify`) |
+| `VULN-16` | **SMTP Command Injection & File Read in `nodemailer`** | A06: Vulnerable & Outdated Components | **High (7.5)** | OWASP Dependency-Check | `Backend/node_modules/nodemailer` (`GHSA-c7w3-x93f-qmm8`) |
+| `VULN-17` | **Insecure Session Cookie Flags (Missing HttpOnly & Secure)** | A05: Security Misconfiguration | **Medium (6.5)** | Static Code Review | `Login.js:30-34` (`POST /login`) |
+| `VULN-18` | **Weak Cryptographic PRNG in OTP Generation (`Math.random`)** | A02: Cryptographic Failures | **Medium (5.3)** | Static Code Review | `ValidateMail.js:77` (`POST /user/otp/send`) |
+| `VULN-19` | **Regular Expression Denial of Service (ReDoS) via Unsanitized Input** | A03: Injection | **Medium (5.3)** | Static Code Review | `payment.controller.js:78`, `UserData.js:114` |
+| `VULN-20` | **Missing HTTP Security Headers & Global Rate Limiting** | A05: Security Misconfiguration | **Medium (5.3)** | Architecture Review | `index.js:1-76` |
 
 ---
 
@@ -131,7 +142,51 @@ Enforce strict authentication and role-based access control middleware (`verifyT
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-04: Unauthenticated Arbitrary Account Deactivation
+### Vulnerability VULN-04: Arbitrary File Overwrite & Symlink Path Traversal (`tar`)
+- **OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+- **Severity Level:** Critical (CVSS v3.1: 9.1 - `GHSA-34x7-hfp2-rc4v` / `GHSA-8qq5-rm4j-mr97`)
+- **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
+- **Affected Component:** `Backend/node_modules/tar` (`tar <=7.5.20` via `@mapbox/node-pre-gyp` -> `bcrypt`)
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html)
+
+#### 1. Description & Root Cause
+The `tar` library bundled transitively under `@mapbox/node-pre-gyp` is vulnerable to path traversal and symlink poisoning. When extracting malicious tar archives, hardlinks can target files outside the extraction directory, allowing attackers to overwrite arbitrary files on the host filesystem.
+
+#### 2. Security Impact
+- **Confidentiality:** Medium
+- **Integrity:** High
+- **Availability:** High
+- **Impact Summary:** Arbitrary file overwrite, server configuration tampering, or host compromise.
+
+#### 3. Remediation Strategy
+Upgrade `bcrypt` and its transitive dependencies via `npm audit fix --force` or migrate exclusively to pure-JS `bcryptjs` (which does not depend on native compilation or `@mapbox/node-pre-gyp`).
+
+---
+
+<!-- ===================================================================== -->
+### Vulnerability VULN-05: Frontend Prototype Pollution (`swiper`)
+- **OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+- **Severity Level:** Critical (CVSS v3.1: 9.1 - `GHSA-hmx5-qpq5-p643`)
+- **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
+- **Affected Component:** `frontend/node_modules/swiper` (`swiper 6.5.1–12.1.1`)
+- **Evidence Link:** [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html)
+
+#### 1. Description & Root Cause
+Versions of `swiper` prior to 12.1.2 / 14.2.0 contain a prototype pollution vulnerability. Attackers supplying crafted object parameters can pollute `Object.prototype`, causing property injection that modifies client-side runtime behavior and enables DOM XSS.
+
+#### 2. Security Impact
+- **Confidentiality:** High
+- **Integrity:** High
+- **Availability:** Medium
+- **Impact Summary:** Client-side prototype pollution leading to Cross-Site Scripting (XSS) or application crashes.
+
+#### 3. Remediation Strategy
+Upgrade `swiper` to a patched release (`>= 12.1.2` or `14.2.0`).
+
+---
+
+<!-- ===================================================================== -->
+### Vulnerability VULN-06: Unauthenticated Arbitrary Account Deactivation
 - **OWASP Category:** A01:2021 – Broken Access Control
 - **Severity Level:** High (CVSS v3.1: 8.6 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H`)
 - **Detection Method:** Route & Logic Audit
@@ -158,7 +213,7 @@ Protect the endpoint with admin-only middleware and log all account status chang
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-05: IDOR & Unauthenticated Deletion on User Accounts
+### Vulnerability VULN-07: IDOR & Unauthenticated Deletion on User Accounts
 - **OWASP Category:** A01:2021 – Broken Access Control
 - **Severity Level:** High (CVSS v3.1: 8.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H`)
 - **Detection Method:** Static Code Review
@@ -185,7 +240,7 @@ Derive the user ID solely from a validated JWT session token (`req.user.id`) rat
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-06: IDOR & Unauthenticated CRUD on Bid Posts
+### Vulnerability VULN-08: IDOR & Unauthenticated CRUD on Bid Posts
 - **OWASP Category:** A01:2021 – Broken Access Control
 - **Severity Level:** High (CVSS v3.1: 8.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:H`)
 - **Detection Method:** Architectural Route Audit
@@ -209,7 +264,7 @@ Mount authentication middleware and verify that `bidPost.farmerId.toString() ===
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-07: Privilege Escalation via Mass Assignment
+### Vulnerability VULN-09: Privilege Escalation via Mass Assignment
 - **OWASP Category:** A01:2021 – Broken Access Control
 - **Severity Level:** High (CVSS v3.1: 8.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N`)
 - **Detection Method:** Static Code Review
@@ -248,7 +303,7 @@ Hardcode the default role to `"farmer"` or `"shopOwner"` during public registrat
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-08: Unrestricted File Upload & Remote Stored XSS
+### Vulnerability VULN-10: Unrestricted File Upload & Remote Stored XSS
 - **OWASP Category:** A04:2021 – Insecure Design / Arbitrary File Upload
 - **Severity Level:** High (CVSS v3.1: 8.2 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:L/A:L`)
 - **Detection Method:** Static Code Review
@@ -273,7 +328,50 @@ Validate file extensions (allowlist: `.jpg`, `.jpeg`, `.png`), enforce strict MI
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-09: Hardcoded Secrets Leaked in Git History
+### Vulnerability VULN-11: Command Injection in `systeminformation` on Windows
+- **OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+- **Severity Level:** High (CVSS v3.1: 8.2 - `GHSA-wphj-fx3q-84ch`)
+- **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
+- **Affected Component:** `Backend/node_modules/systeminformation` (`systeminformation <= 5.31.6`)
+- **Referenced File:** `Backend/src/controllers/userManagement/fetch/ServerInfo.js` (line 54: `si.fsSize()`)
+
+#### 1. Description & Root Cause
+`systeminformation` versions up to 5.31.6 contain a command injection vulnerability in the `fsSize()` function on Windows platforms. In `ServerInfo.js`, `await si.fsSize()` is called on every request to `/api/admin/server`.
+
+#### 2. Security Impact
+- **Confidentiality:** High
+- **Integrity:** High
+- **Availability:** High
+- **Impact Summary:** Arbitrary OS command execution on Windows servers hosting the backend.
+
+#### 3. Remediation Strategy
+Update `systeminformation` to `>= 5.31.7` via `npm install systeminformation@latest`.
+
+---
+
+<!-- ===================================================================== -->
+### Vulnerability VULN-12: Unauthenticated RCE in `react-router` / `turbo-stream`
+- **OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+- **Severity Level:** High (CVSS v3.1: 8.1 - `GHSA-49rj-9fvp-4h2h`)
+- **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
+- **Affected Component:** `frontend/node_modules/react-router` (vendored `turbo-stream < 3.0.0`)
+
+#### 1. Description & Root Cause
+React Router's vendored `turbo-stream` v2 allows arbitrary constructor invocation via `TYPE_ERROR` deserialization, enabling unauthenticated remote code execution during stream handling.
+
+#### 2. Security Impact
+- **Confidentiality:** High
+- **Integrity:** High
+- **Availability:** High
+- **Impact Summary:** Client-side or SSR deserialization compromise.
+
+#### 3. Remediation Strategy
+Update React Router to `>= 7.17.1` via `npm audit fix`.
+
+---
+
+<!-- ===================================================================== -->
+### Vulnerability VULN-13: Hardcoded Secrets Leaked in Git History
 - **OWASP Category:** A02:2021 – Cryptographic Failures
 - **Severity Level:** High (CVSS v3.1: 7.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N`)
 - **Detection Method:** Git History Audit (`git log -S "SMTP_PASS" -p`)
@@ -296,7 +394,7 @@ Revoke the exposed Google App Password immediately in Google Account Security se
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-10: Password Hash Exposure in API Responses
+### Vulnerability VULN-14: Password Hash Exposure in API Responses
 - **OWASP Category:** A02:2021 – Cryptographic Failures / Sensitive Data Exposure
 - **Severity Level:** High (CVSS v3.1: 7.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N`)
 - **Detection Method:** Data Flow Analysis
@@ -323,7 +421,7 @@ Use Mongoose `select: false` on the password schema field or sanitize the return
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-11: Unverified Payment Webhook (Payment Forgery)
+### Vulnerability VULN-15: Unverified Payment Webhook (Payment Forgery)
 - **OWASP Category:** A08:2021 – Software and Data Integrity Failures
 - **Severity Level:** High (CVSS v3.1: 7.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N`)
 - **Detection Method:** Static Logic Review
@@ -346,34 +444,28 @@ Implement cryptographic HMAC signature verification (e.g., PayHere MD5/SHA256 si
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-12: Known Critical & High Vulnerabilities in Third-Party Packages
+### Vulnerability VULN-16: SMTP Command Injection in `nodemailer`
 - **OWASP Category:** A06:2021 – Vulnerable and Outdated Components
-- **Severity Level:** Critical / High
-- **Detection Method:** Software Composition Analysis (`npm audit --registry=https://registry.npmjs.org/`)
-- **Affected Packages:** `Backend/package.json` (29 vulnerabilities: 2 critical, 21 high) & `frontend/package.json` (31 vulnerabilities: 3 critical, 19 high)
+- **Severity Level:** High (CVSS v3.1: 7.5 - `GHSA-c7w3-x93f-qmm8`)
+- **Detection Method:** Software Composition Analysis (OWASP Dependency-Check Report)
+- **Affected Component:** `Backend/node_modules/nodemailer` (`nodemailer <= 9.1.0`)
+- **Referenced File:** `Backend/src/controllers/userManagement/smtp/Mail.js`
 
 #### 1. Description & Root Cause
-- **Backend:**
-  - `tar <=7.5.20` (**Critical**, GHSA-34x7-hfp2-rc4v): Arbitrary File Creation/Overwrite via Hardlink Path Traversal through `node-pre-gyp` / `bcrypt`.
-  - `systeminformation <=5.31.6` (**High**, GHSA-wphj-fx3q-84ch): Command Injection vulnerability in `fsSize()` on Windows.
-  - `nodemailer <=9.1.0` (**High**, GHSA-c7w3-x93f-qmm8): SMTP command injection & arbitrary file read.
-- **Frontend:**
-  - `swiper 6.5.1–12.1.1` (**Critical**, GHSA-hmx5-qpq5-p643): Prototype pollution.
-  - `react-router <=7.17.0` (**High**, GHSA-49rj-9fvp-4h2h): Arbitrary constructor invocation leading to unauthenticated RCE via `turbo-stream`.
+`nodemailer <= 9.1.0` is vulnerable to SMTP command injection via unsanitized envelope parameters and CRLF injection in transport name options, as well as full-response SSRF / arbitrary file read when resolving content.
 
 #### 2. Security Impact
 - **Confidentiality:** High
 - **Integrity:** High
-- **Availability:** High
-- **Impact Summary:** Potential remote code execution and prototype pollution across client and server environments.
+- **Impact Summary:** Unauthorized email transmission, SSRF, and credential interception.
 
 #### 3. Remediation Strategy
-Upgrade vulnerable dependencies via `npm audit fix` and replace abandoned/vulnerable packages with safe versions.
+Update `nodemailer` to `>= 10.0.0` or latest safe release.
 
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-13: Insecure Cookie Flags (Missing HttpOnly & Secure)
+### Vulnerability VULN-17: Insecure Cookie Flags (Missing HttpOnly & Secure)
 - **OWASP Category:** A05:2021 – Security Misconfiguration
 - **Severity Level:** Medium (CVSS v3.1: 6.5 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N`)
 - **Detection Method:** Static Code Review
@@ -403,7 +495,7 @@ Enforce `httpOnly: true`, `secure: process.env.NODE_ENV === "production"`, and `
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-14: Weak Cryptographic PRNG in OTP Generation (`Math.random`)
+### Vulnerability VULN-18: Weak Cryptographic PRNG in OTP Generation (`Math.random`)
 - **OWASP Category:** A02:2021 – Cryptographic Failures
 - **Severity Level:** Medium (CVSS v3.1: 5.3 - `CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N`)
 - **Detection Method:** Static Code Review
@@ -427,7 +519,7 @@ Use Node.js crypto module: `crypto.randomInt(100000, 999999).toString()`, and li
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-15: Regular Expression Denial of Service (ReDoS)
+### Vulnerability VULN-19: Regular Expression Denial of Service (ReDoS)
 - **OWASP Category:** A03:2021 – Injection
 - **Severity Level:** Medium (CVSS v3.1: 5.3 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`)
 - **Detection Method:** Static Code Review
@@ -446,7 +538,7 @@ Sanitize regex inputs using an escape function (e.g., `lodash.escapeRegExp` or c
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability VULN-16: Missing HTTP Security Headers & Absence of Rate Limiting
+### Vulnerability VULN-20: Missing HTTP Security Headers & Absence of Rate Limiting
 - **OWASP Category:** A05:2021 – Security Misconfiguration & A04:2021 – Insecure Design
 - **Severity Level:** Medium (CVSS v3.1: 5.3 - `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L`)
 - **Detection Method:** Architectural Code Review
