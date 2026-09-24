@@ -1,6 +1,6 @@
-# Member 1 - Vulnerability Assessment Report
-**Auditor / Member Name:** [Member 1 Name]  
-**Student ID:** [ITxxxxxx]  
+# Vulnerability Assessment Report - RAJAPAKSHA R W V C V (IT23152878)
+**Name:** RAJAPAKSHA R W V C V  
+**IT Number:** IT23152878  
 **Assigned Focus Area:** Authentication, Session Management & Token Security  
 
 ---

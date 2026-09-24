@@ -1,7 +1,7 @@
-# Member 3 - Vulnerability Assessment Report
-**Auditor / Member Name:** [Member 3 Name]  
-**Student ID:** [ITxxxxxx]  
-**Assigned Focus Area:** Injection Flaws (NoSQL, XSS), Input Validation & Sanitization  
+# Vulnerability Assessment Report - KUMBUKAGE S S (IT23155534)
+**Name:** KUMBUKAGE S S  
+**IT Number:** IT23155534  
+**Assigned Focus Area:** Access Control, Authorization, IDOR & API Security  
 
 ---
 
@@ -9,21 +9,21 @@
 
 | Vuln ID | Title | OWASP Category | Severity | Detection Tool |
 |---|---|---|---|---|
-| `M3-V01` | *[Vulnerability Title 1]* | A03:2021 - Injection | High | ZAP / Manual |
-| `M3-V02` | *[Vulnerability Title 2]* | A03:2021 - Injection | High | Code Review |
-| `M3-V03` | *[Vulnerability Title 3]* | A03:2021 - Injection | Medium | Postman |
-| `M3-V04` | *[Vulnerability Title 4]* | A03:2021 - Injection | High | Code Review |
-| `M3-V05` | *[Vulnerability Title 5]* | A08:2021 - Software & Data Integrity Failures | Medium | Code Review |
-| `M3-V06` | *[Vulnerability Title 6]* | A03:2021 - Injection | Medium | ZAP / Manual |
-| `M3-V07` | *[Vulnerability Title 7]* | A03:2021 - Injection | High | Manual / ZAP |
+| `M2-V01` | *[Vulnerability Title 1]* | A01:2021 - Broken Access Control | High | Postman / Manual |
+| `M2-V02` | *[Vulnerability Title 2]* | A01:2021 - Broken Access Control | High | Code Review |
+| `M2-V03` | *[Vulnerability Title 3]* | A01:2021 - Broken Access Control | Medium | ZAP / Postman |
+| `M2-V04` | *[Vulnerability Title 4]* | A01:2021 - Broken Access Control | High | Code Review |
+| `M2-V05` | *[Vulnerability Title 5]* | A01:2021 - Broken Access Control | Medium | Postman |
+| `M2-V06` | *[Vulnerability Title 6]* | A04:2021 - Insecure Design | Medium | Code Review |
+| `M2-V07` | *[Vulnerability Title 7]* | A01:2021 - Broken Access Control | High | Manual / ZAP |
 
 ---
 
 ## Detailed Vulnerability Reports
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V01: [Title]
-- **OWASP Category:** A03:2021 – Injection (e.g. NoSQL Injection / Stored XSS)
+### Vulnerability M2-V01: [Title]
+- **OWASP Category:** A01:2021 – Broken Access Control
 - **Severity:** High / Critical / Medium / Low (CVSS v3: X.X)
 - **Detection Method:** [e.g., OWASP ZAP / Postman / Code Review]
 - **Affected File / Endpoint:** `...`
@@ -32,10 +32,10 @@
 [Detailed description of what the vulnerability is and why it exists in the codebase.]
 
 #### 2. Proof of Concept (PoC) & Exploitation Steps
-1. Submit crafted payload (e.g. `{"$ne": null}` or `<script>...`).
-2. Observe unescaped execution or authentication bypass.
+1. Send request with user A credentials accessing user B's resource.
+2. Observe unauthorized data leakage or modification.
 
-![M3-V01 PoC Evidence](../media/m3-v01-poc.png)
+![M2-V01 PoC Evidence](../media/m2-v01-poc.png)
 
 #### 3. Impact Assessment
 - **Confidentiality:** [High / Medium / Low]
@@ -49,7 +49,7 @@
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V02: [Title]
+### Vulnerability M2-V02: [Title]
 - **OWASP Category:** [Category]
 - **Severity:** [Severity]
 - **Detection Method:** [Tool / Technique]
@@ -59,7 +59,7 @@
 [Description]
 
 #### 2. Proof of Concept (PoC) & Evidence
-![M3-V02 PoC Evidence](../media/m3-v02-poc.png)
+![M2-V02 PoC Evidence](../media/m2-v02-poc.png)
 
 #### 3. Impact Assessment
 [Impact details]
@@ -70,7 +70,7 @@
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V03: [Title]
+### Vulnerability M2-V03: [Title]
 - **OWASP Category:** [Category]
 - **Severity:** [Severity]
 - **Detection Method:** [Tool / Technique]
@@ -80,7 +80,7 @@
 [Description]
 
 #### 2. Proof of Concept (PoC) & Evidence
-![M3-V03 PoC Evidence](../media/m3-v03-poc.png)
+![M2-V03 PoC Evidence](../media/m2-v03-poc.png)
 
 #### 3. Impact Assessment
 [Impact details]
@@ -91,7 +91,7 @@
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V04: [Title]
+### Vulnerability M2-V04: [Title]
 - **OWASP Category:** [Category]
 - **Severity:** [Severity]
 - **Detection Method:** [Tool / Technique]
@@ -101,7 +101,7 @@
 [Description]
 
 #### 2. Proof of Concept (PoC) & Evidence
-![M3-V04 PoC Evidence](../media/m3-v04-poc.png)
+![M2-V04 PoC Evidence](../media/m2-v04-poc.png)
 
 #### 3. Impact Assessment
 [Impact details]
@@ -112,7 +112,7 @@
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V05: [Title]
+### Vulnerability M2-V05: [Title]
 - **OWASP Category:** [Category]
 - **Severity:** [Severity]
 - **Detection Method:** [Tool / Technique]
@@ -122,7 +122,7 @@
 [Description]
 
 #### 2. Proof of Concept (PoC) & Evidence
-![M3-V05 PoC Evidence](../media/m3-v05-poc.png)
+![M2-V05 PoC Evidence](../media/m2-v05-poc.png)
 
 #### 3. Impact Assessment
 [Impact details]
@@ -133,7 +133,7 @@
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V06: [Title]
+### Vulnerability M2-V06: [Title]
 - **OWASP Category:** [Category]
 - **Severity:** [Severity]
 - **Detection Method:** [Tool / Technique]
@@ -143,7 +143,7 @@
 [Description]
 
 #### 2. Proof of Concept (PoC) & Evidence
-![M3-V06 PoC Evidence](../media/m3-v06-poc.png)
+![M2-V06 PoC Evidence](../media/m2-v06-poc.png)
 
 #### 3. Impact Assessment
 [Impact details]
@@ -154,7 +154,7 @@
 ---
 
 <!-- ===================================================================== -->
-### Vulnerability M3-V07: [Title]
+### Vulnerability M2-V07: [Title]
 - **OWASP Category:** [Category]
 - **Severity:** [Severity]
 - **Detection Method:** [Tool / Technique]
@@ -164,7 +164,7 @@
 [Description]
 
 #### 2. Proof of Concept (PoC) & Evidence
-![M3-V07 PoC Evidence](../media/m3-v07-poc.png)
+![M2-V07 PoC Evidence](../media/m2-v07-poc.png)
 
 #### 3. Impact Assessment
 [Impact details]

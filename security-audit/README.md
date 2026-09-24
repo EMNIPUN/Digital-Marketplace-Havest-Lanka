@@ -8,7 +8,7 @@
 ## 📌 Overview
 
 This directory contains the complete security assessment documentation for the group assignment. 
-Each of the 4 team members discovers and documents **7 distinct vulnerabilities** (total: **28 vulnerabilities**), from which **7 primary vulnerabilities** are selected for full code remediation and demonstration.
+Each team member discovers and documents **7 distinct vulnerabilities** (total: **28 vulnerabilities**), from which **7 primary vulnerabilities** are selected for full code remediation and demonstration.
 
 ---
 
@@ -16,29 +16,29 @@ Each of the 4 team members discovers and documents **7 distinct vulnerabilities*
 
 ```text
 security-audit/
-├── README.md                          <- Main audit overview and consolidated tracking table
-├── media/                             <- Proof-of-concept screenshots, tool scan reports, diagrams
-├── member-1/
-│   └── vulnerabilities.md             <- 7 vulnerabilities identified by Member 1
-├── member-2/
-│   └── vulnerabilities.md             <- 7 vulnerabilities identified by Member 2
-├── member-3/
-│   └── vulnerabilities.md             <- 7 vulnerabilities identified by Member 3
-├── member-4/
-│   └── vulnerabilities.md             <- 7 vulnerabilities identified by Member 4
-└── selected-7-vulnerabilities.md      <- 7 chosen vulnerabilities for implementation & fix
+├── README.md                                    <- Main audit overview and consolidated tracking table
+├── media/                                       <- Proof-of-concept screenshots, tool scan reports, diagrams
+├── RAJAPAKSHA-R-W-V-C-V-IT23152878/
+│   └── vulnerabilities.md                       <- 7 vulnerabilities identified by RAJAPAKSHA R W V C V (IT23152878)
+├── KUMBUKAGE-S-S-IT23155534/
+│   └── vulnerabilities.md                       <- 7 vulnerabilities identified by KUMBUKAGE S S (IT23155534)
+├── EKANAYAKE-E-M-N-D-IT23283930/
+│   └── vulnerabilities.md                       <- 7 vulnerabilities identified by EKANAYAKE E M N D (IT23283930)
+├── CROOS-E-D-IT23314238/
+│   └── vulnerabilities.md                       <- 7 vulnerabilities identified by CROOS E D (IT23314238)
+└── selected-7-vulnerabilities.md                <- 7 chosen vulnerabilities for implementation & fix
 ```
 
 ---
 
 ## 👥 Team Members & Contribution Matrix
 
-| Member | Name | Student ID | Focus Area / Module | Vulnerabilities Documented | Status |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Member 1** | [Member 1 Name] | [ITxxxxxx] | Authentication, JWT, Session Management | 7 / 7 | Pending Review |
-| **Member 2** | [Member 2 Name] | [ITxxxxxx] | API Endpoints, Authorization & Access Control (IDOR) | 7 / 7 | Pending Review |
-| **Member 3** | [Member 3 Name] | [ITxxxxxx] | Injection (NoSQL, XSS) & Input Validation | 7 / 7 | Pending Review |
-| **Member 4** | [Member 4 Name] | [ITxxxxxx] | Security Misconfigurations, Headers, Secrets & Dependencies | 7 / 7 | Pending Review |
+| Name with Initials | IT Number | Folder | Assigned Focus Area | Vulnerabilities Documented | Status |
+| :--- | :--- | :--- | :--- | :---: | :--- |
+| **RAJAPAKSHA R W V C V** | **IT23152878** | [`RAJAPAKSHA-R-W-V-C-V-IT23152878/`](./RAJAPAKSHA-R-W-V-C-V-IT23152878/vulnerabilities.md) | Authentication, Session Management & JWT Security | 7 / 7 | In Progress |
+| **KUMBUKAGE S S** | **IT23155534** | [`KUMBUKAGE-S-S-IT23155534/`](./KUMBUKAGE-S-S-IT23155534/vulnerabilities.md) | Access Control, Authorization, IDOR & API Security | 7 / 7 | In Progress |
+| **EKANAYAKE E M N D** | **IT23283930** | [`EKANAYAKE-E-M-N-D-IT23283930/`](./EKANAYAKE-E-M-N-D-IT23283930/vulnerabilities.md) | Injection Flaws (NoSQL, XSS), Input Validation & Sanitization | 7 / 7 | In Progress |
+| **CROOS E D** | **IT23314238** | [`CROOS-E-D-IT23314238/`](./CROOS-E-D-IT23314238/vulnerabilities.md) | Security Misconfigurations, Dependencies, Secrets & Headers | 7 / 7 | In Progress |
 
 ---
 
@@ -48,34 +48,34 @@ security-audit/
 
 | # | Vulnerability Name | OWASP Top 10 Category | Severity | Discovered By | Selected for Fix? |
 |---|---|---|---|---|:---:|
-| 1 | *Member 1 - Finding 1* | A01/A02/... | High/Med/Low | Member 1 | [ ] |
-| 2 | *Member 1 - Finding 2* | | | Member 1 | [ ] |
-| 3 | *Member 1 - Finding 3* | | | Member 1 | [ ] |
-| 4 | *Member 1 - Finding 4* | | | Member 1 | [ ] |
-| 5 | *Member 1 - Finding 5* | | | Member 1 | [ ] |
-| 6 | *Member 1 - Finding 6* | | | Member 1 | [ ] |
-| 7 | *Member 1 - Finding 7* | | | Member 1 | [ ] |
-| 8 | *Member 2 - Finding 1* | | | Member 2 | [ ] |
-| 9 | *Member 2 - Finding 2* | | | Member 2 | [ ] |
-| 10 | *Member 2 - Finding 3* | | | Member 2 | [ ] |
-| 11 | *Member 2 - Finding 4* | | | Member 2 | [ ] |
-| 12 | *Member 2 - Finding 5* | | | Member 2 | [ ] |
-| 13 | *Member 2 - Finding 6* | | | Member 2 | [ ] |
-| 14 | *Member 2 - Finding 7* | | | Member 2 | [ ] |
-| 15 | *Member 3 - Finding 1* | | | Member 3 | [ ] |
-| 16 | *Member 3 - Finding 2* | | | Member 3 | [ ] |
-| 17 | *Member 3 - Finding 3* | | | Member 3 | [ ] |
-| 18 | *Member 3 - Finding 4* | | | Member 3 | [ ] |
-| 19 | *Member 3 - Finding 5* | | | Member 3 | [ ] |
-| 20 | *Member 3 - Finding 6* | | | Member 3 | [ ] |
-| 21 | *Member 3 - Finding 7* | | | Member 3 | [ ] |
-| 22 | *Member 4 - Finding 1* | | | Member 4 | [ ] |
-| 23 | *Member 4 - Finding 2* | | | Member 4 | [ ] |
-| 24 | *Member 4 - Finding 3* | | | Member 4 | [ ] |
-| 25 | *Member 4 - Finding 4* | | | Member 4 | [ ] |
-| 26 | *Member 4 - Finding 5* | | | Member 4 | [ ] |
-| 27 | *Member 4 - Finding 6* | | | Member 4 | [ ] |
-| 28 | *Member 4 - Finding 7* | | | Member 4 | [ ] |
+| 1 | *Finding 1* | A07:2021 - Identification & Auth | High | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 2 | *Finding 2* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 3 | *Finding 3* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 4 | *Finding 4* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 5 | *Finding 5* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 6 | *Finding 6* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 7 | *Finding 7* | | | RAJAPAKSHA R W V C V (IT23152878) | [ ] |
+| 8 | *Finding 1* | A01:2021 - Broken Access Control | High | KUMBUKAGE S S (IT23155534) | [ ] |
+| 9 | *Finding 2* | | | KUMBUKAGE S S (IT23155534) | [ ] |
+| 10 | *Finding 3* | | | KUMBUKAGE S S (IT23155534) | [ ] |
+| 11 | *Finding 4* | | | KUMBUKAGE S S (IT23155534) | [ ] |
+| 12 | *Finding 5* | | | KUMBUKAGE S S (IT23155534) | [ ] |
+| 13 | *Finding 6* | | | KUMBUKAGE S S (IT23155534) | [ ] |
+| 14 | *Finding 7* | | | KUMBUKAGE S S (IT23155534) | [ ] |
+| 15 | *Finding 1* | A03:2021 - Injection | High | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 16 | *Finding 2* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 17 | *Finding 3* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 18 | *Finding 4* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 19 | *Finding 5* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 20 | *Finding 6* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 21 | *Finding 7* | | | EKANAYAKE E M N D (IT23283930) | [ ] |
+| 22 | *Finding 1* | A05:2021 - Security Misconfiguration | Medium | CROOS E D (IT23314238) | [ ] |
+| 23 | *Finding 2* | | | CROOS E D (IT23314238) | [ ] |
+| 24 | *Finding 3* | | | CROOS E D (IT23314238) | [ ] |
+| 25 | *Finding 4* | | | CROOS E D (IT23314238) | [ ] |
+| 26 | *Finding 5* | | | CROOS E D (IT23314238) | [ ] |
+| 27 | *Finding 6* | | | CROOS E D (IT23314238) | [ ] |
+| 28 | *Finding 7* | | | CROOS E D (IT23314238) | [ ] |
 
 ---
 
