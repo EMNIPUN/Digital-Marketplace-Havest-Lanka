@@ -1,29 +1,38 @@
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 
-const sendMail = (to, subject, htmlContent) => {
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        auth: {
-            user: 'harvestlanka904@gmail.com',
-            pass: process.env.SMTP_PASS
-        }
-    });
+const sendMail = async (to, subject, htmlContent) => {
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
 
-    const mailOptions = {
-        from: '"Harvest Lanka" <harvestlanka904@gmail.com>',
-        to: to,
-        subject: subject,
-        html: htmlContent
-    };
+    if (!smtpUser || !smtpPass) {
+        console.warn("[SECURITY WARN] SMTP credentials are not configured in environment variables. Email sending suppressed.");
+        return false;
+    }
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-            return false
-        } else {
-            return true
-        }
-    });
-}
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: smtpUser,
+                pass: smtpPass
+            }
+        });
 
-export default sendMail
+        const mailOptions = {
+            from: `"Harvest Lanka" <${smtpUser}>`,
+            to: to,
+            subject: subject,
+            html: htmlContent
+        };
+
+        await transporter.sendMail(mailOptions);
+        return true;
+    } catch (error) {
+        console.error("[ERROR] Failed to send email via SMTP:", error.message);
+        return false;
+    }
+};
+
+export default sendMail;
