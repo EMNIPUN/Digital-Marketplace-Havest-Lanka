@@ -1,0 +1,2511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWASP Software Composition Analysis (SCA) Report - Harvest Lanka</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0b1120;
+            color: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            color: #38bdf8;
+            font-size: 28px;
+        }
+        .header p {
+            margin: 5px 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+        .metric-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .metric-card .title {
+            font-size: 13px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .metric-card .count {
+            font-size: 36px;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+        .metric-card.total .count { color: #a855f7; }
+        .metric-card.critical .count { color: #f43f5e; }
+        .metric-card.high .count { color: #fb923c; }
+        .metric-card.moderate .count { color: #facc15; }
+        .metric-card.low .count { color: #38bdf8; }
+        .table-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+        th {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 14px 18px;
+            border-bottom: 1px solid #334155;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #243247;
+            color: #cbd5e1;
+            vertical-align: middle;
+        }
+        tr:hover td {
+            background: #243247;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge.critical { background: rgba(244, 63, 94, 0.2); color: #fda4af; border: 1px solid #f43f5e; }
+        .badge.high { background: rgba(251, 146, 60, 0.2); color: #fed7aa; border: 1px solid #fb923c; }
+        .badge.moderate { background: rgba(250, 204, 21, 0.2); color: #fef08a; border: 1px solid #facc15; }
+        .badge.low { background: rgba(56, 189, 248, 0.2); color: #bae6fd; border: 1px solid #38bdf8; }
+        .scope-badge {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #334155;
+            color: #e2e8f0;
+        }
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #0f172a;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ OWASP Dependency-Check & Software Composition Analysis Report</h1>
+            <p><strong>Project:</strong> Harvest Lanka (Digital Marketplace for Farmers and Sellers)</p>
+            <p><strong>Academic Course:</strong> SE4030 – Secure Software Development (SLIIT)</p>
+            <p><strong>Standard Reference:</strong> OWASP Top 10:2021 – Category A06: Vulnerable and Outdated Components</p>
+            <p><strong>Total Scanned Packages:</strong> Backend (436) + Frontend (444)</p>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card total"><div class="title">Total Vulnerabilities</div><div class="count">60</div></div>
+            <div class="metric-card critical"><div class="title">Critical Severity</div><div class="count">5</div></div>
+            <div class="metric-card high"><div class="title">High Severity</div><div class="count">40</div></div>
+            <div class="metric-card moderate"><div class="title">Moderate Severity</div><div class="count">12</div></div>
+            <div class="metric-card low"><div class="title">Low Severity</div><div class="count">3</div></div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scope</th>
+                        <th>Severity</th>
+                        <th>Vulnerable Package</th>
+                        <th>Affected Version</th>
+                        <th>Vulnerability Description & Impact</th>
+                        <th>Advisory</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>@langchain/core</strong></td>
+                        <td><code><0.3.80</code></td>
+                        <td>LangChain serialization injection vulnerability enables secret extraction</td>
+                        <td><a href='https://github.com/advisories/GHSA-r399-636x-v7f6' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>@langchain/core</strong></td>
+                        <td><code><=1.1.28 || 1.1.50-dev-1781580357424 - 1.2.0-dev-1775763803878</code></td>
+                        <td>Transitive vulnerability via dependency langsmith</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>@langchain/core</strong></td>
+                        <td><code><=1.1.28 || 1.1.50-dev-1781580357424 - 1.2.0-dev-1775763803878</code></td>
+                        <td>Transitive vulnerability via dependency uuid</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>@mapbox/node-pre-gyp</strong></td>
+                        <td><code><=1.0.11</code></td>
+                        <td>Transitive vulnerability via dependency tar</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.12.0</code></td>
+                        <td>Axios is vulnerable to DoS attack through lack of data size check</td>
+                        <td><a href='https://github.com/advisories/GHSA-4hjh-wcwx-xvwj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.0</code></td>
+                        <td>Axios has a NO_PROXY Hostname Normalization Bypass that Leads to SSRF</td>
+                        <td><a href='https://github.com/advisories/GHSA-3p68-rc4w-qgx5' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Authentication Bypass via Prototype Pollution Gadget in `validateStatus` Merge Strategy</td>
+                        <td><a href='https://github.com/advisories/GHSA-w9j2-pvgh-6h63' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Incomplete Fix for CVE-2025-62718 — NO_PROXY Protection Bypassed via RFC 1122 Loopback Subnet (127.0.0.0/8) in Axios 1.15.0</td>
+                        <td><a href='https://github.com/advisories/GHSA-pmwg-cvhr-8vh7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.2</code></td>
+                        <td>Axios: Invisible JSON Response Tampering via Prototype Pollution Gadget in `parseReviver`</td>
+                        <td><a href='https://github.com/advisories/GHSA-3w6x-2g7m-8v23' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Null Byte Injection via Reverse-Encoding in AxiosURLSearchParams</td>
+                        <td><a href='https://github.com/advisories/GHSA-xhjh-pmcv-23jw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: CRLF Injection in multipart/form-data body via unsanitized blob.type in formDataToStream</td>
+                        <td><a href='https://github.com/advisories/GHSA-445q-vr5w-6q77' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: no_proxy bypass via IP alias allows SSRF</td>
+                        <td><a href='https://github.com/advisories/GHSA-m7pr-hjqh-92cm' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios' HTTP adapter-streamed uploads bypass maxBodyLength when maxRedirects: 0</td>
+                        <td><a href='https://github.com/advisories/GHSA-5c9x-8gcm-mpgx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: HTTP adapter streamed responses bypass maxContentLength</td>
+                        <td><a href='https://github.com/advisories/GHSA-vf2m-468p-8v99' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Prototype Pollution Gadgets - Response Tampering, Data Exfiltration, and Request Hijacking</td>
+                        <td><a href='https://github.com/advisories/GHSA-pf86-5x62-jrwf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Header Injection via Prototype Pollution</td>
+                        <td><a href='https://github.com/advisories/GHSA-6chq-wfr3-2hj9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: XSRF Token Cross-Origin Leakage via Prototype Pollution Gadget in `withXSRFToken` Boolean Coercion</td>
+                        <td><a href='https://github.com/advisories/GHSA-xx6v-rp6x-q39c' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <=1.13.4</code></td>
+                        <td>Axios is Vulnerable to Denial of Service via __proto__ Key in mergeConfig</td>
+                        <td><a href='https://github.com/advisories/GHSA-43fc-jf86-j433' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.2</code></td>
+                        <td>Axios has prototype pollution read-side gadgets in HTTP adapter that allow credential injection and request hijacking</td>
+                        <td><a href='https://github.com/advisories/GHSA-q8qp-cvcw-x6jj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.0</code></td>
+                        <td>Axios has Unrestricted Cloud Metadata Exfiltration via Header Injection Chain</td>
+                        <td><a href='https://github.com/advisories/GHSA-fvcv-3m26-pcqx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: unbounded recursion in toFormData causes DoS via deeply nested request data</td>
+                        <td><a href='https://github.com/advisories/GHSA-62hf-57xw-28j9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>Axios: Regular Expression Denial of Service (ReDoS) via Cookie Name Injection</td>
+                        <td><a href='https://github.com/advisories/GHSA-hfxv-24rg-xrqf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.7.0 <1.16.0</code></td>
+                        <td>Allocation of Resources Without Limits or Throttling in Axios</td>
+                        <td><a href='https://github.com/advisories/GHSA-777c-7fjr-54vf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>Axios: Proxy-Authorization Credential Leak to Origin Server Across HTTP-to-HTTPS Redirect in Axios Node.js HTTP Adapter</td>
+                        <td><a href='https://github.com/advisories/GHSA-p92q-9vqr-4j8v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>Axios: Proxy-Authorization header leaks to redirect target when proxy is re-evaluated to direct connection</td>
+                        <td><a href='https://github.com/advisories/GHSA-j5f8-grm9-p9fc' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.2</code></td>
+                        <td>axios Vulnerable to Credential Theft and Response Hijacking via Prototype Pollution Gadget in Config Merge</td>
+                        <td><a href='https://github.com/advisories/GHSA-3g43-6gmg-66jw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>axios Vulnerable to Full Man-in-the-Middle via Prototype Pollution Gadget in `config.proxy`</td>
+                        <td><a href='https://github.com/advisories/GHSA-35jp-ww65-95wh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>axios has DoS & Header Injection via Prototype Pollution Read-Side Gadgets in axios merge functions</td>
+                        <td><a href='https://github.com/advisories/GHSA-898c-q2cr-xwhg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Prototype pollution gadgets can alter axios request construction</td>
+                        <td><a href='https://github.com/advisories/GHSA-mmx7-hfxf-jppx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Deep formToJSON Key Recursion Can Cause Denial of Service</td>
+                        <td><a href='https://github.com/advisories/GHSA-pmv8-rq9r-6j72' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Nested axios option objects can consume polluted prototype values</td>
+                        <td><a href='https://github.com/advisories/GHSA-7q8q-rj6j-mhjq' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.7.0 <1.18.0</code></td>
+                        <td>Axios: Fetch adapter `ReadableStream` uploads bypass `maxBodyLength`</td>
+                        <td><a href='https://github.com/advisories/GHSA-jqh4-m9w3-8hp9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Excessive recursion in formDataToJSON can cause denial of service</td>
+                        <td><a href='https://github.com/advisories/GHSA-42h9-826w-cgv3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>bcrypt</strong></td>
+                        <td><code>5.0.1 - 5.1.1</code></td>
+                        <td>Transitive vulnerability via dependency @mapbox/node-pre-gyp</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>body-parser</strong></td>
+                        <td><code><1.20.6</code></td>
+                        <td>body-parser vulnerable to denial of service when invalid limit value silently disables size enforcement</td>
+                        <td><a href='https://github.com/advisories/GHSA-v422-hmwv-36x6' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>body-parser</strong></td>
+                        <td><code><=1.20.6 || 2.0.0-beta.1 - 2.0.2</code></td>
+                        <td>Transitive vulnerability via dependency qs</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=1.0.0 <=1.1.11</code></td>
+                        <td>brace-expansion Regular Expression Denial of Service vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-v6h2-p8h4-qcjw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <=2.0.1</code></td>
+                        <td>brace-expansion Regular Expression Denial of Service vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-v6h2-p8h4-qcjw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.13</code></td>
+                        <td>brace-expansion: Zero-step sequence causes process hang and memory exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-f886-m6hf-6m8v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.0.3</code></td>
+                        <td>brace-expansion: Zero-step sequence causes process hang and memory exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-f886-m6hf-6m8v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.1.2</code></td>
+                        <td>brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups</td>
+                        <td><a href='https://github.com/advisories/GHSA-3jxr-9vmj-r5cp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.16</code></td>
+                        <td>brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups</td>
+                        <td><a href='https://github.com/advisories/GHSA-3jxr-9vmj-r5cp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.17</code></td>
+                        <td>brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash</td>
+                        <td><a href='https://github.com/advisories/GHSA-mh99-v99m-4gvg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.1.3</code></td>
+                        <td>brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash</td>
+                        <td><a href='https://github.com/advisories/GHSA-mh99-v99m-4gvg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.1.4</code></td>
+                        <td>brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation</td>
+                        <td><a href='https://github.com/advisories/GHSA-rgw5-rvv9-x895' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.18</code></td>
+                        <td>brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation</td>
+                        <td><a href='https://github.com/advisories/GHSA-rgw5-rvv9-x895' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>engine.io</strong></td>
+                        <td><code>>=4.1.0 <6.6.7</code></td>
+                        <td>Socket.IO: Engine.IO Polling Transport Connection Exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-r635-g3xr-vw7x' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>engine.io</strong></td>
+                        <td><code>>=6.5.0 <6.6.7</code></td>
+                        <td>Socket.IO: Engine.IO WebTransport SID DoS</td>
+                        <td><a href='https://github.com/advisories/GHSA-gr94-w7qr-f4j3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>engine.io</strong></td>
+                        <td><code>0.7.8 - 0.7.9 || 4.1.0 - 6.6.7</code></td>
+                        <td>Transitive vulnerability via dependency ws</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>express</strong></td>
+                        <td><code>4.0.0-rc1 - 4.22.2 || 5.0.0-alpha.1 - 5.0.1</code></td>
+                        <td>Transitive vulnerability via dependency body-parser</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>express</strong></td>
+                        <td><code>4.0.0-rc1 - 4.22.2 || 5.0.0-alpha.1 - 5.0.1</code></td>
+                        <td>Transitive vulnerability via dependency path-to-regexp</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>express</strong></td>
+                        <td><code>4.0.0-rc1 - 4.22.2 || 5.0.0-alpha.1 - 5.0.1</code></td>
+                        <td>Transitive vulnerability via dependency qs</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>follow-redirects</strong></td>
+                        <td><code><=1.15.11</code></td>
+                        <td>follow-redirects leaks Custom Authentication Headers to Cross-Domain Redirect Targets</td>
+                        <td><a href='https://github.com/advisories/GHSA-r4q5-vmmm-2653' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td><strong>form-data</strong></td>
+                        <td><code>>=4.0.0 <4.0.4</code></td>
+                        <td>form-data uses unsafe random function in form-data for choosing boundary</td>
+                        <td><a href='https://github.com/advisories/GHSA-fjxv-7rqg-78g4' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>form-data</strong></td>
+                        <td><code>>=4.0.0 <4.0.6</code></td>
+                        <td>form-data: CRLF injection in form-data via unescaped multipart field names and filenames</td>
+                        <td><a href='https://github.com/advisories/GHSA-hmw2-7cc7-3qxx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>glob</strong></td>
+                        <td><code>>=10.2.0 <10.5.0</code></td>
+                        <td>glob CLI: Command injection via -c/--cmd executes matches with shell:true</td>
+                        <td><a href='https://github.com/advisories/GHSA-5j98-mcp5-4vw2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>js-cookie</strong></td>
+                        <td><code><=3.0.5</code></td>
+                        <td>JavaScript Cookie: Per-instance prototype hijack in assign() enables cookie-attribute injection</td>
+                        <td><a href='https://github.com/advisories/GHSA-qjx8-664m-686j' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jws</strong></td>
+                        <td><code><3.2.3</code></td>
+                        <td>auth0/node-jws Improperly Verifies HMAC Signature</td>
+                        <td><a href='https://github.com/advisories/GHSA-869p-cjfg-cm3x' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>langsmith</strong></td>
+                        <td><code><=0.5.17</code></td>
+                        <td>LangSmith Client SDKs has Prototype Pollution in langsmith-sdk via Incomplete `__proto__` Guard in Internal lodash `set()`</td>
+                        <td><a href='https://github.com/advisories/GHSA-fw9q-39r9-c252' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>langsmith</strong></td>
+                        <td><code><=0.5.18</code></td>
+                        <td>LangSmith SDK: Streaming token events bypass output redaction</td>
+                        <td><a href='https://github.com/advisories/GHSA-rr7j-v2q5-chgv' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>langsmith</strong></td>
+                        <td><code><0.6.0</code></td>
+                        <td>LangSmith SDK: Public prompt pull deserializes untrusted manifests without trust boundary warning</td>
+                        <td><a href='https://github.com/advisories/GHSA-3644-q5cj-c5c7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>langsmith</strong></td>
+                        <td><code><=0.5.26</code></td>
+                        <td>Transitive vulnerability via dependency uuid</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>lodash</strong></td>
+                        <td><code>>=4.0.0 <=4.17.23</code></td>
+                        <td>lodash vulnerable to Code Injection via `_.template` imports key names</td>
+                        <td><a href='https://github.com/advisories/GHSA-r5fr-rjxr-66jc' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>lodash</strong></td>
+                        <td><code><=4.17.23</code></td>
+                        <td>lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`</td>
+                        <td><a href='https://github.com/advisories/GHSA-f23m-r3pf-42rh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>lodash</strong></td>
+                        <td><code>>=4.0.0 <=4.17.22</code></td>
+                        <td>Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions</td>
+                        <td><a href='https://github.com/advisories/GHSA-xxjr-mmjv-4gpg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code><3.1.3</code></td>
+                        <td>minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern</td>
+                        <td><a href='https://github.com/advisories/GHSA-3ppc-4f35-3m26' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=5.0.0 <5.1.7</code></td>
+                        <td>minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern</td>
+                        <td><a href='https://github.com/advisories/GHSA-3ppc-4f35-3m26' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=9.0.0 <9.0.6</code></td>
+                        <td>minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern</td>
+                        <td><a href='https://github.com/advisories/GHSA-3ppc-4f35-3m26' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code><3.1.3</code></td>
+                        <td>minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments</td>
+                        <td><a href='https://github.com/advisories/GHSA-7r86-cg39-jmmj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=5.0.0 <5.1.8</code></td>
+                        <td>minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments</td>
+                        <td><a href='https://github.com/advisories/GHSA-7r86-cg39-jmmj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=9.0.0 <9.0.7</code></td>
+                        <td>minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments</td>
+                        <td><a href='https://github.com/advisories/GHSA-7r86-cg39-jmmj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code><3.1.4</code></td>
+                        <td>minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions</td>
+                        <td><a href='https://github.com/advisories/GHSA-23c5-xmqv-rm74' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=5.0.0 <5.1.8</code></td>
+                        <td>minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions</td>
+                        <td><a href='https://github.com/advisories/GHSA-23c5-xmqv-rm74' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=9.0.0 <9.0.7</code></td>
+                        <td>minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions</td>
+                        <td><a href='https://github.com/advisories/GHSA-23c5-xmqv-rm74' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>mongoose</strong></td>
+                        <td><code>>=8.0.0 <=8.22.0</code></td>
+                        <td>Mongoose's Improper Sanitization of $nor in sanitizeFilter May Allow NoSQL Injection</td>
+                        <td><a href='https://github.com/advisories/GHSA-wpg9-53fq-2r8h' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>mongoose</strong></td>
+                        <td><code>>=8.0.0 <8.24.1</code></td>
+                        <td>Mongoose: Prototype pollution in mongoose update casting via __proto__-prefixed dotted path (Schema._getSchema/path getter)</td>
+                        <td><a href='https://github.com/advisories/GHSA-664h-wqgq-64gw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>node-cron</strong></td>
+                        <td><code>3.0.2 - 3.0.3</code></td>
+                        <td>Transitive vulnerability via dependency uuid</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><7.0.7</code></td>
+                        <td>Nodemailer: Email to an unintended domain can occur due to Interpretation Conflict</td>
+                        <td><a href='https://github.com/advisories/GHSA-mm7p-fcc7-pg87' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><8.0.4</code></td>
+                        <td>Nodemailer has SMTP command injection due to unsanitized `envelope.size` parameter</td>
+                        <td><a href='https://github.com/advisories/GHSA-c7w3-x93f-qmm8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><=8.0.4</code></td>
+                        <td>Nodemailer Vulnerable to SMTP Command Injection via CRLF in Transport name Option (EHLO/HELO) </td>
+                        <td><a href='https://github.com/advisories/GHSA-vvjj-xcjg-gr5g' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><=8.0.8</code></td>
+                        <td>Nodemailer: CRLF injection in Nodemailer List-* header comments allows arbitrary message header injection</td>
+                        <td><a href='https://github.com/advisories/GHSA-268h-hp4c-crq3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><=8.0.8</code></td>
+                        <td>Nodemailer jsonTransport bypasses disableFileAccess and disableUrlAccess during message normalization</td>
+                        <td><a href='https://github.com/advisories/GHSA-wqvq-jvpq-h66f' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><=8.0.7</code></td>
+                        <td>Nodemailer: Improper TLS Certificate Validation in OAuth2 Token Fetch Enables Credential Interception</td>
+                        <td><a href='https://github.com/advisories/GHSA-r7g4-qg5f-qqm2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code>>=3.0.0 <=7.0.10</code></td>
+                        <td>Nodemailer’s addressparser is vulnerable to DoS caused by recursive calls</td>
+                        <td><a href='https://github.com/advisories/GHSA-rcmh-qjqh-p98v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><=9.0.0</code></td>
+                        <td>Nodemailer: Message-level raw option bypasses disableFileAccess/disableUrlAccess, enabling arbitrary file read and full-response SSRF in the delivered message</td>
+                        <td><a href='https://github.com/advisories/GHSA-p6gq-j5cr-w38f' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><=9.1.0</code></td>
+                        <td>Nodemailer: resolveContent() on a MailMessage bypasses disableFileAccess/disableUrlAccess when called with the legacy signature</td>
+                        <td><a href='https://github.com/advisories/GHSA-8m3c-c648-2xjj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><9.1.0</code></td>
+                        <td>Nodemailer: IDN/Punycode domain allow-list bypass leads to email delivery to an attacker-controlled domain</td>
+                        <td><a href='https://github.com/advisories/GHSA-wmmp-3585-3rmp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code><9.1.0</code></td>
+                        <td>Nodemailer: Quadratic (O(n²)) time complexity in addressparser allows remote denial of service via a crafted address list</td>
+                        <td><a href='https://github.com/advisories/GHSA-2x7j-588g-ccc2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>nodemailer</strong></td>
+                        <td><code>>=6.9.16 <9.1.0</code></td>
+                        <td>Nodemailer: Recipient-domain validation bypass via RFC 5322 comment mis-parsing leads to email delivery to an attacker-controlled domain</td>
+                        <td><a href='https://github.com/advisories/GHSA-cc9r-2j5m-2m83' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>path-to-regexp</strong></td>
+                        <td><code><0.1.13</code></td>
+                        <td>path-to-regexp vulnerable to Regular Expression Denial of Service via multiple route parameters</td>
+                        <td><a href='https://github.com/advisories/GHSA-37ch-88jc-xwx2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>picomatch</strong></td>
+                        <td><code><2.3.2</code></td>
+                        <td>Picomatch: Method Injection in POSIX Character Classes causes incorrect Glob Matching</td>
+                        <td><a href='https://github.com/advisories/GHSA-3v7f-55p6-f55p' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>picomatch</strong></td>
+                        <td><code><2.3.2</code></td>
+                        <td>Picomatch has a ReDoS vulnerability via extglob quantifiers</td>
+                        <td><a href='https://github.com/advisories/GHSA-c2c7-rcm5-vvqj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>qs</strong></td>
+                        <td><code>>=6.7.0 <=6.14.1</code></td>
+                        <td>qs's arrayLimit bypass in comma parsing allows denial of service</td>
+                        <td><a href='https://github.com/advisories/GHSA-w7fw-mjwx-w883' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>qs</strong></td>
+                        <td><code><6.14.1</code></td>
+                        <td>qs's arrayLimit bypass in its bracket notation allows DoS via memory exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-6rw7-vpxm-498p' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>qs</strong></td>
+                        <td><code>>=6.11.1 <=6.15.1</code></td>
+                        <td>qs has a remotely triggerable DoS: qs.stringify crashes with TypeError on null/undefined entries in comma-format arrays when encodeValuesOnly is set</td>
+                        <td><a href='https://github.com/advisories/GHSA-q8mj-m7cp-5q26' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>qs</strong></td>
+                        <td><code>>=2.2.5 <6.16.0</code></td>
+                        <td>qs: Denial of Service via Attacker Controlled isBuffer</td>
+                        <td><a href='https://github.com/advisories/GHSA-4mjr-xmp4-gh2g' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>socket.io-adapter</strong></td>
+                        <td><code>2.5.2 - 2.5.6</code></td>
+                        <td>Transitive vulnerability via dependency ws</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>socket.io-parser</strong></td>
+                        <td><code>>=4.0.0 <4.2.6</code></td>
+                        <td>socket.io allows an unbounded number of binary attachments</td>
+                        <td><a href='https://github.com/advisories/GHSA-677m-j7p3-52f9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>socket.io-parser</strong></td>
+                        <td><code>>=4.0.0 <4.2.7</code></td>
+                        <td>Socket.IO: Zero-attachment Memory Exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-2m8v-j782-fhvr' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>systeminformation</strong></td>
+                        <td><code><5.27.14</code></td>
+                        <td>systeminformation has a Command Injection vulnerability in fsSize() function on Windows</td>
+                        <td><a href='https://github.com/advisories/GHSA-wphj-fx3q-84ch' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>systeminformation</strong></td>
+                        <td><code><5.30.8</code></td>
+                        <td>Systeminformation has a Command Injection via unsanitized interface parameter in wifi.js retry path</td>
+                        <td><a href='https://github.com/advisories/GHSA-9c88-49p5-5ggf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>systeminformation</strong></td>
+                        <td><code>>=4.17.0 <=5.31.5</code></td>
+                        <td>Systeminformation vulnerable to Linux command injection in networkInterfaces() via unsanitized NetworkManager connection profile name</td>
+                        <td><a href='https://github.com/advisories/GHSA-hvx9-hwr7-wjj9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>systeminformation</strong></td>
+                        <td><code><=5.31.6</code></td>
+                        <td>systeminformation: OS command injection in networkInterfaces() via interfaces(5) source-directive path on Linux</td>
+                        <td><a href='https://github.com/advisories/GHSA-5xpp-75jx-m839' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><7.5.7</code></td>
+                        <td>node-tar Vulnerable to Arbitrary File Creation/Overwrite via Hardlink Path Traversal</td>
+                        <td><a href='https://github.com/advisories/GHSA-34x7-hfp2-rc4v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.2</code></td>
+                        <td>node-tar is Vulnerable to Arbitrary File Overwrite and Symlink Poisoning via Insufficient Path Sanitization</td>
+                        <td><a href='https://github.com/advisories/GHSA-8qq5-rm4j-mr97' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><7.5.8</code></td>
+                        <td>Arbitrary File Read/Write via Hardlink Target Escape Through Symlink Chain in node-tar Extraction</td>
+                        <td><a href='https://github.com/advisories/GHSA-83g3-92jg-28cx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.9</code></td>
+                        <td>tar has Hardlink Path Traversal via Drive-Relative Linkpath</td>
+                        <td><a href='https://github.com/advisories/GHSA-qffp-2rhf-9h96' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.10</code></td>
+                        <td>node-tar Symlink Path Traversal via Drive-Relative Linkpath</td>
+                        <td><a href='https://github.com/advisories/GHSA-9ppj-qmqm-q256' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.3</code></td>
+                        <td>Race Condition in node-tar Path Reservations via Unicode Ligature Collisions on macOS APFS</td>
+                        <td><a href='https://github.com/advisories/GHSA-r6q2-hw4h-h46w' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.15</code></td>
+                        <td>node-tar applies PAX size override to intermediary GNU long-name/long-link headers, causing tar parser interpretation differential (file smuggling)</td>
+                        <td><a href='https://github.com/advisories/GHSA-vmf3-w455-68vh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.17</code></td>
+                        <td>node-tar: Process crash via PAX numeric path type confusion</td>
+                        <td><a href='https://github.com/advisories/GHSA-w8wr-v893-vjvp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.18</code></td>
+                        <td>node-tar: Decompression/parse DoS via unlimited input</td>
+                        <td><a href='https://github.com/advisories/GHSA-23hp-3jrh-7fpw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.17</code></td>
+                        <td>node-tar: Negative tar entry size causes infinite loop in archive replace</td>
+                        <td><a href='https://github.com/advisories/GHSA-8x88-c5mf-7j5w' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.16</code></td>
+                        <td>node-tar: Uncaught Exception DoS via NUL byte in PAX path/linkpath records</td>
+                        <td><a href='https://github.com/advisories/GHSA-gvwx-54wh-qm9j' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar</strong></td>
+                        <td><code><=7.5.20</code></td>
+                        <td>node-tar: Uncontrolled recursion in mapHas/filesFilter allows uncatchable stack-overflow DoS via crafted long-path tar with member selection</td>
+                        <td><a href='https://github.com/advisories/GHSA-r292-9mhp-454m' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar-fs</strong></td>
+                        <td><code>>=2.0.0 <2.1.4</code></td>
+                        <td>tar-fs has a symlink validation bypass if destination directory is predictable with a specific tarball</td>
+                        <td><a href='https://github.com/advisories/GHSA-vj76-c3g6-qr5v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>tar-fs</strong></td>
+                        <td><code>>=2.0.0 <2.1.3</code></td>
+                        <td>tar-fs can extract outside the specified dir with a specific tarball</td>
+                        <td><a href='https://github.com/advisories/GHSA-8cj5-5rvv-wf4v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>uuid</strong></td>
+                        <td><code><11.1.1</code></td>
+                        <td>uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided</td>
+                        <td><a href='https://github.com/advisories/GHSA-w5hq-g745-h8pq' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>ws</strong></td>
+                        <td><code>>=8.0.0 <8.20.1</code></td>
+                        <td>ws: Uninitialized memory disclosure</td>
+                        <td><a href='https://github.com/advisories/GHSA-58qx-3vcg-4xpx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Backend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>ws</strong></td>
+                        <td><code>>=8.0.0 <8.21.0</code></td>
+                        <td>ws: Memory exhaustion DoS from tiny fragments and data chunks</td>
+                        <td><a href='https://github.com/advisories/GHSA-96hv-2xvq-fx4p' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>@eslint/plugin-kit</strong></td>
+                        <td><code><0.3.4</code></td>
+                        <td>@eslint/plugin-kit is vulnerable to Regular Expression Denial of Service attacks through ConfigCommentParser</td>
+                        <td><a href='https://github.com/advisories/GHSA-xffm-g5w8-qvg7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>@humanfs/node</strong></td>
+                        <td><code><0.16.8</code></td>
+                        <td>humanfs: Recursive copy follows symlinked files and copies data from outside the source tree</td>
+                        <td><a href='https://github.com/advisories/GHSA-p498-v437-472g' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>ajv</strong></td>
+                        <td><code><6.14.0</code></td>
+                        <td>ajv has ReDoS when using `$data` option</td>
+                        <td><a href='https://github.com/advisories/GHSA-2g4f-4pwh-qvx6' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.12.0</code></td>
+                        <td>Axios is vulnerable to DoS attack through lack of data size check</td>
+                        <td><a href='https://github.com/advisories/GHSA-4hjh-wcwx-xvwj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.0</code></td>
+                        <td>Axios has a NO_PROXY Hostname Normalization Bypass that Leads to SSRF</td>
+                        <td><a href='https://github.com/advisories/GHSA-3p68-rc4w-qgx5' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Authentication Bypass via Prototype Pollution Gadget in `validateStatus` Merge Strategy</td>
+                        <td><a href='https://github.com/advisories/GHSA-w9j2-pvgh-6h63' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Incomplete Fix for CVE-2025-62718 — NO_PROXY Protection Bypassed via RFC 1122 Loopback Subnet (127.0.0.0/8) in Axios 1.15.0</td>
+                        <td><a href='https://github.com/advisories/GHSA-pmwg-cvhr-8vh7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.2</code></td>
+                        <td>Axios: Invisible JSON Response Tampering via Prototype Pollution Gadget in `parseReviver`</td>
+                        <td><a href='https://github.com/advisories/GHSA-3w6x-2g7m-8v23' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Null Byte Injection via Reverse-Encoding in AxiosURLSearchParams</td>
+                        <td><a href='https://github.com/advisories/GHSA-xhjh-pmcv-23jw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: CRLF Injection in multipart/form-data body via unsanitized blob.type in formDataToStream</td>
+                        <td><a href='https://github.com/advisories/GHSA-445q-vr5w-6q77' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: no_proxy bypass via IP alias allows SSRF</td>
+                        <td><a href='https://github.com/advisories/GHSA-m7pr-hjqh-92cm' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios' HTTP adapter-streamed uploads bypass maxBodyLength when maxRedirects: 0</td>
+                        <td><a href='https://github.com/advisories/GHSA-5c9x-8gcm-mpgx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: HTTP adapter streamed responses bypass maxContentLength</td>
+                        <td><a href='https://github.com/advisories/GHSA-vf2m-468p-8v99' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Prototype Pollution Gadgets - Response Tampering, Data Exfiltration, and Request Hijacking</td>
+                        <td><a href='https://github.com/advisories/GHSA-pf86-5x62-jrwf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: Header Injection via Prototype Pollution</td>
+                        <td><a href='https://github.com/advisories/GHSA-6chq-wfr3-2hj9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: XSRF Token Cross-Origin Leakage via Prototype Pollution Gadget in `withXSRFToken` Boolean Coercion</td>
+                        <td><a href='https://github.com/advisories/GHSA-xx6v-rp6x-q39c' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <=1.13.4</code></td>
+                        <td>Axios is Vulnerable to Denial of Service via __proto__ Key in mergeConfig</td>
+                        <td><a href='https://github.com/advisories/GHSA-43fc-jf86-j433' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.2</code></td>
+                        <td>Axios has prototype pollution read-side gadgets in HTTP adapter that allow credential injection and request hijacking</td>
+                        <td><a href='https://github.com/advisories/GHSA-q8qp-cvcw-x6jj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.0</code></td>
+                        <td>Axios has Unrestricted Cloud Metadata Exfiltration via Header Injection Chain</td>
+                        <td><a href='https://github.com/advisories/GHSA-fvcv-3m26-pcqx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.1</code></td>
+                        <td>Axios: unbounded recursion in toFormData causes DoS via deeply nested request data</td>
+                        <td><a href='https://github.com/advisories/GHSA-62hf-57xw-28j9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>Axios: Regular Expression Denial of Service (ReDoS) via Cookie Name Injection</td>
+                        <td><a href='https://github.com/advisories/GHSA-hfxv-24rg-xrqf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.7.0 <1.16.0</code></td>
+                        <td>Allocation of Resources Without Limits or Throttling in Axios</td>
+                        <td><a href='https://github.com/advisories/GHSA-777c-7fjr-54vf' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>Axios: Proxy-Authorization Credential Leak to Origin Server Across HTTP-to-HTTPS Redirect in Axios Node.js HTTP Adapter</td>
+                        <td><a href='https://github.com/advisories/GHSA-p92q-9vqr-4j8v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>Axios: Proxy-Authorization header leaks to redirect target when proxy is re-evaluated to direct connection</td>
+                        <td><a href='https://github.com/advisories/GHSA-j5f8-grm9-p9fc' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.15.2</code></td>
+                        <td>axios Vulnerable to Credential Theft and Response Hijacking via Prototype Pollution Gadget in Config Merge</td>
+                        <td><a href='https://github.com/advisories/GHSA-3g43-6gmg-66jw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>axios Vulnerable to Full Man-in-the-Middle via Prototype Pollution Gadget in `config.proxy`</td>
+                        <td><a href='https://github.com/advisories/GHSA-35jp-ww65-95wh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.16.0</code></td>
+                        <td>axios has DoS & Header Injection via Prototype Pollution Read-Side Gadgets in axios merge functions</td>
+                        <td><a href='https://github.com/advisories/GHSA-898c-q2cr-xwhg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Prototype pollution gadgets can alter axios request construction</td>
+                        <td><a href='https://github.com/advisories/GHSA-mmx7-hfxf-jppx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Deep formToJSON Key Recursion Can Cause Denial of Service</td>
+                        <td><a href='https://github.com/advisories/GHSA-pmv8-rq9r-6j72' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Nested axios option objects can consume polluted prototype values</td>
+                        <td><a href='https://github.com/advisories/GHSA-7q8q-rj6j-mhjq' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.7.0 <1.18.0</code></td>
+                        <td>Axios: Fetch adapter `ReadableStream` uploads bypass `maxBodyLength`</td>
+                        <td><a href='https://github.com/advisories/GHSA-jqh4-m9w3-8hp9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>axios</strong></td>
+                        <td><code>>=1.0.0 <1.18.0</code></td>
+                        <td>Axios: Excessive recursion in formDataToJSON can cause denial of service</td>
+                        <td><a href='https://github.com/advisories/GHSA-42h9-826w-cgv3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=1.0.0 <=1.1.11</code></td>
+                        <td>brace-expansion Regular Expression Denial of Service vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-v6h2-p8h4-qcjw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <=2.0.1</code></td>
+                        <td>brace-expansion Regular Expression Denial of Service vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-v6h2-p8h4-qcjw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.13</code></td>
+                        <td>brace-expansion: Zero-step sequence causes process hang and memory exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-f886-m6hf-6m8v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.0.3</code></td>
+                        <td>brace-expansion: Zero-step sequence causes process hang and memory exhaustion</td>
+                        <td><a href='https://github.com/advisories/GHSA-f886-m6hf-6m8v' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.1.2</code></td>
+                        <td>brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups</td>
+                        <td><a href='https://github.com/advisories/GHSA-3jxr-9vmj-r5cp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.16</code></td>
+                        <td>brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups</td>
+                        <td><a href='https://github.com/advisories/GHSA-3jxr-9vmj-r5cp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.17</code></td>
+                        <td>brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash</td>
+                        <td><a href='https://github.com/advisories/GHSA-mh99-v99m-4gvg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.1.3</code></td>
+                        <td>brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash</td>
+                        <td><a href='https://github.com/advisories/GHSA-mh99-v99m-4gvg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code>>=2.0.0 <2.1.4</code></td>
+                        <td>brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation</td>
+                        <td><a href='https://github.com/advisories/GHSA-rgw5-rvv9-x895' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>brace-expansion</strong></td>
+                        <td><code><1.1.18</code></td>
+                        <td>brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation</td>
+                        <td><a href='https://github.com/advisories/GHSA-rgw5-rvv9-x895' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>browserslist</strong></td>
+                        <td><code><=4.28.6</code></td>
+                        <td>Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM</td>
+                        <td><a href='https://github.com/advisories/GHSA-c83g-rgw3-j3cx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>browserslist</strong></td>
+                        <td><code><=4.28.6</code></td>
+                        <td>Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)</td>
+                        <td><a href='https://github.com/advisories/GHSA-73wf-gq98-2v4g' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code>>=3.1.3 <3.2.7</code></td>
+                        <td>DOMPurify contains a Cross-site Scripting vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-v8jm-5vwx-cfxm' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code>>=3.1.3 <=3.3.1</code></td>
+                        <td>DOMPurify contains a Cross-site Scripting vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-v2wj-7wpq-c8vv' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><3.4.0</code></td>
+                        <td>DOMPurify: FORBID_TAGS bypassed by function-based ADD_TAGS predicate (asymmetry with FORBID_ATTR fix)</td>
+                        <td><a href='https://github.com/advisories/GHSA-h7mw-gpvr-xq4m' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code>>=1.0.10 <3.4.0</code></td>
+                        <td>DOMPurify has a SAFE_FOR_TEMPLATES bypass in RETURN_DOM mode</td>
+                        <td><a href='https://github.com/advisories/GHSA-crv5-9vww-q3g8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code>>=3.0.1 <3.4.0</code></td>
+                        <td>DOMPurify: Prototype Pollution to XSS Bypass via CUSTOM_ELEMENT_HANDLING Fallback</td>
+                        <td><a href='https://github.com/advisories/GHSA-v9jr-rg53-9pgp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.5</code></td>
+                        <td>DOMPurify: Cross-realm IN_PLACE sanitization leaves executable markup intact via realm-bound `instanceof` checks</td>
+                        <td><a href='https://github.com/advisories/GHSA-hpcv-96wg-7vj8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.5</code></td>
+                        <td>DOMPurify: IN_PLACE mode preserves attributes of a clobbered root element, allowing XSS via attacker-controlled root DOM</td>
+                        <td><a href='https://github.com/advisories/GHSA-r47g-fvhr-h676' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.6</code></td>
+                        <td>DOMPurify IN_PLACE Sanitization Bypass via Attached Shadow Root Inside <template>.content</td>
+                        <td><a href='https://github.com/advisories/GHSA-rp9w-3fw7-7cwq' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.11</code></td>
+                        <td>DOMPurify: `CUSTOM_ELEMENT_HANDLING` bypasses `afterSanitizeElements` for allowed custom elements.</td>
+                        <td><a href='https://github.com/advisories/GHSA-c2j3-45gr-mqc4' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.10</code></td>
+                        <td>DOMPurify: Permanent `ALLOWED_ATTR` pollution via `setConfig()` bypassing the hook clone-guard (incomplete fix of the 3.4.7 hook-pollution patch)</td>
+                        <td><a href='https://github.com/advisories/GHSA-cmwh-pvxp-8882' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><3.4.9</code></td>
+                        <td>DOMPurify: Trusted Types policy survives `clearConfig()` and can poison later `RETURN_TRUSTED_TYPE` output</td>
+                        <td><a href='https://github.com/advisories/GHSA-vxr8-fq34-vvx9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code>>=3.0.0 <=3.4.7</code></td>
+                        <td>DOMPurify: SAFE_FOR_TEMPLATES bypass - template expressions survive sanitization inside <template> content when using DOM output modes</td>
+                        <td><a href='https://github.com/advisories/GHSA-gvmj-g25r-r7wr' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.6</code></td>
+                        <td>DOMPurify: `IN_PLACE` mode trusts attacker-controlled `nodeName` on live non-form nodes, allowing script retention and XSS via attacker-supplied DOM objects</td>
+                        <td><a href='https://github.com/advisories/GHSA-x4vx-rjvf-j5p4' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><3.4.7</code></td>
+                        <td>DOMPurify: Hook mutation of `data.allowedTags` / `data.allowedAttributes` permanently pollutes `DEFAULT_ALLOWED_TAGS` / `DEFAULT_ALLOWED_ATTR`</td>
+                        <td><a href='https://github.com/advisories/GHSA-76mc-f452-cxcm' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.3.3</code></td>
+                        <td>DOMPurify's ADD_TAGS function form bypasses FORBID_TAGS due to short-circuit evaluation</td>
+                        <td><a href='https://github.com/advisories/GHSA-39q2-94rc-95cp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.3.1</code></td>
+                        <td>DOMPurify ADD_ATTR predicate skips URI validation</td>
+                        <td><a href='https://github.com/advisories/GHSA-cjmm-f4jc-qw8r' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.3.1</code></td>
+                        <td>DOMPurify USE_PROFILES prototype pollution allows event handlers</td>
+                        <td><a href='https://github.com/advisories/GHSA-cj63-jhhr-wcxv' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><3.3.2</code></td>
+                        <td>DOMPurify is vulnerable to mutation-XSS via Re-Contextualization </td>
+                        <td><a href='https://github.com/advisories/GHSA-h8r8-wccr-v5f2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>dompurify</strong></td>
+                        <td><code><=3.4.12</code></td>
+                        <td>DOMPurify: IN_PLACE hook removal leaves a detached subtree executable, causing XSS</td>
+                        <td><a href='https://github.com/advisories/GHSA-55q2-fjhq-7xh7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>eslint</strong></td>
+                        <td><code>9.10.0 - 9.26.0</code></td>
+                        <td>Transitive vulnerability via dependency @eslint/plugin-kit</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>fflate</strong></td>
+                        <td><code>>=0.8.0 <0.8.3</code></td>
+                        <td>fflate unzipSync can enter an infinite loop when parsing malformed ZIP64 archives</td>
+                        <td><a href='https://github.com/advisories/GHSA-px8p-9vwx-vf98' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>flatted</strong></td>
+                        <td><code><3.4.0</code></td>
+                        <td>flatted vulnerable to unbounded recursion DoS in parse() revive phase</td>
+                        <td><a href='https://github.com/advisories/GHSA-25h7-pfq9-p65f' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>flatted</strong></td>
+                        <td><code><=3.4.1</code></td>
+                        <td>Prototype Pollution via parse() in NodeJS flatted</td>
+                        <td><a href='https://github.com/advisories/GHSA-rf6f-7fwh-wjgh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>follow-redirects</strong></td>
+                        <td><code><=1.15.11</code></td>
+                        <td>follow-redirects leaks Custom Authentication Headers to Cross-Domain Redirect Targets</td>
+                        <td><a href='https://github.com/advisories/GHSA-r4q5-vmmm-2653' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td><strong>form-data</strong></td>
+                        <td><code>>=4.0.0 <4.0.4</code></td>
+                        <td>form-data uses unsafe random function in form-data for choosing boundary</td>
+                        <td><a href='https://github.com/advisories/GHSA-fjxv-7rqg-78g4' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>form-data</strong></td>
+                        <td><code>>=4.0.0 <4.0.6</code></td>
+                        <td>form-data: CRLF injection in form-data via unescaped multipart field names and filenames</td>
+                        <td><a href='https://github.com/advisories/GHSA-hmw2-7cc7-3qxx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>glob</strong></td>
+                        <td><code>>=10.2.0 <10.5.0</code></td>
+                        <td>glob CLI: Command injection via -c/--cmd executes matches with shell:true</td>
+                        <td><a href='https://github.com/advisories/GHSA-5j98-mcp5-4vw2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>html2pdf.js</strong></td>
+                        <td><code><0.14.0</code></td>
+                        <td>html2pdf.js contains a cross-site scripting vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-w8x4-x68c-m6fc' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>js-cookie</strong></td>
+                        <td><code><=3.0.5</code></td>
+                        <td>JavaScript Cookie: Per-instance prototype hijack in assign() enables cookie-attribute injection</td>
+                        <td><a href='https://github.com/advisories/GHSA-qjx8-664m-686j' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>js-yaml</strong></td>
+                        <td><code>>=4.0.0 <4.1.1</code></td>
+                        <td>js-yaml has prototype pollution in merge (<<)</td>
+                        <td><a href='https://github.com/advisories/GHSA-mh29-5h37-fv8m' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>js-yaml</strong></td>
+                        <td><code>>=4.0.0 <=4.1.1</code></td>
+                        <td>JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases</td>
+                        <td><a href='https://github.com/advisories/GHSA-h67p-54hq-rp68' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>js-yaml</strong></td>
+                        <td><code>>=4.0.0 <4.3.0</code></td>
+                        <td>js-yaml: YAML merge-key chains can force quadratic CPU consumption</td>
+                        <td><a href='https://github.com/advisories/GHSA-52cp-r559-cp3m' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>js-yaml</strong></td>
+                        <td><code>>=4.0.0 <4.3.1</code></td>
+                        <td>JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) — CVE-2026-59870 fix not backported</td>
+                        <td><a href='https://github.com/advisories/GHSA-5p4m-2wfm-xmqj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>js-yaml</strong></td>
+                        <td><code>>=4.0.0 <4.3.2</code></td>
+                        <td>js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources</td>
+                        <td><a href='https://github.com/advisories/GHSA-2883-xcg3-v3hh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=3.0.1</code></td>
+                        <td>jsPDF Denial of Service (DoS)</td>
+                        <td><a href='https://github.com/advisories/GHSA-8mvj-3j78-4qmw' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=3.0.4</code></td>
+                        <td>jsPDF has Local File Inclusion/Path Traversal vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-f8cm-6447-x5h2' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=4.0.0</code></td>
+                        <td>jsPDF has PDF Injection in AcroFormChoiceField that allows Arbitrary JavaScript Execution</td>
+                        <td><a href='https://github.com/advisories/GHSA-pqxr-3g65-p328' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=4.0.0</code></td>
+                        <td>jsPDF Vulnerable to Denial of Service (DoS) via Unvalidated BMP Dimensions in BMPDecoder</td>
+                        <td><a href='https://github.com/advisories/GHSA-95fx-jjr5-f39c' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=4.0.0</code></td>
+                        <td>jsPDF Vulnerable to Stored XMP Metadata Injection (Spoofing & Integrity Violation)</td>
+                        <td><a href='https://github.com/advisories/GHSA-vm32-vv63-w422' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=4.0.0</code></td>
+                        <td>jsPDF has Shared State Race Condition in addJS Plugin</td>
+                        <td><a href='https://github.com/advisories/GHSA-cjw8-79x6-5cj4' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><4.2.0</code></td>
+                        <td>jsPDF has a PDF Object Injection via Unsanitized Input in addJS Method</td>
+                        <td><a href='https://github.com/advisories/GHSA-9vjf-qc39-jprp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><4.2.0</code></td>
+                        <td>jsPDF Affected by Client-Side/Server-Side Denial of Service via Malicious GIF Dimensions</td>
+                        <td><a href='https://github.com/advisories/GHSA-67pg-wm7f-q7fj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><4.2.0</code></td>
+                        <td>jsPDF has a PDF Injection in AcroForm module allows Arbitrary JavaScript Execution (RadioButton.createOption and "AS" property)</td>
+                        <td><a href='https://github.com/advisories/GHSA-p5xg-68wr-hm3m' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=4.2.0</code></td>
+                        <td>jsPDF has a PDF Object Injection via FreeText color</td>
+                        <td><a href='https://github.com/advisories/GHSA-7x6v-j9x4-qf24' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td><strong>jspdf</strong></td>
+                        <td><code><=4.2.0</code></td>
+                        <td>jsPDF has HTML Injection in New Window paths</td>
+                        <td><a href='https://github.com/advisories/GHSA-wfv2-pwc8-crg5' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>jws</strong></td>
+                        <td><code><3.2.3</code></td>
+                        <td>auth0/node-jws Improperly Verifies HMAC Signature</td>
+                        <td><a href='https://github.com/advisories/GHSA-869p-cjfg-cm3x' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>lodash</strong></td>
+                        <td><code>>=4.0.0 <=4.17.23</code></td>
+                        <td>lodash vulnerable to Code Injection via `_.template` imports key names</td>
+                        <td><a href='https://github.com/advisories/GHSA-r5fr-rjxr-66jc' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>lodash</strong></td>
+                        <td><code><=4.17.23</code></td>
+                        <td>lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`</td>
+                        <td><a href='https://github.com/advisories/GHSA-f23m-r3pf-42rh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>lodash</strong></td>
+                        <td><code>>=4.0.0 <=4.17.22</code></td>
+                        <td>Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions</td>
+                        <td><a href='https://github.com/advisories/GHSA-xxjr-mmjv-4gpg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code><3.1.3</code></td>
+                        <td>minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern</td>
+                        <td><a href='https://github.com/advisories/GHSA-3ppc-4f35-3m26' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=9.0.0 <9.0.6</code></td>
+                        <td>minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern</td>
+                        <td><a href='https://github.com/advisories/GHSA-3ppc-4f35-3m26' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code><3.1.3</code></td>
+                        <td>minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments</td>
+                        <td><a href='https://github.com/advisories/GHSA-7r86-cg39-jmmj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=9.0.0 <9.0.7</code></td>
+                        <td>minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments</td>
+                        <td><a href='https://github.com/advisories/GHSA-7r86-cg39-jmmj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code><3.1.4</code></td>
+                        <td>minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions</td>
+                        <td><a href='https://github.com/advisories/GHSA-23c5-xmqv-rm74' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>minimatch</strong></td>
+                        <td><code>>=9.0.0 <9.0.7</code></td>
+                        <td>minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions</td>
+                        <td><a href='https://github.com/advisories/GHSA-23c5-xmqv-rm74' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>nanoid</strong></td>
+                        <td><code><3.3.16</code></td>
+                        <td>nanoid: non-secure generators can loop indefinitely with negative size</td>
+                        <td><a href='https://github.com/advisories/GHSA-28wg-ghj8-5hjv' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>nanoid</strong></td>
+                        <td><code><3.3.18</code></td>
+                        <td>nanoid: custom generators can loop indefinitely when size is zero</td>
+                        <td><a href='https://github.com/advisories/GHSA-2v37-7h3g-55p8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>nanoid</strong></td>
+                        <td><code><3.3.12</code></td>
+                        <td>nanoid: Integer Overflow or Wraparound</td>
+                        <td><a href='https://github.com/advisories/GHSA-xwg4-73v4-xw9w' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>picomatch</strong></td>
+                        <td><code><2.3.2</code></td>
+                        <td>Picomatch: Method Injection in POSIX Character Classes causes incorrect Glob Matching</td>
+                        <td><a href='https://github.com/advisories/GHSA-3v7f-55p6-f55p' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>picomatch</strong></td>
+                        <td><code><2.3.2</code></td>
+                        <td>Picomatch has a ReDoS vulnerability via extglob quantifiers</td>
+                        <td><a href='https://github.com/advisories/GHSA-c2c7-rcm5-vvqj' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>postcss</strong></td>
+                        <td><code><8.5.10</code></td>
+                        <td>PostCSS has XSS via Unescaped </style> in its CSS Stringify Output</td>
+                        <td><a href='https://github.com/advisories/GHSA-qx2v-qp2m-jg93' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>postcss</strong></td>
+                        <td><code><=8.5.11</code></td>
+                        <td>PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments</td>
+                        <td><a href='https://github.com/advisories/GHSA-6g55-p6wh-862q' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>postcss</strong></td>
+                        <td><code><=8.5.22</code></td>
+                        <td>PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset</td>
+                        <td><a href='https://github.com/advisories/GHSA-fxqj-rqcc-2cmp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>postcss</strong></td>
+                        <td><code><=8.5.17</code></td>
+                        <td>PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure</td>
+                        <td><a href='https://github.com/advisories/GHSA-r28c-9q8g-f849' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>postcss-selector-parser</strong></td>
+                        <td><code>>=6.1.0 <6.1.3</code></td>
+                        <td>postcss-selector-parser allows denial of service through uncontrolled AST recursion</td>
+                        <td><a href='https://github.com/advisories/GHSA-w9m9-85wc-3x92' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.2.0 <=7.5.1</code></td>
+                        <td>React Router allows a DoS via cache poisoning by forcing SPA mode</td>
+                        <td><a href='https://github.com/advisories/GHSA-f46r-rw29-r322' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <=7.11.0</code></td>
+                        <td>React Router vulnerable to XSS via Open Redirects</td>
+                        <td><a href='https://github.com/advisories/GHSA-2w69-qvjg-hvjx' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <7.9.6</code></td>
+                        <td>React Router has unexpected external redirect via untrusted paths</td>
+                        <td><a href='https://github.com/advisories/GHSA-9jcx-v3wj-wh4m' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0-pre.0 <=7.5.1</code></td>
+                        <td>React Router allows pre-render data spoofing on React-Router framework mode</td>
+                        <td><a href='https://github.com/advisories/GHSA-cpj6-fhp6-mr6j' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <=7.14.1</code></td>
+                        <td>React Router's vendored turbo-stream v2 allows arbitrary constructor invocation via TYPE_ERROR deserialization leading to Unauth RCE</td>
+                        <td><a href='https://github.com/advisories/GHSA-49rj-9fvp-4h2h' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <7.15.0</code></td>
+                        <td>React Router vulnerable to DoS via unbounded path expansion in __manifest endpoint</td>
+                        <td><a href='https://github.com/advisories/GHSA-8x6r-g9mw-2r78' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <7.14.0</code></td>
+                        <td>React Router vulnerable to Denial of Service via reflected user input in single-fetch</td>
+                        <td><a href='https://github.com/advisories/GHSA-rxv8-25v2-qmq8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <=7.11.0</code></td>
+                        <td>React Router has CSRF issue in Action/Server Action Request Processing</td>
+                        <td><a href='https://github.com/advisories/GHSA-h5cw-625j-3rxh' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=6.0.0 <7.18.0</code></td>
+                        <td>React Router: Open redirect via backslash in <Link> and useNavigate (CVE-2025-68470 bypass)</td>
+                        <td><a href='https://github.com/advisories/GHSA-wrjc-x8rr-h8h6' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=6.4.0 <7.18.0</code></td>
+                        <td>React Router: Arbitrary Constructor Injection via deserializeErrors() in React Router SSR Hydration</td>
+                        <td><a href='https://github.com/advisories/GHSA-337j-9hxr-rhxg' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <7.18.0</code></td>
+                        <td>React Router: Unauthenticated Denial of Service via Inefficient Route Matching</td>
+                        <td><a href='https://github.com/advisories/GHSA-chx6-hx7r-mcp5' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <7.14.1</code></td>
+                        <td>React Router's same-origin redirect with path starting // causes open redirect via protocol-relative URL reinterpretation</td>
+                        <td><a href='https://github.com/advisories/GHSA-2j2x-hqr9-3h42' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <7.12.0</code></td>
+                        <td>React Router SSR XSS in ScrollRestoration</td>
+                        <td><a href='https://github.com/advisories/GHSA-8v8x-cx79-35w7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code>>=7.0.0 <=7.8.2</code></td>
+                        <td>React Router has XSS Vulnerability</td>
+                        <td><a href='https://github.com/advisories/GHSA-3cgp-3xvw-98x8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router</strong></td>
+                        <td><code><=0.0.0-nightly-fdd3ab3a6-20250809 || 6.0.0 - 7.17.0</code></td>
+                        <td>Transitive vulnerability via dependency turbo-stream</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>react-router-dom</strong></td>
+                        <td><code>7.2.0-pre.0 - 7.5.1</code></td>
+                        <td>Transitive vulnerability via dependency react-router</td>
+                        <td>-</td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>rollup</strong></td>
+                        <td><code>>=4.0.0 <4.59.0</code></td>
+                        <td>Rollup 4 has Arbitrary File Write via Path Traversal</td>
+                        <td><a href='https://github.com/advisories/GHSA-mw96-cpmx-2vgc' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td><strong>swiper</strong></td>
+                        <td><code>>=6.5.1 <12.1.2</code></td>
+                        <td>Prototype pollution in swiper</td>
+                        <td><a href='https://github.com/advisories/GHSA-hmx5-qpq5-p643' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>turbo-stream</strong></td>
+                        <td><code><3.0.0</code></td>
+                        <td>React Router vulnerable to Denial of Service via reflected user input in single-fetch</td>
+                        <td><a href='https://github.com/advisories/GHSA-rxv8-25v2-qmq8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.2.0 <6.2.6</code></td>
+                        <td>Vite has an `server.fs.deny` bypass with an invalid `request-target`</td>
+                        <td><a href='https://github.com/advisories/GHSA-356w-63v5-8wf4' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.2.0 <=6.2.6</code></td>
+                        <td>Vite's server.fs.deny bypassed with /. for files under project root</td>
+                        <td><a href='https://github.com/advisories/GHSA-859w-5945-r5v3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.2.0 <6.2.5</code></td>
+                        <td>Vite allows server.fs.deny to be bypassed with .svg or relative paths</td>
+                        <td><a href='https://github.com/advisories/GHSA-xcj6-pq6g-qj4x' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.0.0 <=6.3.5</code></td>
+                        <td>Vite middleware may serve files starting with the same name with the public directory</td>
+                        <td><a href='https://github.com/advisories/GHSA-g4jq-h2w9-997c' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge low">LOW</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.0.0 <=6.3.5</code></td>
+                        <td>Vite's `server.fs` settings were not applied to HTML files</td>
+                        <td><a href='https://github.com/advisories/GHSA-jqfw-vq24-v9c3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.0.0 <=6.4.0</code></td>
+                        <td>vite allows server.fs.deny bypass via backslash on Windows</td>
+                        <td><a href='https://github.com/advisories/GHSA-93m4-6634-74q7' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.2.0 <6.2.4</code></td>
+                        <td>Vite has a `server.fs.deny` bypassed for `inline` and `raw` with `?import` query</td>
+                        <td><a href='https://github.com/advisories/GHSA-4r4m-qw57-chr8' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code><=6.4.1</code></td>
+                        <td>Vite Vulnerable to Path Traversal in Optimized Deps `.map` Handling</td>
+                        <td><a href='https://github.com/advisories/GHSA-4w7w-66w2-5vf9' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code>>=6.0.0 <=6.4.1</code></td>
+                        <td>Vite Vulnerable to Arbitrary File Read via Vite Dev Server WebSocket</td>
+                        <td><a href='https://github.com/advisories/GHSA-p9ff-h696-f583' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code><=6.4.2</code></td>
+                        <td>launch-editor: NTLMv2 hash disclosure via UNC path handling on Windows</td>
+                        <td><a href='https://github.com/advisories/GHSA-v6wh-96g9-6wx3' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td><strong>vite</strong></td>
+                        <td><code><=6.4.2</code></td>
+                        <td>vite: `server.fs.deny` bypass on Windows alternate paths</td>
+                        <td><a href='https://github.com/advisories/GHSA-fx2h-pf6j-xcff' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                    <tr>
+                        <td><span class="scope-badge">Frontend</span></td>
+                        <td><span class="badge moderate">MODERATE</span></td>
+                        <td><strong>yaml</strong></td>
+                        <td><code>>=2.0.0 <2.8.3</code></td>
+                        <td>yaml is vulnerable to Stack Overflow via deeply nested YAML collections</td>
+                        <td><a href='https://github.com/advisories/GHSA-48c2-rrv3-qjmp' target='_blank'>Advisory ↗</a></td>
+                    </tr>
+    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
