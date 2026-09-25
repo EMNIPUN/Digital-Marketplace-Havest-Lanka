@@ -108,17 +108,20 @@ For team member **KUMBUKAGE S S (IT23155534)**, all three assigned vulnerabiliti
 - **Scope:** Complete analysis of `Backend/package-lock.json` and `frontend/package-lock.json`.
 - **Artifacts:** Generated interactive dashboard [`security-audit/reports/dependency-check/dependency-check-report.html`](./reports/dependency-check/dependency-check-report.html) alongside raw JSON datasets (`backend-audit.json`, `frontend-audit.json`).
 - **Results:** 60 total dependency vulnerabilities identified (Backend: 2 Critical, 21 High, 6 Moderate; Frontend: 3 Critical, 19 High, 6 Moderate, 3 Low).
+- **Evidence Images:** [`security-audit/media/backend-npm-audit-summary.png`](./media/backend-npm-audit-summary.png), [`security-audit/media/frontend-npm-audit-summary.png`](./media/frontend-npm-audit-summary.png)
 
 ### 3.2 Secret Scanning via Git History Analysis
 - **Tool:** Git Pickaxe Search (`git log -S "<query>" --oneline -p`).
 - **Technique:** Scanning the full chronological commit graph for leaked tokens, private keys, and application passwords.
 - **Results:** Discovered hardcoded Google SMTP App Password committed in cleartext (`pass: 'xcbr yhvi bbdf uben'`) in commit `1ee655bce93071d89dfb0f60ee1acead2a60a926`.
+- **Evidence Image:** [`security-audit/media/vuln-13-git-secret-leak.png`](./media/vuln-13-git-secret-leak.png)
 
 ### 3.3 Dynamic Application Security Testing (DAST)
 - **Tool:** **OWASP ZAP 2.17.0 (Zed Attack Proxy)**.
 - **Target:** Live running Node.js/Express server (`http://localhost:8005`) connected to local Docker MongoDB.
 - **Scan Type:** Traditional Spider crawl followed by Active and Passive vulnerability scanning.
 - **Artifacts:** Full report export [`security-audit/reports/zap-report.html`](./reports/zap-report.html) and GUI screenshot [`security-audit/media/zap-scan-alerts.png`](./media/zap-scan-alerts.png).
+- **Evidence Image:** [`security-audit/media/zap-scan-alerts.png`](./media/zap-scan-alerts.png)
 - **Results:** 7 distinct dynamic security alerts detected, including missing anti-clickjacking headers, missing Content-Security-Policy, missing MIME-sniffing protection, and framework fingerprint leakage.
 
 ### 3.4 Static Application Security Testing (SAST) & Manual Code Review
@@ -584,6 +587,7 @@ Versions of `systeminformation` up to 5.31.6 are vulnerable to OS command inject
 - **Affected File:** `Backend/src/controllers/userManagement/UserRegistration.js` (lines 18 & 48)
 - **Endpoint:** `POST /user/register`
 - **Detection Method:** Manual Data Binding & Flow Analysis
+- **Evidence Image:** [`security-audit/media/Ekanayake/priviladge.png`](./media/Ekanayake/priviladge.png)
 
 ##### 1. Vulnerability Description & Root Cause
 In `UserRegistration.js`, the registration controller destructured `role` directly from `req.body`:
@@ -619,6 +623,7 @@ Because the client-supplied `role` is bound directly into the Mongoose schema wi
 - **Affected File:** `Backend/src/controllers/userManagement/UserRegistration.js` (lines 7–14) & `UserData.js`
 - **Endpoint:** `POST /user/register` & `PUT /user/update`
 - **Detection Method:** Static Code Review (Input Validation)
+- **Evidence Image:** [`security-audit/media/Ekanayake/unrestricted file upload.png`](./media/Ekanayake/unrestricted%20file%20upload.png)
 
 ##### 1. Vulnerability Description & Root Cause
 Multer is configured using `multer.diskStorage` without a `fileFilter`, without MIME-type validation, and without file size limits:
@@ -685,6 +690,7 @@ The `tar` library bundled transitively under `@mapbox/node-pre-gyp` (depended on
 - **Affected File:** `Backend/src/controllers/financeManagement/payment.controller.js` (lines 5–18)
 - **Endpoint:** `POST /api/notify`
 - **Detection Method:** Business Logic Analysis
+- **Evidence Image:** [`security-audit/media/Croos/Unverified Payment.png`](./media/Croos/Unverified%20Payment.png)
 
 ##### 1. Vulnerability Description & Root Cause
 The payment notification receiver `notifyPayment` accepts arbitrary payment payloads from `req.body` and stores them in MongoDB as completed transactions without verifying HMAC checksum signatures or merchant secrets:
@@ -710,6 +716,7 @@ An attacker can forge payment confirmations for unpaid orders.
 - **Affected File:** `Backend/src/controllers/financeManagement/payment.controller.js` (line 78) & `UserData.js` (line 114)
 - **Endpoint:** `GET /api/prices/:name`
 - **Detection Method:** Static Code Review
+- **Evidence Image:** [`security-audit/media/Croos/Regular Expression Denial.png`](./media/Croos/Regular%20Expression%20Denial.png)
 
 ##### 1. Vulnerability Description & Root Cause
 User input is passed directly to `new RegExp(\`^${name}$\`, "i")` without escaping regex metacharacters. Attackers can supply catastrophic backtracking expressions (e.g., `((a+)+)+$`) that cause exponential backtracking, blocking the single-threaded Node.js event loop and creating application-wide denial of service.
