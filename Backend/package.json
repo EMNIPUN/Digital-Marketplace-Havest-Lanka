@@ -26,6 +26,7 @@
       "dotenv": "^16.4.7",
       "express": "^4.21.2",
       "express-rate-limit": "^8.7.0",
+      "google-auth-library": "^11.1.0",
       "helmet": "^8.3.0",
       "js-cookie": "^3.0.5",
       "jsonwebtoken": "^9.0.2",
