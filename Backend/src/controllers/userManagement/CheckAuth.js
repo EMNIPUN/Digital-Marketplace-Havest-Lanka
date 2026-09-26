@@ -1,4 +1,4 @@
-import express from 'express'
+import jwt from 'jsonwebtoken'
 
 const CheckAuth = (req, res) => {
     const token = req.cookies.token
@@ -7,7 +7,12 @@ const CheckAuth = (req, res) => {
         return res.status(401).json({ loggedIn: false })
     }
 
-    return res.status(200).json({ loggedIn: true })
+    try {
+        jwt.verify(token, process.env.JWT_SECRET)
+        return res.status(200).json({ loggedIn: true })
+    } catch (e) {
+        return res.status(401).json({ loggedIn: false })
+    }
 }
 
 export default CheckAuth

@@ -17,9 +17,12 @@ import { generateLoginReport } from '../../controllers/userManagement/reports/Sy
 import { generateBidReport } from '../../controllers/userManagement/reports/BiddingSuccessReport.js'
 import { createSystemBackup, listBackups } from '../../controllers/userManagement/backup/Backup.js'
 import { closeConversation, getAdminConversations, getConversations, getMessages, joinConversation, sendMessage, sendUserMessage } from '../../controllers/userManagement/chat/Chat.js'
+import { verifyToken, requireAdmin } from '../../middleware/auth.js'
 
 
 const router = express.Router()
+
+router.use(verifyToken, requireAdmin)
 
 router.get("/server", ServerInfo)
 router.get("/piechartdata", PieChartData)
