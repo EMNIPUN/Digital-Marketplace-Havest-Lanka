@@ -42,7 +42,7 @@
       "pdfkit": "^0.16.0",
       "pdfmake": "^0.2.18",
       "socket.io": "^4.8.1",
-      "systeminformation": "^5.25.11"
+      "systeminformation": "^5.31.7"
    },
    "keywords": []
 }
