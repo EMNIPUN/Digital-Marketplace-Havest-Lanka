@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import DailyPricess from "../../models/financeManagement/DailyPricess.js";
 import Payment from "../../models/financeManagement/payment.js";
 import FarmerpaymentSchema from "../../models/financeManagement/paymentSchema.js";
@@ -6,14 +7,60 @@ import FarmerpaymentSchema from "../../models/financeManagement/paymentSchema.js
 // inside `new RegExp(...)` without enabling catastrophic backtracking (ReDoS).
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+// Recomputes the PayHere notification signature server-side and compares it
+// (constant-time) against the md5sig the client supplied, per the PayHere
+// webhook verification spec: md5(merchant_id + order_id + payhere_amount +
+// payhere_currency + status_code + md5(merchant_secret).toUpperCase()).toUpperCase()
+const isValidPayHereSignature = ({
+   merchant_id,
+   order_id,
+   payhere_amount,
+   payhere_currency,
+   status_code,
+   md5sig,
+}) => {
+   const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
+   if (!merchantSecret || !md5sig) {
+      return false;
+   }
+
+   const hashedSecret = crypto
+      .createHash("md5")
+      .update(merchantSecret)
+      .digest("hex")
+      .toUpperCase();
+
+   const localSig = crypto
+      .createHash("md5")
+      .update(
+         `${merchant_id}${order_id}${payhere_amount}${payhere_currency}${status_code}${hashedSecret}`
+      )
+      .digest("hex")
+      .toUpperCase();
+
+   const received = Buffer.from(String(md5sig).toUpperCase());
+   const expected = Buffer.from(localSig);
+   if (received.length !== expected.length) {
+      return false;
+   }
+   return crypto.timingSafeEqual(received, expected);
+};
+
 const notifyPayment = async (req, res) => {
    try {
       const paymentData = req.body;
-      console.log(req.body);
+
+      if (!isValidPayHereSignature(paymentData)) {
+         console.warn("Rejected payment notification with invalid signature:", {
+            merchant_id: paymentData.merchant_id,
+            order_id: paymentData.order_id,
+         });
+         return res.status(400).send("Invalid payment signature");
+      }
 
       const newPayment = new Payment(paymentData);
       await newPayment.save();
-      console.log("Payment notification received and saved:", paymentData);
+      console.log("Payment notification received and saved:", paymentData.order_id);
       res.status(200).send("Payment recorded");
    } catch (error) {
       console.error("Error saving payment data:", error);
