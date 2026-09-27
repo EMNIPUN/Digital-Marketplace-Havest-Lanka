@@ -1,13 +1,8 @@
 import express from 'express';
+import CheckAuth from '../../controllers/userManagement/CheckAuth.js';
 
-const CheckAuth = (req, res) => {
-    const token = req.cookies?.token;
+const router = express.Router();
 
-    if (!token) {
-        return res.status(401).json({ loggedIn: false });
-    }
+router.get('/', CheckAuth);
 
-    return res.status(200).json({ loggedIn: true });
-};
-
-export default CheckAuth;
+export default router;
