@@ -19,7 +19,7 @@
 | **KUMBUKAGE S S** | **IT23155534** | **`VULN-01`**, **`VULN-13`**, **`VULN-20`** | **Fully Remediated** (Code, Secret Scanning, DAST Headers & Commits) |
 | **RAJAPAKSHA R W V C V** | **IT23152878** | **`VULN-02`**, **`VULN-03`**, **`VULN-11`** | **Discovery Documented** *(Remediation: Member Section Placeholder)* |
 | **EKANAYAKE E M N D** | **IT23283930** | **`VULN-09`**, **`VULN-10`**, **`VULN-12`** | **Discovery Documented** *(Remediation: Member Section Placeholder)* |
-| **CROOS E D** | **IT23314238** | **`VULN-04`**, **`VULN-15`**, **`VULN-19`** | **Discovery Documented** *(Remediation: Member Section Placeholder)* |
+| **CROOS E D** | **IT23314238** | **`VULN-04`**, **`VULN-15`**, **`VULN-19`** | **Fully Remediated** (Dependency Migration, Payment Signature Verification & ReDoS Hardening) |
 
 ---
 
@@ -665,29 +665,87 @@ React Router's bundled stream parser `turbo-stream` v2 permits arbitrary constru
 
 #### 6.4.1 Vulnerability VULN-04: Arbitrary File Overwrite & Symlink Path Traversal (`tar`)
 - **OWASP Category:** A06:2021 – Vulnerable and Outdated Components
+- **CWE:** CWE-22 (Path Traversal), CWE-59 (Improper Link Resolution Before File Access / Symlink Following)
 - **CVSS v3.1 Score:** **9.1 (Critical)** — `GHSA-34x7-hfp2-rc4v` / `GHSA-8qq5-rm4j-mr97`
 - **Affected Component:** `Backend/node_modules/tar` (`tar <=7.5.20` via `@mapbox/node-pre-gyp` -> `bcrypt`)
 - **Detection Method:** Software Composition Analysis (OWASP Dependency-Check & `npm audit`)
 - **Evidence Image:** [`security-audit/media/Croos/vuln-04-tar-arbitrary-file-overwrite-sca.png`](./media/Croos/vuln-04-tar-arbitrary-file-overwrite-sca.png)
 
 ##### 1. Vulnerability Description & Root Cause
-The `tar` library bundled transitively under `@mapbox/node-pre-gyp` (depended on by `bcrypt`) suffers from symlink poisoning and directory traversal vulnerabilities. Maliciously crafted archives can target files outside the extraction destination, overwriting arbitrary host server files.
+The `tar` library bundled transitively under `@mapbox/node-pre-gyp` (depended on by the native `bcrypt` package used across the authentication controllers) suffers from symlink poisoning and directory traversal vulnerabilities. Maliciously crafted archives can target files outside the extraction destination, overwriting arbitrary host server files. Because `node-pre-gyp` invokes `tar` internally during `npm install` to fetch pre-built native binaries, the vulnerable code path is exercised purely as an installation-time side effect of depending on `bcrypt` — the application never has to call `tar` directly for the risk to exist.
 
-##### 2. Remediation Details
-> *[Placeholder: To be completed and committed by CROOS E D]*  
-> *(Action required: Upgrade native dependencies or migrate exclusively to pure-JS `bcryptjs` which eliminates native binary compilation).*
+##### 2. Proof of Concept (PoC) & Steps to Reproduce
+1. Confirm the vulnerable transitive dependency chain prior to remediation:
+   ```bash
+   npm ls tar
+   ```
+   **Output (before fix):**
+   ```text
+   backend@1.0.0
+   `-- bcrypt@5.1.1
+     `-- @mapbox/node-pre-gyp@1.0.11
+       `-- tar@6.1.11
+   ```
+2. `npm audit` flags the chain directly: `tar` <=7.5.20 reachable via `@mapbox/node-pre-gyp` <=1.0.11, depended on by `bcrypt` 5.0.1–5.1.1 (see Figure 15, `security-audit/media/Croos/vuln-04-tar-arbitrary-file-overwrite-sca.png`).
+3. Since `bcryptjs` (a pure-JavaScript, dependency-free reimplementation with an API-compatible `hash()`/`compare()` interface) was already present in `package.json` and already in use by `UserData.js`, the fix is to standardize the entire codebase on it and drop native `bcrypt` entirely, removing the `tar`/`node-pre-gyp` chain rather than attempting to patch it in place.
+
+##### 3. Security Impact
+- **Integrity:** Critical (Arbitrary file overwrite on the host filesystem during dependency installation).
+- **Availability:** High (A poisoned symlink target can corrupt application or system files).
+- **Attack Surface:** The vulnerable code only exists because of an unnecessary native compilation dependency; removing it eliminates the exposure outright instead of merely bumping a version.
+
+##### 4. Remediation Implementation
+1. **Dependency Consolidation:** Replaced `import bcrypt from "bcrypt"` with `import bcrypt from "bcryptjs"` in `Backend/src/controllers/userManagement/Login.js` and `Backend/src/controllers/userManagement/UserRegistration.js`, matching the pattern already used in `UserData.js`. `bcryptjs` exposes an identical `bcrypt.hash(password, 10)` / `bcrypt.compare(password, hash)` async API, so no other call sites required changes.
+2. **Dependency Removal:** Removed `"bcrypt": "^5.1.1"` from `Backend/package.json` and ran `npm uninstall bcrypt`, which deleted `node_modules/bcrypt`, `node_modules/@mapbox/node-pre-gyp`, and the vulnerable `node_modules/tar` from the dependency tree entirely.
+3. **Verification:** Re-ran `npm ls tar bcrypt` post-fix and confirmed both packages are no longer present in the tree (`(empty)`).
+
+##### 5. Code Comparison (Before vs. After)
+
+**Vulnerable Code (`Backend/src/controllers/userManagement/Login.js`):**
+```javascript
+import bcrypt from 'bcrypt'
+...
+const isMatch = await bcrypt.compare(password, user.password)
+```
+
+**Vulnerable Code (`Backend/src/controllers/userManagement/UserRegistration.js`):**
+```javascript
+import bcrypt from "bcrypt";
+...
+const hashedPassword = await bcrypt.hash(password, 10);
+```
+
+**Secure Patched Code (both files — only the import changes):**
+```javascript
+import bcrypt from 'bcryptjs'
+// bcryptjs is a pure-JS implementation: no native compilation,
+// no node-pre-gyp, no vulnerable transitive `tar` dependency.
+```
+
+**`Backend/package.json` (dependency removed):**
+```diff
+   "axios": "^1.9.0",
+-  "bcrypt": "^5.1.1",
+   "bcryptjs": "^3.0.2",
+```
+
+##### 6. Git Commit Verification
+- **Commit Hash:** `1f86242`
+- **Commit Message:** `fix(security): migrate from native bcrypt to bcryptjs to remove tar symlink path traversal dependency (VULN-04)`
 
 ---
 
 #### 6.4.2 Vulnerability VULN-15: Unverified Payment Webhook (Payment Forgery)
 - **OWASP Category:** A08:2021 – Software and Data Integrity Failures
+- **CWE:** CWE-345 (Insufficient Verification of Data Authenticity)
 - **CVSS v3.1 Score:** **7.5 (High)** — `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N`
 - **Affected File:** `Backend/src/controllers/financeManagement/payment.controller.js` (lines 5–18)
-- **Endpoint:** `POST /api/notify`
+- **Endpoint:** `POST /api/payment`
 - **Detection Method:** Business Logic Analysis
+- **Evidence Image:** [`security-audit/media/Croos/Unverified Payment.png`](./media/Croos/Unverified%20Payment.png)
 
 ##### 1. Vulnerability Description & Root Cause
-The payment notification receiver `notifyPayment` accepts arbitrary payment payloads from `req.body` and stores them in MongoDB as completed transactions without verifying HMAC checksum signatures or merchant secrets:
+The payment notification receiver `notifyPayment` accepted arbitrary payment payloads from `req.body` and stored them in MongoDB as completed transactions without verifying the PayHere `md5sig` checksum against the merchant secret:
 ```javascript
 const notifyPayment = async (req, res) => {
    const paymentData = req.body;
@@ -696,27 +754,213 @@ const notifyPayment = async (req, res) => {
    res.status(200).send("Payment recorded");
 };
 ```
-An attacker can forge payment confirmations for unpaid orders.
+The `Payment` Mongoose schema already stores the fields the PayHere webhook protocol requires for verification (`merchant_id`, `order_id`, `payhere_amount`, `payhere_currency`, `status_code`, `md5sig`), but the controller never recomputed or checked `md5sig`. Because the endpoint is unauthenticated (it must be, to receive server-to-server webhooks from PayHere), any external actor who knows or guesses an `order_id` can `POST` a forged JSON body directly to `/api/payment` and have it recorded as a completed, successful payment.
 
-##### 2. Remediation Details
-> *[Placeholder: To be completed and committed by CROOS E D]*  
-> *(Action required: Implement cryptographic HMAC signature validation, e.g., PayHere MD5/SHA256 signature verification).*
+##### 2. Proof of Concept (PoC) & Steps to Reproduce
+1. Send a forged payment notification for an arbitrary order, with no valid signature:
+   ```bash
+   curl -i -X POST http://localhost:8005/api/payment \
+     -H "Content-Type: application/json" \
+     -d '{"merchant_id":"1230001","order_id":"ORDER123","payhere_amount":"25000.00","payhere_currency":"LKR","status_code":"2","md5sig":"FORGED"}'
+   ```
+2. Prior to remediation, the server responds `200 OK "Payment recorded"` and persists the forged transaction as if PayHere had genuinely confirmed payment — with no cryptographic check performed at all.
+
+##### 3. Security Impact
+- **Integrity:** High (Attackers can mark unpaid orders as paid, obtaining goods/services or unlocking order fulfillment without payment).
+- **Confidentiality:** None directly, but downstream financial reconciliation and fraud-detection processes are undermined.
+- **Business Impact:** Direct financial loss and reconciliation discrepancies between the marketplace ledger and the actual PayHere settlement records.
+
+##### 4. Remediation Implementation
+1. **Signature Recomputation:** Implemented `isValidPayHereSignature()`, which recomputes the PayHere-specified checksum server-side: `md5(merchant_id + order_id + payhere_amount + payhere_currency + status_code + md5(merchant_secret).toUpperCase()).toUpperCase()`, using Node's built-in `crypto` module.
+2. **Constant-Time Comparison:** Compared the recomputed signature against the client-supplied `md5sig` using `crypto.timingSafeEqual` (after equalizing buffer lengths) rather than `===`, to avoid timing side-channel leakage of the correct signature.
+3. **Fail-Closed Default:** If `PAYHERE_MERCHANT_SECRET` is not configured, or `md5sig` is missing, or the signatures don't match, the webhook is rejected with `400 Bad Request` and the payment is **not** persisted.
+4. **Secret Management:** Documented the new `PAYHERE_MERCHANT_SECRET` environment variable (sourced from the PayHere dashboard's Business Settings > Merchant Secret) in `Backend/.env.example`, following the same environment-variable pattern used to remediate VULN-13.
+5. **Reduced Logging:** Removed the `console.log(req.body)` statement that previously echoed the full raw payment payload (including card metadata fields on the schema) to server logs on every request; the success log now only records the `order_id`.
+
+##### 5. Code Comparison (Before vs. After)
+
+**Vulnerable Code (`Backend/src/controllers/financeManagement/payment.controller.js`):**
+```javascript
+const notifyPayment = async (req, res) => {
+   try {
+      const paymentData = req.body;
+      console.log(req.body);
+
+      const newPayment = new Payment(paymentData);
+      await newPayment.save();
+      console.log("Payment notification received and saved:", paymentData);
+      res.status(200).send("Payment recorded");
+   } catch (error) {
+      console.error("Error saving payment data:", error);
+      res.status(500).send("Error saving payment");
+   }
+};
+```
+
+**Secure Patched Code (`Backend/src/controllers/financeManagement/payment.controller.js`):**
+```javascript
+import crypto from "crypto";
+
+// Recomputes the PayHere notification signature server-side and compares it
+// (constant-time) against the md5sig the client supplied, per the PayHere
+// webhook verification spec: md5(merchant_id + order_id + payhere_amount +
+// payhere_currency + status_code + md5(merchant_secret).toUpperCase()).toUpperCase()
+const isValidPayHereSignature = ({
+   merchant_id,
+   order_id,
+   payhere_amount,
+   payhere_currency,
+   status_code,
+   md5sig,
+}) => {
+   const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
+   if (!merchantSecret || !md5sig) {
+      return false;
+   }
+
+   const hashedSecret = crypto
+      .createHash("md5")
+      .update(merchantSecret)
+      .digest("hex")
+      .toUpperCase();
+
+   const localSig = crypto
+      .createHash("md5")
+      .update(
+         `${merchant_id}${order_id}${payhere_amount}${payhere_currency}${status_code}${hashedSecret}`
+      )
+      .digest("hex")
+      .toUpperCase();
+
+   const received = Buffer.from(String(md5sig).toUpperCase());
+   const expected = Buffer.from(localSig);
+   if (received.length !== expected.length) {
+      return false;
+   }
+   return crypto.timingSafeEqual(received, expected);
+};
+
+const notifyPayment = async (req, res) => {
+   try {
+      const paymentData = req.body;
+
+      if (!isValidPayHereSignature(paymentData)) {
+         console.warn("Rejected payment notification with invalid signature:", {
+            merchant_id: paymentData.merchant_id,
+            order_id: paymentData.order_id,
+         });
+         return res.status(400).send("Invalid payment signature");
+      }
+
+      const newPayment = new Payment(paymentData);
+      await newPayment.save();
+      console.log("Payment notification received and saved:", paymentData.order_id);
+      res.status(200).send("Payment recorded");
+   } catch (error) {
+      console.error("Error saving payment data:", error);
+      res.status(500).send("Error saving payment");
+   }
+};
+```
+
+**`Backend/.env.example` (new required variable):**
+```diff
++# PayHere Merchant Secret (Business Settings > Merchant Secret on the PayHere dashboard).
++# Used to verify the md5sig on incoming POST /api/payment webhook notifications.
++PAYHERE_MERCHANT_SECRET=replace-with-your-payhere-merchant-secret
+```
+
+##### 6. Git Commit Verification
+- **Commit Hash:** `d68ef4d`
+- **Commit Message:** `fix(security): verify PayHere webhook signature to prevent payment forgery (VULN-15)`
 
 ---
 
 #### 6.4.3 Vulnerability VULN-19: Regular Expression Denial of Service (ReDoS)
 - **OWASP Category:** A03:2021 – Injection
-- **CVSS v3.1 Score:** **5.3 (Medium)** — `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`
-- **Affected File:** `Backend/src/controllers/financeManagement/payment.controller.js` (line 78) & `UserData.js` (line 114)
-- **Endpoint:** `GET /api/prices/:name`
+- **CWE:** CWE-1333 (Inefficient Regular Expression Complexity)
+- **CVSS v3.1 Score:** **7.5 (High)** — `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`
+- **Affected Files:** `Backend/src/controllers/financeManagement/payment.controller.js` (`getPricesByName`, line 78) & `Backend/src/controllers/userManagement/UserData.js` (`filterUsers`, line 114)
+- **Endpoints:** `GET /api/prices-by-name/:name` & `GET /user/filter` (search query)
 - **Detection Method:** Static Code Review
+- **Evidence Image:** [`security-audit/media/Croos/Regular Expression Denial.png`](./media/Croos/Regular%20Expression%20Denial.png)
 
 ##### 1. Vulnerability Description & Root Cause
-User input is passed directly to `new RegExp(\`^${name}$\`, "i")` without escaping regex metacharacters. Attackers can supply catastrophic backtracking expressions (e.g., `((a+)+)+$`) that cause exponential backtracking, blocking the single-threaded Node.js event loop and creating application-wide denial of service.
+Two separate controllers passed unescaped, user-controlled strings directly into the `RegExp` constructor:
+```javascript
+// payment.controller.js:78 — name comes from req.params.name
+name: { $regex: new RegExp(`^${name}$`, "i") },
 
-##### 2. Remediation Details
-> *[Placeholder: To be completed and committed by CROOS E D]*  
-> *(Action required: Sanitize user input using an escape regex function before passing into `new RegExp` or use exact index matching).*
+// UserData.js:114 — search comes from req.query.search
+const searchRegex = new RegExp(search, 'i');
+```
+Because `name` and `search` are attacker-controlled (a URL path segment and a query string parameter respectively) and are interpolated into the pattern with no escaping of regex metacharacters, a client can submit a regex-special string. In the worst case, a pattern engineered for catastrophic backtracking (e.g. containing nested quantifiers such as `((a+)+)+$`) causes the underlying regex engine to take exponential time relative to input length on certain non-matching inputs, blocking Node.js's single-threaded event loop and denying service to every other concurrent request while the match runs.
+
+##### 2. Proof of Concept (PoC) & Steps to Reproduce
+1. Prior to remediation, submit a crafted `name` parameter designed to trigger catastrophic backtracking:
+   ```bash
+   curl -i "http://localhost:8005/api/prices-by-name/$(python3 -c "print('a'*30 + '!')")"
+   ```
+   Supplying an unescaped grouping/quantifier sequence in place of a literal crop name causes MongoDB's `$regex` evaluation (backed by the same PCRE-style engine) to spend disproportionate CPU time compiling and matching the pattern, and repeated concurrent requests amplify the effect into an event-loop stall.
+2. The `filterUsers` search endpoint is exploitable identically via the `search` query parameter, e.g. `GET /user/filter?search=((a+)+)+$`.
+3. In both cases the server has no timeout or complexity guard on the regex evaluation, so a single crafted request can measurably degrade response times for all other users.
+
+##### 3. Security Impact
+- **Availability:** High (Single-threaded Node.js event loop can be blocked by a single crafted request, denying service to all concurrent users).
+- **Scope:** Affects both a public-facing endpoint (`getPricesByName`, used for daily market price lookups) and an authenticated administrative endpoint (`filterUsers`, used for the admin user-management search), widening the attack surface.
+
+##### 4. Remediation Implementation
+1. **Input Sanitization Helper:** Added a shared `escapeRegex()` helper in both files that escapes all regex metacharacters (`. * + ? ^ $ { } ( ) | [ ] \`) before the user-supplied string is interpolated into a `RegExp`:
+   ```javascript
+   const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+   ```
+2. **Applied at Both Call Sites:** `getPricesByName` now builds `new RegExp(\`^${escapeRegex(name)}$\`, "i")` and `filterUsers` now builds `new RegExp(escapeRegex(search), 'i')`, so any regex-special characters supplied by the client are treated as literal text to match rather than as pattern syntax — eliminating the ability to construct a backtracking pattern at all, rather than merely limiting execution time.
+
+##### 5. Code Comparison (Before vs. After)
+
+**Vulnerable Code (`Backend/src/controllers/financeManagement/payment.controller.js`):**
+```javascript
+const getPricesByName = async (req, res) => {
+   const name = req.params.name;
+   ...
+   const prices = await DailyPricess.find({
+      name: { $regex: new RegExp(`^${name}$`, "i") },
+      date: { $gte: startDate, $lte: targetDate },
+   });
+   ...
+};
+```
+
+**Vulnerable Code (`Backend/src/controllers/userManagement/UserData.js`):**
+```javascript
+if (search && search.trim() !== "") {
+    const searchRegex = new RegExp(search, 'i');
+    ...
+}
+```
+
+**Secure Patched Code (both files):**
+```javascript
+// Escapes regex metacharacters so user-supplied strings can be used safely
+// inside `new RegExp(...)` without enabling catastrophic backtracking (ReDoS).
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// payment.controller.js
+const prices = await DailyPricess.find({
+   name: { $regex: new RegExp(`^${escapeRegex(name)}$`, "i") },
+   date: { $gte: startDate, $lte: targetDate },
+});
+
+// UserData.js
+if (search && search.trim() !== "") {
+    const searchRegex = new RegExp(escapeRegex(search), 'i');
+    ...
+}
+```
+
+##### 6. Git Commit Verification
+- **Commit Hash:** `f3ea63c`
+- **Commit Message:** `fix(security): escape user input before constructing RegExp to prevent ReDoS (VULN-19)`
 
 ---
 
@@ -801,8 +1045,8 @@ sequenceDiagram
 ### 10.1 Deliverables Checklist
 - [x] **Vulnerability Audit Matrix:** 20 itemized vulnerabilities across 7 OWASP Top 10 categories.
 - [x] **Multi-Vector Evidence Assets:** Interactive SCA report (`dependency-check-report.html`), Secret scan screenshot (`git log -S`), OWASP ZAP DAST report (`zap-report.html`), and VS Code code audit captures.
-- [x] **Code Remediation:** Secure refactoring of `VULN-01`, `VULN-13`, and `VULN-20` on active branches.
-- [x] **Detailed Git Commit History:** Commits `16bd27f`, `f3eeba4`, and `d3e02da` with full security documentation.
+- [x] **Code Remediation:** Secure refactoring of `VULN-01`, `VULN-13`, `VULN-20`, `VULN-04`, `VULN-15`, and `VULN-19` on active branches.
+- [x] **Detailed Git Commit History:** Commits `16bd27f`, `f3eeba4`, `d3e02da` (Kumbukage) and `1f86242`, `f3ea63c`, `d68ef4d` (Croos) with full security documentation.
 - [ ] **Demonstration Video:** 20-minute walkthrough covering vulnerability discovery, PoC execution, code remediation, and OAuth integration.
 
 ---
