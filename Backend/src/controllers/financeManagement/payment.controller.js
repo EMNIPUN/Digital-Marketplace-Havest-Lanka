@@ -2,6 +2,10 @@ import DailyPricess from "../../models/financeManagement/DailyPricess.js";
 import Payment from "../../models/financeManagement/payment.js";
 import FarmerpaymentSchema from "../../models/financeManagement/paymentSchema.js";
 
+// Escapes regex metacharacters so user-supplied strings can be used safely
+// inside `new RegExp(...)` without enabling catastrophic backtracking (ReDoS).
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 const notifyPayment = async (req, res) => {
    try {
       const paymentData = req.body;
@@ -75,7 +79,7 @@ const getPricesByName = async (req, res) => {
       startDate.setDate(startDate.getDate() - 6);
 
       const prices = await DailyPricess.find({
-         name: { $regex: new RegExp(`^${name}$`, "i") },
+         name: { $regex: new RegExp(`^${escapeRegex(name)}$`, "i") },
          date: { $gte: startDate, $lte: targetDate },
       });
 

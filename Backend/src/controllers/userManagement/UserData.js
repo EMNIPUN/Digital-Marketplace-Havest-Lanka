@@ -11,6 +11,10 @@ import OTPBuffer from '../../models/userManagement/OTPBuffer.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Escapes regex metacharacters so user-supplied strings can be used safely
+// inside `new RegExp(...)` without enabling catastrophic backtracking (ReDoS).
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 export const FindUserById = async (req, res) => {
     try {
         const { id } = req.params
@@ -111,7 +115,7 @@ export const filterUsers = async (req, res) => {
         }
 
         if (search && search.trim() !== "") {
-            const searchRegex = new RegExp(search, 'i');
+            const searchRegex = new RegExp(escapeRegex(search), 'i');
             // Build an array for the $or conditions.
             const orConditions = [
                 { name: { $regex: searchRegex } },
