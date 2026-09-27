@@ -1,21 +1,11 @@
 import User from "../../models/userManagement/User.js";
 import bcrypt from "bcrypt";
-import multer from "multer";
-import path from "path";
 import sendMail from "./smtp/Mail.js";
-
-const storage = multer.diskStorage({
-    destination: "./uploads/",
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
-});
-
-const upload = multer({ storage });
+import { imageUpload } from "../../middleware/imageUpload.js";
 
 export const registerUser = async (req, res) => {
     try {
-        let { email, name, number, password, NIC, role = "farmer", status } = req.body;
+        let { email, name, number, password, NIC, status } = req.body;
         const displayPicture = req.file ? `/uploads/${req.file.filename}` : null;
 
         // Check if email exists
@@ -45,7 +35,7 @@ export const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create new user
-        const newUser = new User({ email, name, number, password: hashedPassword, role, displayPicture, status, NIC });
+        const newUser = new User({ email, name, number, password: hashedPassword, role: "farmer", displayPicture, status, NIC });
         await newUser.save();
 
         // Send email after successful registration
@@ -58,7 +48,7 @@ export const registerUser = async (req, res) => {
     }
 };
 
-export const uploadMiddleware = upload.single("displayPicture");
+export const uploadMiddleware = imageUpload.single("displayPicture");
 
 // Helper function to send beautiful email
 const sendRegistrationEmail = async (email, name, password) => {

@@ -1,12 +1,12 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import User from '../../models/userManagement/User.js'
-import multer from 'multer';
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import bcrypt from 'bcryptjs'
 import OTPBuffer from '../../models/userManagement/OTPBuffer.js';
+import { imageUpload } from "../../middleware/imageUpload.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,15 +38,6 @@ export const FindUserById = async (req, res) => {
     }
 }
 
-const storage = multer.diskStorage({
-    destination: "./uploads/",
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
-});
-
-const upload = multer({ storage });
-
 export const UpdateUserById = async (req, res) => {
     try {
         const { userId, name, number } = req.body;
@@ -74,7 +65,7 @@ export const UpdateUserById = async (req, res) => {
     }
 };
 
-export const uploadUpdateMiddleware = upload.single("displayPicture");
+export const uploadUpdateMiddleware = imageUpload.single("displayPicture");
 
 
 export const DeleteUserById = async (req, res) => {

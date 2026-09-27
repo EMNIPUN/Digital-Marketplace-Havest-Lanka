@@ -138,7 +138,11 @@ app.use("/api/message", messageRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads"), {
+   setHeaders: (res) => {
+      res.setHeader("Content-Disposition", "attachment");
+   },
+}));
 
 const port = 8005;
 app.listen(port, () => {
